@@ -6,7 +6,6 @@ using UnityEngine;
 public class Enemy : CharacterBase
 {
     public eGimickType gimickType = eGimickType.None;
-    public int hp = 0;
 
     /// <summary>
     /// エネミーを生成する。
@@ -18,8 +17,9 @@ public class Enemy : CharacterBase
     public static Enemy CreateEnemy(int x, int y, int hp, eGimickType gimickType)
     {
         var prefab = Instantiate(GameManager.instance.enemyPrefab);
-        prefab.SetOrigin(GameManager.instance.enemyBoard);
+        prefab.SetOrigin(GameManager.instance.enemyBoard, Game.ENEMY_MASU_X, Game.ENEMY_MASU_Y);
         prefab.Setup(x, y, gimickType, hp);
+        prefab.transform.SetParent(GameManager.instance.enemyBoard.transform, false);
 
         return prefab;
     }
@@ -31,19 +31,11 @@ public class Enemy : CharacterBase
     /// <param name="y"></param>
     /// <param name="gimickType"></param>
     /// <param name="hp"></param>
-    public void Setup(int x, int y, eGimickType gimickType, int hp)
+    public void Setup(int x, int y, eGimickType gimickType, int power)
     {
-        this.x = x;
-        this.y = y;
+        _Setup(x, y, power);
         this.gimickType = gimickType;
-        this.hp = hp;
-
         name = $"{gimickType} ({x},{y})";
-        transform.SetParent(GameManager.instance.enemyBoard.transform, false);
-        rect.sizeDelta = new Vector2(size, size);
-        transform.localPosition = new Vector3(x * size + originX, y * size + originY, 0);
-
-        UpdateText();
     }
 
     /// <summary>
@@ -58,7 +50,7 @@ public class Enemy : CharacterBase
     public void Move()
     {
         y -= 1;
-        Setup(x, y, gimickType, hp);
+        Setup(x, y, gimickType, power);
     }
 
     /// <summary>
@@ -68,15 +60,15 @@ public class Enemy : CharacterBase
     {
         if (gimickType == eGimickType.Enemy)
         {
-            hpText.text = hp.ToString();
+            _hpText.text = power.ToString();
         }
         else if(gimickType == eGimickType.Key)
         {
-            hpText.text = "Key";
+            _hpText.text = "Key";
         }
         else if (gimickType == eGimickType.Timer)
         {
-            hpText.text = "Timer";
+            _hpText.text = "Timer";
         }
     }
 }

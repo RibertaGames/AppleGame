@@ -16,27 +16,6 @@ public enum eGameState
     GameEnd,
 }
 
-/// <summary>
-/// ギミック種類
-/// </summary>
-public enum eGimickType
-{
-    None,
-    Enemy,
-    Key,
-    Timer,
-}
-
-/// <summary>
-/// 手持ちのアイテム
-/// </summary>
-[System.Flags]
-public enum eItem
-{
-    Timer = 1,
-    Key = 2,
-}
-
 public class GameManager : MonoBehaviour
 {
     private static GameManager _instance;
@@ -69,8 +48,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Character _characterPrefab;
     [SerializeField] private Enemy _enemyPrefab;
     //ボード
-    [SerializeField] private GameObject _enemyBoard;
-    [SerializeField] private GameObject _characterBoard;
+    [SerializeField] private RectTransform _enemyBoard;
+    [SerializeField] private RectTransform _characterBoard;
     //レイ
     [SerializeField] private GraphicRaycaster _graphicRaycaster;
 
@@ -78,10 +57,8 @@ public class GameManager : MonoBehaviour
     public Masu masuPrefab => _masuPrefab;
     public Enemy enemyPrefab => _enemyPrefab;
     public Character characterPrefab => _characterPrefab;
-    public GameObject enemyBoard => _enemyBoard;
-    public GameObject characterBoard => _characterBoard;
-
-    public static readonly int BLOCK_SIZE = 80;
+    public RectTransform enemyBoard => _enemyBoard;
+    public RectTransform characterBoard => _characterBoard;
 
     public eGameState gameState { get; private set; } = eGameState.None;
     public Game currentGame { get; private set; } = null;

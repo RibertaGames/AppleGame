@@ -1,8 +1,26 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
-using UnityEngine;
-using System.Linq;
-using System.Threading.Tasks;
+
+/// <summary>
+/// ギミック種類
+/// </summary>
+public enum eGimickType
+{
+    None,
+    Enemy,
+    Key,
+    Timer,
+}
+
+/// <summary>
+/// 手持ちのアイテム
+/// </summary>
+[System.Flags]
+public enum eItem
+{
+    Timer = 1,
+    Key = 2,
+}
 
 public class GameProgress
 {
@@ -24,13 +42,74 @@ public class Game
     private Character[,] _characters = null;
     private Character _nextCharacter = null;
 
-    private int _enemyX = 6; //7マス
-    private int _enemyY = 6; //7マス
-    private int _characterX = 6; //7マス
-    private int _characterY = 1; //2マス
-
-    //救済処置: 5ターン鍵が出なかったら鍵を出す。
     private int _noKeyTurn = 0;
+
+    private Random _random = new Random();
+
+    /// <summary>
+    /// 盤面のマス
+    /// </summary>
+    public static readonly int ENEMY_MASU_X = 7;
+    public static readonly int ENEMY_MASU_Y = 7;
+    public static readonly int CHARACTER_MASU_X = 7;
+    public static readonly int CHARACTER_MASU_Y = 2;
+
+    /// <summary>
+    /// エネミーのスポーンするY座標
+    /// </summary>
+    private readonly int SPAWN_ENEMY_MASU_Y = ENEMY_MASU_Y - 1;
+
+    /// <summary>
+    /// キャラクター側の進化可能な数字
+    /// </summary>
+    public static readonly int[] CHARACTER_ENABLE_NUM = new int[] { 2, 4, 8, 16, 32, 64 };
+
+    /// <summary>
+    /// 次の生成キャラクターの固定X,Y
+    /// </summary>
+    public static readonly int NEXT_CHARACTER_X = 3;
+    public static readonly int NEXT_CHARACTER_Y = -1;
+    public static readonly float NEXT_CHARACTER_POSITION_Y = -1.35f;
+
+    /// <summary>
+    /// 一体撃破: 10ポイント
+    /// </summary>
+    private readonly int DESTROY_BONUS = 10;
+
+    /// <summary>
+    /// 一ターン: 5ポイント
+    /// </summary>
+    private readonly int TURN_BONUS = 5;
+
+    /// <summary>
+    /// 100ダメージ毎: 1ポイント
+    /// </summary>
+    private readonly int DAMEGE_BONUS = 100;
+
+    /// <summary>
+    /// 30ターン毎にボーナスステージ: 鍵か時計
+    /// </summary>
+    private readonly int BONUS_STAGE_TURN = 30;
+
+    /// <summary>
+    /// 救済処置: 5ターン鍵が出なかったら鍵を出す。
+    /// </summary>
+    private readonly int NO_KEY_TURN = 5;
+
+    /// <summary>
+    /// エネミーの出現確率
+    /// </summary>
+    private readonly int ENEMY_POP_PERCENT = 80;
+
+    /// <summary>
+    /// 鍵の出現確率
+    /// </summary>
+    private readonly int KEY_POP_PERCENT = 15;
+
+    /// <summary>
+    /// タイマーの出現確率
+    /// </summary>
+    private readonly int TIMER_POP_PERCENT = 5;
 
     /// <summary>
     /// コンストラクタ
@@ -91,8 +170,8 @@ public class Game
         _destroyCount = 0;
         _currentTurn = 0;
         _currentItem = new eItem();
-        _enemies = new Enemy[_enemyX + 1, _enemyY + 1];
-        _characters = new Character[_characterX + 1, _characterY + 1];
+        _enemies = new Enemy[ENEMY_MASU_X, ENEMY_MASU_Y];
+        _characters = new Character[CHARACTER_MASU_X, CHARACTER_MASU_Y];
         _nextCharacter = null;
     }
 
@@ -142,8 +221,6 @@ public class Game
         GameManager.instance.GameResult(GetCurrentGameProgress());
     }
 
-    #region -- 次のターンへ関係の処理
-
     /// <summary>
     /// キャラクターの攻撃
     /// </summary>
@@ -175,10 +252,10 @@ public class Game
                     //エネミーの場合
                     if (enemy.gimickType == eGimickType.Enemy)
                     {
-                        int enemyHp = enemy.hp;
-                        enemy.hp -= characterPower;
+                        int enemyHp = enemy.power;
+                        enemy.ChangePower(enemy.power - characterPower);
                         //敵を倒した(威力減衰して貫通する)
-                        if (enemy.hp <= 0)
+                        if (enemy.power <= 0)
                         {
                             _destroyCount++; //撃破数加算
                             enemy.Destroy();
@@ -186,7 +263,7 @@ public class Game
                             totalDamege += enemyHp;
                         }
                         //敵が受け止めた(貫通止まる)
-                        else if(enemy.hp > 0)
+                        else if(enemy.power > 0)
                         {
                             totalDamege += characterPower;
                             enemy.UpdateText();
@@ -307,20 +384,25 @@ public class Game
             //敵か鍵かタイマーか
             var gimick = _GetRandomGimickType();
             //敵生成
-            var enemy = Enemy.CreateEnemy(x, _enemyY, hp, gimick);
+            var enemy = Enemy.CreateEnemy(x, SPAWN_ENEMY_MASU_Y, hp, gimick);
             //記憶しておく
-            _enemies[x, _enemyY] = enemy;
+            _enemies[x, SPAWN_ENEMY_MASU_Y] = enemy;
         }
     }
+
+    /// <summary>
+    /// エネミーの数を計算
+    /// </summary>
+    /// <returns></returns>
     private int _GetEnemyCount()
     {
         //ボーナスタイム: 一列全部鍵か時計
-        if (_currentTurn % 30 == 0)
+        if (_currentTurn % BONUS_STAGE_TURN == 0)
         {
             return _enemies.GetLength(0);
         }
-        //return Random.Range(2, 4);
-        return Random.Range(2, 4);
+
+        return _random.Next(2, 4);
     }
 
     /// <summary>
@@ -332,7 +414,7 @@ public class Game
         List<int> canMove = new List<int>();
         for (int x = 0; x < _enemies.GetLength(0); x++)
         {
-            if (_enemies[x, _enemyY] == null)
+            if (_enemies[x, SPAWN_ENEMY_MASU_Y] == null)
             {
                 canMove.Add(x);
             }
@@ -347,14 +429,11 @@ public class Game
     /// <returns></returns>
     private int _GetRandomNumber(int[] values)
     {
-        // Random クラスのインスタンスを生成
-        System.Random random = new System.Random();
-
         // 配列の中からランダムに一つを選ぶ
         //int randomIndex = random.Next(0, values.Length);
 
         // 配列の中から若い番号がより選ばれやすい
-        double adjustedRandom = System.Math.Pow(random.NextDouble(), 2);
+        double adjustedRandom = Math.Pow(_random.NextDouble(), 2);
         int randomIndex = (int)(adjustedRandom * values.Length);
 
         int randomValue = values[randomIndex];
@@ -383,27 +462,6 @@ public class Game
 
         return list.ToArray();
     }
-    /// <summary>
-    /// ターン数に応じてエネミーの強さを計算する
-    /// </summary>
-    /// <param name="currentTurn"></param>
-    /// <returns></returns>
-    private int _GetEnemyStrength()
-    {
-        //ターン数×倍数: 倍数は1ターン目:0.5倍,100ターン目:1倍,200ターン目:1.5倍,300ターン目:2倍
-        //var multiple = Mathf.Min(0.5f + (_currentTurn / 100) * 0.5f, 1f);
-        var multiple = Mathf.Min(0.5f + (_currentTurn / 150) * 0.5f, 1f);
-        if(multiple == 1f)
-        {
-            multiple = 1f + (_currentTurn / 150) * 0.1f;
-        }
-
-        int strongMax = (int)(_currentTurn * multiple); //強さの上限
-        int strongMin = 1 + strongMax / 3;              //強さの下限
-        int result = Random.Range(strongMin, strongMax);
-        Debug.Log($"Random({strongMin}～{strongMax}) => " + result);
-        return result;
-    }
 
     /// <summary>
     /// エネミーの種類を抽選
@@ -411,56 +469,43 @@ public class Game
     /// <returns></returns>
     private eGimickType _GetRandomGimickType()
     {
-        float rand = Random.Range(1f, 10f);
+        int rand = _random.Next(0, 101);
 
         //30ターン毎にボーナスステージ: 鍵か時計
-        if (_currentTurn % 30 == 0)
+        if (_currentTurn % BONUS_STAGE_TURN == 0)
         {
-            rand = Random.Range(8f, 10f);
+            rand = _random.Next(81, 101);
         }
+
         //5ターン以上鍵が貰えていない
-        else if(_noKeyTurn >= 5)
+        if(_noKeyTurn >= NO_KEY_TURN)
         {
-            Debug.Log("救済処置発動");
-            rand = Random.Range(8f, 9f);
-        }
-        
-        if (rand < 8f) //敵: 80%
-        {
-            return eGimickType.Enemy;
-        }
-        else if (rand < 9.5f) //鍵: 15%
-        {
-            //鍵ゲット
+            UnityEngine.Debug.Log("救済処置発動");
             _noKeyTurn = 0;
             return eGimickType.Key;
         }
-        else //時計: 5%
+
+        // 敵
+        if (rand <= ENEMY_POP_PERCENT)
+        {
+            return eGimickType.Enemy;
+        }
+        // 鍵
+        else if (rand <= ENEMY_POP_PERCENT + KEY_POP_PERCENT)
+        {
+            _noKeyTurn = 0;
+            return eGimickType.Key;
+        }
+        // 時計
+        else if(rand <= ENEMY_POP_PERCENT + KEY_POP_PERCENT + TIMER_POP_PERCENT)
         {
             return eGimickType.Timer;
         }
-    }
-
-    /// <summary>
-    /// 次のキャラクターを生成する。
-    /// </summary>
-    private void _CreateNextCharacter()
-    {
-        if (_nextCharacter != null)
+        else
         {
-            Debug.Log("既に次のキャラクターが待機中です。");
-            return;
+            return eGimickType.Enemy;
         }
-
-        //指定ターンごとに生成される2の累乗の数字が大きくなっていく
-        int generateCount = (int)(_currentTurn / 30f);
-        int[] generateList = _GetElementsArray(Character.CHARACTER_ENABLE_NUM, generateCount);
-        var nextCharacterPower = _GetRandomNumber(generateList);
-
-        //控室に生成させる。
-        _nextCharacter = Character.CreateCharacter(Character.NEXT_CHARACTER_X, Character.NEXT_CHARACTER_Y, nextCharacterPower);
     }
-    #endregion
 
     /// <summary>
     /// プレイヤーがキャラクターを移動させる処理。
@@ -496,7 +541,7 @@ public class Game
         }
 
         //移動元を消す
-        if (oldX == Character.NEXT_CHARACTER_X && oldY == Character.NEXT_CHARACTER_Y)
+        if (oldX == NEXT_CHARACTER_X && oldY == NEXT_CHARACTER_Y)
         {
             _nextCharacter = null;
         }
@@ -521,18 +566,61 @@ public class Game
     private void _CalcScore()
     {
         // 撃破数によるボーナス => 一体撃破:10ポイント
-        int destroyBonus = _destroyCount * 10;
+        int destroyBonus = _destroyCount * DESTROY_BONUS;
 
         // ターン数によるボーナス => 一ターン:30ポイント
-        int turnBonus = _currentTurn * 5;
+        int turnBonus = (_currentTurn - 1) * TURN_BONUS;
 
         // ダメージ数によるボーナス => 100ダメージ:1ポイント
-        int damageBonus = _totalDamege / 100;
+        int damageBonus = _totalDamege / DAMEGE_BONUS;
 
         // 各ボーナスを合算
         int totalBonus = destroyBonus + turnBonus + damageBonus;
 
         //スコアを記憶する。
         _score = totalBonus;
+    }
+
+    /// <summary>
+    /// 次のキャラクターを生成する。
+    /// </summary>
+    private void _CreateNextCharacter()
+    {
+        if (_nextCharacter != null)
+        {
+            UnityEngine.Debug.Log("既に次のキャラクターが待機中です。");
+            return;
+        }
+
+        //指定ターンごとに生成される2の累乗の数字が大きくなっていく
+        int generateCount = (int)(_currentTurn / 30f);
+        int[] generateList = _GetElementsArray(CHARACTER_ENABLE_NUM, generateCount);
+        var nextCharacterPower = _GetRandomNumber(generateList);
+
+        //控室に生成させる。
+        _nextCharacter = Character.CreateCharacter(NEXT_CHARACTER_X, NEXT_CHARACTER_Y, nextCharacterPower);
+        _nextCharacter.SetNextCharacterPosition(NEXT_CHARACTER_X, NEXT_CHARACTER_POSITION_Y);
+    }
+
+    /// <summary>
+    /// ターン数に応じてエネミーの強さを計算する
+    /// </summary>
+    /// <param name="currentTurn"></param>
+    /// <returns></returns>
+    private int _GetEnemyStrength()
+    {
+        //ターン数×倍数: 倍数は1ターン目:0.5倍,100ターン目:1倍,200ターン目:1.5倍,300ターン目:2倍
+        //var multiple = Mathf.Min(0.5f + (_currentTurn / 100) * 0.5f, 1f);
+        var multiple = Math.Min(0.5f + (_currentTurn / 150) * 0.5f, 1f);
+        if (multiple == 1f)
+        {
+            multiple = 1f + (_currentTurn / 150) * 0.1f;
+        }
+
+        int strongMax = 1 + (int)(_currentTurn * multiple); //強さの上限
+        int strongMin = 1 + strongMax / 3;              //強さの下限
+        int result = _random.Next(strongMin, strongMax);
+        UnityEngine.Debug.Log($"Random({strongMin}～{strongMax}) => " + result);
+        return result;
     }
 }

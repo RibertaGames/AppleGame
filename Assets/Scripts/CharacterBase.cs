@@ -5,27 +5,62 @@ using UnityEngine;
 
 public class CharacterBase : MonoBehaviour
 {
-    //現在の座標
-    public int x;
-    public int y;
+    /// <summary>
+    /// キャラクターの強さ
+    /// </summary>
+    public int power { get; private set; }
 
-    public TextMeshProUGUI hpText;
-    public RectTransform rect;
+    /// <summary>
+    /// 現在の座標
+    /// </summary>
+    public int x { get; protected private set; }
+    public int y { get; protected private set; }
+
+    [SerializeField] private protected TextMeshProUGUI _hpText;
+    [SerializeField] private protected RectTransform _rect;
 
     //原点座標(0,0) 左下
-    public float originX = 0;
-    public float originY = 0;
-    public int size = 0;
+    protected private float _originX;
+    protected private float _originY;
+    protected private float _sizeX;
+    protected private float _sizeY;
 
     /// <summary>
     /// 原点を設定する。
     /// </summary>
     /// <param name="setBoard"></param>
-    public void SetOrigin(GameObject setBoard)
+    public void SetOrigin(RectTransform boardRect, float boardX, float boardY)
     {
-        var boardRect = setBoard.GetComponent<RectTransform>();
-        size = GameManager.BLOCK_SIZE;
-        originX = -(boardRect.sizeDelta.x / 2) + size / 2;
-        originY = -(boardRect.sizeDelta.y / 2) + size / 2;
+        _sizeX = (int)(boardRect.sizeDelta.x / boardX);
+        _sizeY = (int)(boardRect.sizeDelta.y / boardY);
+        _originX = -(boardRect.sizeDelta.x / 2) + _sizeX / 2;
+        _originY = -(boardRect.sizeDelta.y / 2) + _sizeY / 2;
+    }
+
+    /// <summary>
+    /// セットアップ
+    /// </summary>
+    protected private void _Setup(int x, int y , int power)
+    {
+        this.x = x;
+        this.y = y;
+        this.power = power;
+        transform.localPosition = new Vector3(x * _sizeX + _originX, y * _sizeY + _originY, 0);
+
+        _UpdatePowerText();
+    }
+
+    /// <summary>
+    /// 強さ表示を更新する
+    /// </summary>
+    protected private void _UpdatePowerText()
+    {
+        _hpText.text = power.ToString();
+    }
+
+    public void ChangePower(int power)
+    {
+        this.power = power;
+        _UpdatePowerText();
     }
 }

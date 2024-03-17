@@ -8,13 +8,10 @@ using UnityEngine.UI;
 [RequireComponent(typeof(RectTransform))]
 public class Character : CharacterBase
 {
-    public int power = 0;
-
-    //キャラクター側の可能な数字
-    public static readonly int[] CHARACTER_ENABLE_NUM = new int[] { 2, 4, 8, 16, 32, 64};
-    //次のキャラクターの固定X,Y
-    public static readonly int NEXT_CHARACTER_X = 3;
-    public static readonly int NEXT_CHARACTER_Y = -1;
+    /// <summary>
+    /// マウス動かす前の座標
+    /// </summary>
+    private Vector3 _defaultPosition;
 
     /// <summary>
     /// キャラクターを生成する。
@@ -25,9 +22,9 @@ public class Character : CharacterBase
     public static Character CreateCharacter(int x, int y, int power)
     {
         var prefab = Instantiate(GameManager.instance.characterPrefab);
-        prefab.SetOrigin(GameManager.instance.characterBoard);
+        prefab.SetOrigin(GameManager.instance.characterBoard, Game.CHARACTER_MASU_X, Game.CHARACTER_MASU_Y);
         prefab.Setup(x, y, power);
-        
+        prefab.transform.SetParent(GameManager.instance.characterBoard, false);
         return prefab;
     }
 
@@ -39,15 +36,9 @@ public class Character : CharacterBase
     /// <param name="power"></param>
     public void Setup(int x, int y, int power)
     {
-        this.x = x;
-        this.y = y;
-        this.power = power;
-
+        _Setup(x, y, power);
         name = $"Character ({x},{y}) power:{power}";
-        transform.SetParent(GameManager.instance.characterBoard.transform, false);
-        rect.sizeDelta = new Vector2(size, size);
-        transform.localPosition = new Vector3(x * size + originX, y * size + originY, 0);
-        UpdateText();
+        _defaultPosition = transform.localPosition;
     }
 
     /// <summary>
@@ -57,8 +48,9 @@ public class Character : CharacterBase
     {
         var worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         worldPosition.z = 1;
-        rect.position = worldPosition;
+        _rect.position = worldPosition;
     }
+
     /// <summary>
     /// マウスを離したら
     /// </summary>
@@ -77,11 +69,9 @@ public class Character : CharacterBase
                 if (result[i].gameObject.CompareTag("CharacterMasu"))
                 {
                     var masu = result[i].gameObject.GetComponent<Masu>();
-                    Debug.Log("マスを選択: " + masu.x + " - " + masu.y);
                     var move = GameManager.instance.currentGame.PlayerMoveCharacter(masu.x, masu.y, this);
                     if (move)
                     {
-                        Debug.Log("移動成功: " + result[i].gameObject.name + " 次のターンへ");
                         //再度セットアップ
                         Setup(masu.x, masu.y, power);
                         return;
@@ -91,7 +81,7 @@ public class Character : CharacterBase
         }
 
         //失敗したので、元の位置に戻す。
-        transform.localPosition = new Vector3(x * GameManager.BLOCK_SIZE + originX, y * GameManager.BLOCK_SIZE + originY, 0);
+        transform.localPosition = _defaultPosition;
     }
 
     /// <summary>
@@ -121,17 +111,17 @@ public class Character : CharacterBase
     {
         if (IsEnableMarge(targetCharacter))
         {
-            power += targetCharacter.power;
-            UpdateText();
+            ChangePower(power + targetCharacter.power);
             Destroy(targetCharacter.gameObject);
         }
     }
 
     /// <summary>
-    /// UIを更新する。
+    /// 次のキャラクターのポジションを設定する。
     /// </summary>
-    public void UpdateText()
+    public void SetNextCharacterPosition(float x, float y)
     {
-        hpText.text = power.ToString();
+        transform.localPosition = new Vector3(x * _sizeX + _originX, y * _sizeY + _originY, 0);
+        _defaultPosition = transform.localPosition;
     }
 }

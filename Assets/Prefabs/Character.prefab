@@ -227,12 +227,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   x: 0
   y: 0
-  hpText: {fileID: 3263280509865307851}
-  rect: {fileID: 3263280511792127127}
-  originX: 0
-  originY: 0
-  size: 0
-  power: 0
+  _hpText: {fileID: 3263280509865307851}
+  _rect: {fileID: 3263280511792127127}
 --- !u!61 &-6878912703350696759
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -225,10 +225,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   x: 0
   y: 0
-  hpText: {fileID: 69169031292572048}
-  rect: {fileID: 69169032582915020}
-  originX: 0
-  originY: 0
-  size: 0
+  _hpText: {fileID: 69169031292572048}
+  _rect: {fileID: 69169032582915020}
   gimickType: 0
   hp: 0
