@@ -36,6 +36,19 @@ public class Enemy : CharacterBase
         _Setup(x, y, power);
         this.gimickType = gimickType;
         name = $"{gimickType} ({x},{y})";
+
+        if (gimickType == eGimickType.Enemy)
+        {
+            _hpText.text = power.ToString();
+        }
+        else if (gimickType == eGimickType.Key)
+        {
+            _hpText.text = "Key";
+        }
+        else if (gimickType == eGimickType.Timer)
+        {
+            _hpText.text = "Timer";
+        }
     }
 
     /// <summary>
@@ -51,24 +64,5 @@ public class Enemy : CharacterBase
     {
         y -= 1;
         Setup(x, y, gimickType, power);
-    }
-
-    /// <summary>
-    /// UIÇçXêVÇ∑ÇÈÅB
-    /// </summary>
-    public void UpdateText()
-    {
-        if (gimickType == eGimickType.Enemy)
-        {
-            _hpText.text = power.ToString();
-        }
-        else if(gimickType == eGimickType.Key)
-        {
-            _hpText.text = "Key";
-        }
-        else if (gimickType == eGimickType.Timer)
-        {
-            _hpText.text = "Timer";
-        }
     }
 }

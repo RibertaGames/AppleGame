@@ -266,7 +266,6 @@ public class Game
                         else if(enemy.power > 0)
                         {
                             totalDamege += characterPower;
-                            enemy.UpdateText();
                         }
 
                         //à–óÕå∏êä
