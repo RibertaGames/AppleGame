@@ -30,6 +30,11 @@ public class GameProgress
     public int currentTurn = 0;
 }
 
+public class GameSetting
+{
+    public readonly bool ALWAYS_MIN_NUMBER = true;
+}
+
 public class Game
 {
     private int _score = 0;
@@ -45,6 +50,7 @@ public class Game
     private int _noKeyTurn = 0;
 
     private Random _random = new Random();
+    private GameSetting _gameSetting = new GameSetting();
 
     /// <summary>
     /// 盤面のマス
@@ -104,12 +110,12 @@ public class Game
     /// <summary>
     /// 鍵の出現確率
     /// </summary>
-    private readonly int KEY_POP_PERCENT = 15;
+    private readonly int KEY_POP_PERCENT = 18;
 
     /// <summary>
     /// タイマーの出現確率
     /// </summary>
-    private readonly int TIMER_POP_PERCENT = 5;
+    private readonly int TIMER_POP_PERCENT = 2;
 
     /// <summary>
     /// コンストラクタ
@@ -441,28 +447,6 @@ public class Game
     }
 
     /// <summary>
-    /// 指定した値までの要素の配列の返す
-    /// </summary>
-    /// <param name="array"></param>
-    /// <param name="maxCount"></param>
-    /// <returns></returns>
-    private int[] _GetElementsArray(int[] array, int maxCount)
-    {
-        // 指定された値までの要素を取得
-        List<int> list = new List<int>();
-        for(int i = 0; i < array.Length; i++)
-        {
-            if(i > maxCount)
-            {
-                break;
-            }
-            list.Add(array[i]);
-        }
-
-        return list.ToArray();
-    }
-
-    /// <summary>
     /// エネミーの種類を抽選
     /// </summary>
     /// <returns></returns>
@@ -596,9 +580,31 @@ public class Game
         int[] generateList = _GetElementsArray(CHARACTER_ENABLE_NUM, generateCount);
         var nextCharacterPower = _GetRandomNumber(generateList);
 
+        // 常に2で試してみる。
+        if (_gameSetting.ALWAYS_MIN_NUMBER)
+        {
+            nextCharacterPower = 2;
+        }
+
         //控室に生成させる。
         _nextCharacter = Character.CreateCharacter(NEXT_CHARACTER_X, NEXT_CHARACTER_Y, nextCharacterPower);
         _nextCharacter.SetNextCharacterPosition(NEXT_CHARACTER_X, NEXT_CHARACTER_POSITION_Y);
+
+        int[] _GetElementsArray(int[] array, int maxCount)
+        {
+            // 指定された値までの要素を取得
+            List<int> list = new List<int>();
+            for (int i = 0; i < array.Length; i++)
+            {
+                if (i > maxCount)
+                {
+                    break;
+                }
+                list.Add(array[i]);
+            }
+
+            return list.ToArray();
+        }
     }
 
     /// <summary>
@@ -609,12 +615,7 @@ public class Game
     private int _GetEnemyStrength()
     {
         //ターン数×倍数: 倍数は1ターン目:0.5倍,100ターン目:1倍,200ターン目:1.5倍,300ターン目:2倍
-        //var multiple = Mathf.Min(0.5f + (_currentTurn / 100) * 0.5f, 1f);
-        var multiple = Math.Min(0.5f + (_currentTurn / 150) * 0.5f, 1f);
-        if (multiple == 1f)
-        {
-            multiple = 1f + (_currentTurn / 150) * 0.1f;
-        }
+        var multiple = (_currentTurn / 100) * 0.5f;
 
         int strongMax = 1 + (int)(_currentTurn * multiple); //強さの上限
         int strongMin = 1 + strongMax / 3;              //強さの下限
