@@ -7,25 +7,12 @@ using UnityEngine;
 
 namespace RibertaGames
 {
-
 	/// <summary>
 	/// セーブデータの種類
 	/// </summary>
 	public enum eSaveDataType
 	{
-		PaidStone,     //int: 課金石
-		Gold,          //Int: アウトゲーム内のゴールド
-		Exp,           //int: 経験値
-		SurvivalDays,  //int: 生存日数
-		
-		HaveCharacter, //List: 所持しているキャラクター => 装備ID、トータル経験値、ランク、お気に入り、+値
-		HaveEquip,     //List: 所持している装備 => 装備ID、トータル経験値、ランク、お気に入り、+値
-		HaveDungeon,   //List: 所持しているダンジョン
-		HaveRunes,   //List: 所持しているルーン
-		HaveArtifact,  //List: 所持しているアーティファクト
-		InGameResults, //List: マップごとのリザルトリスト
-		DungeonInfo,   //List: 現在のダンジョン構成
-		StageCached,    //class: 前回までのステージ
+		HighScore //ハイスコア
 	}
 
 	/// <summary>

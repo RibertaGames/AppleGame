@@ -1,3 +1,4 @@
+using RibertaGames;
 using System;
 using System.Collections.Generic;
 
@@ -48,9 +49,10 @@ public class Game
     private Character _nextCharacter = null;
 
     private int _noKeyTurn = 0;
-
+    private int _highScore;
     private Random _random = new Random();
     private GameSetting _gameSetting = new GameSetting();
+    private SaveData _saveData = new SaveData();
 
     /// <summary>
     /// 盤面のマス
@@ -179,6 +181,7 @@ public class Game
         _enemies = new Enemy[ENEMY_MASU_X, ENEMY_MASU_Y];
         _characters = new Character[CHARACTER_MASU_X, CHARACTER_MASU_Y];
         _nextCharacter = null;
+        _GetHighScore();
     }
 
     /// <summary>
@@ -225,6 +228,25 @@ public class Game
 
         //UI更新
         GameManager.instance.GameResult(GetCurrentGameProgress());
+    }
+
+    /// <summary>
+    /// ハイスコア取得
+    /// </summary>
+    private void _GetHighScore()
+    {
+        _highScore = _saveData.GetInt(eSaveDataType.HighScore.ToString(), 0);
+    }
+
+    /// <summary>
+    /// ハイスコア更新
+    /// </summary>
+    private void _SetHighScore()
+    {
+        if (_score > _highScore)
+        {
+            _saveData.SetInt(eSaveDataType.HighScore.ToString(), _score);
+        }
     }
 
     /// <summary>
