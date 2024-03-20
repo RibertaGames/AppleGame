@@ -2,8 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Masu : MonoBehaviour
+namespace RibertaGames
 {
-    public int x;
-    public int y;
+    public class Masu : MonoBehaviour
+    {
+        public int x;
+        public int y;
+    }
 }
