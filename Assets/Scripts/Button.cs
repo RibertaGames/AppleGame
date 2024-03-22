@@ -17,6 +17,7 @@ namespace RibertaGames
         [SerializeField] private Image _image;
         [Header("ボタンの連打回数"), SerializeField] private eButtonHitsType _hitsType = eButtonHitsType.Duplication;
         [Header("ボタンの種類"),SerializeField] private eButtonType _buttonType = eButtonType.DecideButton;
+        [Header("ボタンを押した時の透明度"), SerializeField] private float _buttonClickAlpha = 0.8f;
 
         /// <summary>
         /// クリックイベント([NonSerialized]を外すとエディターから設定可能になる。)
@@ -86,7 +87,7 @@ namespace RibertaGames
             {
                 //押した瞬間、画像がグレーぽくなる。
                 var c = _image.color;
-                c.a = 0.5f;
+                c.a = _buttonClickAlpha;
                 _image.color = c;
             }
         }

@@ -10,23 +10,6 @@ namespace RibertaGames
         public eGimickType gimickType = eGimickType.None;
 
         /// <summary>
-        /// エネミーを生成する。
-        /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <param name="hp"></param>
-        /// <param name="gimickType"></param>
-        public static Enemy CreateEnemy(int x, int y, int hp, eGimickType gimickType)
-        {
-            var prefab = Instantiate(GameManager.instance.enemyPrefab);
-            prefab.SetOrigin(GameManager.instance.enemyBoard, Game.ENEMY_MASU_X, Game.ENEMY_MASU_Y);
-            prefab.Setup(x, y, gimickType, hp);
-            prefab.transform.SetParent(GameManager.instance.enemyBoard.transform, false);
-
-            return prefab;
-        }
-
-        /// <summary>
         /// セットアップ
         /// </summary>
         /// <param name="x"></param>

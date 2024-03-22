@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UniRx;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -16,19 +18,19 @@ namespace RibertaGames
         private Vector3 _defaultPosition;
 
         /// <summary>
-        /// キャラクターを生成する。
+        /// キャラクタームーブ
         /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <param name="power"></param>
-        public static Character CreateCharacter(int x, int y, int power)
-        {
-            var prefab = Instantiate(GameManager.instance.characterPrefab);
-            prefab.SetOrigin(GameManager.instance.characterBoard, Game.CHARACTER_MASU_X, Game.CHARACTER_MASU_Y);
-            prefab.Setup(x, y, power);
-            prefab.transform.SetParent(GameManager.instance.characterBoard, false);
-            return prefab;
-        }
+        private Subject<(int, int, Character)> _moveCharacter = new Subject<(int, int, Character)>();
+
+        /// <summary>
+        /// 外部公開: キャラクタームーブ
+        /// </summary>
+        public IObservable<(int x, int y, Character character)> moveCharacter => _moveCharacter;
+
+        /// <summary>
+        /// UIのレイキャスタ
+        /// </summary>
+        private GraphicRaycaster _graphicRaycaster;
 
         /// <summary>
         /// セットアップ
@@ -41,6 +43,15 @@ namespace RibertaGames
             _Setup(x, y, power);
             name = $"Character ({x},{y}) power:{power}";
             _defaultPosition = transform.localPosition;
+        }
+
+        /// <summary>
+        /// レイキャスタを設定
+        /// </summary>
+        /// <param name="graphicRaycaster"></param>
+        public void SetGraphicRaycaster(GraphicRaycaster graphicRaycaster)
+        {
+            _graphicRaycaster = graphicRaycaster;
         }
 
         /// <summary>
@@ -62,7 +73,7 @@ namespace RibertaGames
             PointerEventData poiner = new PointerEventData(EventSystem.current);
             poiner.position = Input.mousePosition;
             List<RaycastResult> result = new List<RaycastResult>();
-            GameManager.instance.graphicRaycaster.Raycast(poiner, result);
+            _graphicRaycaster.Raycast(poiner, result);
 
             if (result != null && result.Count != 0)
             {
@@ -71,13 +82,7 @@ namespace RibertaGames
                     if (result[i].gameObject.CompareTag("CharacterMasu"))
                     {
                         var masu = result[i].gameObject.GetComponent<Masu>();
-                        var move = GameManager.instance.currentGame.PlayerMoveCharacter(masu.x, masu.y, this);
-                        if (move)
-                        {
-                            //再度セットアップ
-                            Setup(masu.x, masu.y, power);
-                            return;
-                        }
+                        _moveCharacter.OnNext((masu.x, masu.y, this));
                     }
                 }
             }

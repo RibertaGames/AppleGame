@@ -1,6 +1,7 @@
 using RibertaGames;
 using System;
 using System.Collections.Generic;
+using UniRx;
 
 namespace RibertaGames
 {
@@ -18,68 +19,78 @@ namespace RibertaGames
     /// <summary>
     /// 手持ちのアイテム
     /// </summary>
-    [System.Flags]
+    [Flags]
     public enum eItem
     {
         Timer = 1,
         Key = 2,
     }
 
-    public class GameProgress
+    public struct EntityInfo
     {
-        public int score = 0;
-        public int totalDamege = 0;
-        public int destroyCount = 0;
-        public int currentTurn = 0;
+        public EntityInfo(int x, int y, int power, int boardX, int boardY, eGimickType gimickType = eGimickType.None)
+        {
+            this.x = x;
+            this.y = y;
+            this.power = power;
+            this.boardX = boardX;
+            this.boardY = boardY;
+            this.gimickType = gimickType;
+        }
+
+        public int x;
+        public int y;
+        public int power;
+        public int boardX;
+        public int boardY;
+        public eGimickType gimickType;
     }
 
-    public class GameSetting
+    public class GameModel
     {
-        public readonly bool ALWAYS_MIN_NUMBER = true;
-    }
+        private ReactiveProperty<int> _score = new ReactiveProperty<int>();
+        private ReactiveProperty<int> _highScore = new ReactiveProperty<int>();
+        private ReactiveProperty<int> _destroyCount = new ReactiveProperty<int>();
+        private ReactiveProperty<int> _currentTurn = new ReactiveProperty<int>();
+        private int _totalDamege;
 
-    public class Game
-    {
-        private int _score = 0;
-        private int _totalDamege = 0;
-        private int _destroyCount = 0;
-        private int _currentTurn = 0;
+        private Subject<EntityInfo> _createCharacter = new Subject<EntityInfo>();
+        private Subject<EntityInfo> _createEnemy = new Subject<EntityInfo>();
+        public Enemy[,] enemies;
+        public Character[,] characters;
+        public Character nextCharacter;
+
         private eItem _currentItem = new eItem();
+        private eGameState _gameState = eGameState.Initialize;
+        private int _noKeyTurn;
+        private Random _random;
+        private SaveData _saveData;
 
-        private Enemy[,] _enemies = null;
-        private Character[,] _characters = null;
-        private Character _nextCharacter = null;
-
-        private int _noKeyTurn = 0;
-        private int _highScore;
-        private Random _random = new Random();
-        private GameSetting _gameSetting = new GameSetting();
-        private SaveData _saveData = new SaveData();
+        #region ゲーム定数
 
         /// <summary>
         /// 盤面のマス
         /// </summary>
-        public static readonly int ENEMY_MASU_X = 7;
-        public static readonly int ENEMY_MASU_Y = 7;
-        public static readonly int CHARACTER_MASU_X = 7;
-        public static readonly int CHARACTER_MASU_Y = 2;
+        private readonly int ENEMY_MASU_X = 7;
+        private readonly int ENEMY_MASU_Y = 7;
+        private readonly int CHARACTER_MASU_X = 7;
+        private readonly int CHARACTER_MASU_Y = 2;
 
         /// <summary>
         /// エネミーのスポーンするY座標
         /// </summary>
-        private readonly int SPAWN_ENEMY_MASU_Y = ENEMY_MASU_Y - 1;
+        public readonly int SPAWN_ENEMY_MASU_Y = 6;
 
         /// <summary>
         /// キャラクター側の進化可能な数字
         /// </summary>
-        public static readonly int[] CHARACTER_ENABLE_NUM = new int[] { 2, 4, 8, 16, 32, 64 };
+        private readonly int[] CHARACTER_ENABLE_NUM = new int[] { 2, 4, 8, 16, 32, 64 };
 
         /// <summary>
         /// 次の生成キャラクターの固定X,Y
         /// </summary>
-        public static readonly int NEXT_CHARACTER_X = 3;
-        public static readonly int NEXT_CHARACTER_Y = -1;
-        public static readonly float NEXT_CHARACTER_POSITION_Y = -1.35f;
+        private readonly int NEXT_CHARACTER_X = 3;
+        private readonly int NEXT_CHARACTER_Y = -1;
 
         /// <summary>
         /// 一体撃破: 10ポイント
@@ -122,10 +133,28 @@ namespace RibertaGames
         private readonly int TIMER_POP_PERCENT = 2;
 
         /// <summary>
+        /// 出現する味方が常に最低レベルで登場
+        /// </summary>
+        private readonly bool ALWAYS_MIN_NUMBER = true;
+
+        #endregion
+
+        public IObservable<int> score => _score;
+        public IObservable<int> highScore => _highScore;
+        public IObservable<int> destroyCount => _destroyCount;
+        public IObservable<int> currentTurn => _currentTurn;
+
+        public IObservable<EntityInfo> createCharacter => _createCharacter;
+        public IObservable<EntityInfo> createEnemy => _createEnemy;
+
+        /// <summary>
         /// コンストラクタ
         /// </summary>
-        public Game()
+        public GameModel()
         {
+            _random = new Random();
+            _saveData = new SaveData();
+
             _Initialize();
         }
 
@@ -134,55 +163,29 @@ namespace RibertaGames
         /// </summary>
         public void GameStart()
         {
-            if (_currentTurn == 0)
+            if (_currentTurn.Value == 0)
             {
+                _gameState = eGameState.GamePlay;
                 _NextTurn();
                 _CreateNextCharacter();
             }
         }
-
-        /// <summary>
-        /// キャラクターを移動させる処理。
-        /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <param name="selectCharacter"></param>
-        /// <returns></returns>
-        public bool PlayerMoveCharacter(int x, int y, Character selectCharacter)
-        {
-            return _PlayerMoveCharacter(x, y, selectCharacter);
-        }
-
-        /// <summary>
-        /// 現在のゲームの状況を取得
-        /// </summary>
-        /// <returns></returns>
-        public GameProgress GetCurrentGameProgress()
-        {
-            GameProgress result = new GameProgress()
-            {
-                score = _score,
-                totalDamege = _totalDamege,
-                destroyCount = _destroyCount,
-                currentTurn = _currentTurn,
-            };
-
-            return result;
-        }
-
         /// <summary>
         /// 初期化する。
         /// </summary>
         private void _Initialize()
         {
-            _score = 0;
+            _score.Value = 0;
+            _highScore.Value = 0;
+            _destroyCount.Value = 0;
+            _currentTurn.Value = 0;
             _totalDamege = 0;
-            _destroyCount = 0;
-            _currentTurn = 0;
+
+            _gameState = eGameState.Initialize;
             _currentItem = new eItem();
-            _enemies = new Enemy[ENEMY_MASU_X, ENEMY_MASU_Y];
-            _characters = new Character[CHARACTER_MASU_X, CHARACTER_MASU_Y];
-            _nextCharacter = null;
+            enemies = new Enemy[ENEMY_MASU_X, ENEMY_MASU_Y];
+            characters = new Character[CHARACTER_MASU_X, CHARACTER_MASU_Y];
+            nextCharacter = null;
             _GetHighScore();
         }
 
@@ -191,7 +194,8 @@ namespace RibertaGames
         /// </summary>
         private void _GameEnd()
         {
-            GameManager.instance.GameEnd();
+            _gameState = eGameState.GameEnd;
+            _SetHighScore();
             _Initialize();
             return;
         }
@@ -202,7 +206,7 @@ namespace RibertaGames
         private void _NextTurn()
         {
             //次のターンへ
-            _currentTurn++;
+            _currentTurn.Value++;
 
             //鍵を貰えなかったターン計測
             _noKeyTurn++;
@@ -227,9 +231,6 @@ namespace RibertaGames
             }
             //スコアを計算
             _CalcScore();
-
-            //UI更新
-            GameManager.instance.GameResult(GetCurrentGameProgress());
         }
 
         /// <summary>
@@ -237,7 +238,7 @@ namespace RibertaGames
         /// </summary>
         private void _GetHighScore()
         {
-            _highScore = _saveData.GetInt(eSaveDataType.HighScore.ToString(), 0);
+            _highScore.Value = _saveData.GetInt(eSaveDataType.HighScore.ToString(), 0);
         }
 
         /// <summary>
@@ -245,9 +246,9 @@ namespace RibertaGames
         /// </summary>
         private void _SetHighScore()
         {
-            if (_score > _highScore)
+            if (_score.Value > _highScore.Value)
             {
-                _saveData.SetInt(eSaveDataType.HighScore.ToString(), _score);
+                _saveData.SetInt(eSaveDataType.HighScore.ToString(), _score.Value);
             }
         }
 
@@ -256,14 +257,14 @@ namespace RibertaGames
         /// </summary>
         private void _CharacterAttack()
         {
-            for (int x = 0; x < _characters.GetLength(0); x++)
+            for (int x = 0; x < characters.GetLength(0); x++)
             {
-                for (int y = 0; y < _characters.GetLength(1); y++)
+                for (int y = 0; y < characters.GetLength(1); y++)
                 {
-                    if (_characters[x, y] != null)
+                    if (characters[x, y] != null)
                     {
                         //攻撃したら総ダメージ数を計算しておく。
-                        _totalDamege += Attack(x, _characters[x, y].power);
+                        _totalDamege += Attack(x, characters[x, y].power);
                     }
                 };
             };
@@ -273,9 +274,9 @@ namespace RibertaGames
                 //当たるごとに威力減衰する
                 int totalDamege = 0;
 
-                for (int y = 0; y < _enemies.GetLength(1); y++)
+                for (int y = 0; y < enemies.GetLength(1); y++)
                 {
-                    var enemy = _enemies[x, y];
+                    var enemy = enemies[x, y];
                     //同じ座標
                     if (enemy != null)
                     {
@@ -287,9 +288,9 @@ namespace RibertaGames
                             //敵を倒した(威力減衰して貫通する)
                             if (enemy.power <= 0)
                             {
-                                _destroyCount++; //撃破数加算
+                                _destroyCount.Value++; //撃破数加算
                                 enemy.Destroy();
-                                _enemies[x, y] = null;
+                                enemies[x, y] = null;
                                 totalDamege += enemyHp;
                             }
                             //敵が受け止めた(貫通止まる)
@@ -313,7 +314,7 @@ namespace RibertaGames
                             //利用可能
                             _currentItem |= eItem.Key;
                             enemy.Destroy();
-                            _enemies[x, y] = null;
+                            enemies[x, y] = null;
                         }
                         //タイマーの場合
                         else if (enemy.gimickType == eGimickType.Timer)
@@ -321,7 +322,7 @@ namespace RibertaGames
                             //エネミーが1ターン待機
                             _currentItem |= eItem.Timer;
                             enemy.Destroy();
-                            _enemies[x, y] = null;
+                            enemies[x, y] = null;
                         }
                     }
                 }
@@ -361,11 +362,11 @@ namespace RibertaGames
         /// </summary>
         private bool _EnemyMove()
         {
-            for (int x = 0; x < _enemies.GetLength(0); x++)
+            for (int x = 0; x < enemies.GetLength(0); x++)
             {
-                for (int y = 0; y < _enemies.GetLength(1); y++)
+                for (int y = 0; y < enemies.GetLength(1); y++)
                 {
-                    var enemy = _enemies[x, y];
+                    var enemy = enemies[x, y];
                     if (enemy != null)
                     {
                         //エネミー属性が最後まで行ったら終了
@@ -382,14 +383,14 @@ namespace RibertaGames
                             {
                                 //ボーナスアイテムは削除
                                 enemy.Destroy();
-                                _enemies[x, y] = null;
+                                enemies[x, y] = null;
                                 continue;
                             }
                         }
                         //次へ移動
                         enemy.Move();
-                        _enemies[x, nextY] = _enemies[x, y];
-                        _enemies[x, y] = null;
+                        enemies[x, nextY] = enemies[x, y];
+                        enemies[x, y] = null;
                     }
                 }
             };
@@ -413,9 +414,7 @@ namespace RibertaGames
                 //敵か鍵かタイマーか
                 var gimick = _GetRandomGimickType();
                 //敵生成
-                var enemy = Enemy.CreateEnemy(x, SPAWN_ENEMY_MASU_Y, hp, gimick);
-                //記憶しておく
-                _enemies[x, SPAWN_ENEMY_MASU_Y] = enemy;
+                _createEnemy.OnNext(new EntityInfo(x, SPAWN_ENEMY_MASU_Y, hp, ENEMY_MASU_X, ENEMY_MASU_Y, gimick));
             }
         }
 
@@ -426,9 +425,9 @@ namespace RibertaGames
         private int _GetEnemyCount()
         {
             //ボーナスタイム: 一列全部鍵か時計
-            if (_currentTurn % BONUS_STAGE_TURN == 0)
+            if (_currentTurn.Value % BONUS_STAGE_TURN == 0)
             {
-                return _enemies.GetLength(0);
+                return enemies.GetLength(0);
             }
 
             return _random.Next(2, 4);
@@ -441,9 +440,9 @@ namespace RibertaGames
         private int[] _CheckGenerateMasu()
         {
             List<int> canMove = new List<int>();
-            for (int x = 0; x < _enemies.GetLength(0); x++)
+            for (int x = 0; x < enemies.GetLength(0); x++)
             {
-                if (_enemies[x, SPAWN_ENEMY_MASU_Y] == null)
+                if (enemies[x, SPAWN_ENEMY_MASU_Y] == null)
                 {
                     canMove.Add(x);
                 }
@@ -479,7 +478,7 @@ namespace RibertaGames
             int rand = _random.Next(0, 101);
 
             //30ターン毎にボーナスステージ: 鍵か時計
-            if (_currentTurn % BONUS_STAGE_TURN == 0)
+            if (_currentTurn.Value % BONUS_STAGE_TURN == 0)
             {
                 rand = _random.Next(81, 101);
             }
@@ -517,13 +516,13 @@ namespace RibertaGames
         /// <summary>
         /// プレイヤーがキャラクターを移動させる処理。
         /// </summary>
-        private bool _PlayerMoveCharacter(int newX, int newY, Character selectCharacter)
+        public void PlayerMoveCharacter(int newX, int newY, Character selectCharacter)
         {
             //移動元
             var oldX = selectCharacter.x;
             var oldY = selectCharacter.y;
             //移動先
-            var chara = _characters[newX, newY];
+            var chara = characters[newX, newY];
 
             //移動先にキャラクターがいる: マージ
             if (chara != null)
@@ -536,7 +535,7 @@ namespace RibertaGames
                 //既にキャラクターがいる かつ マージ出来ない。
                 else
                 {
-                    return false; //利用できない
+                    return;
                 }
             }
             //移動先にキャラクターがいない: 移動
@@ -544,23 +543,21 @@ namespace RibertaGames
             {
                 //再度セットアップ
                 selectCharacter.Setup(newX, newY, selectCharacter.power);
-                _characters[newX, newY] = selectCharacter;
+                characters[newX, newY] = selectCharacter;
             }
 
             //移動元を消す
             if (oldX == NEXT_CHARACTER_X && oldY == NEXT_CHARACTER_Y)
             {
-                _nextCharacter = null;
+                nextCharacter = null;
             }
             else
             {
-                _characters[oldX, oldY] = null;
+                characters[oldX, oldY] = null;
             }
 
             //成功!次のターンへ
             _NextTurn();
-
-            return true; //成功
         }
 
         /// <summary>
@@ -573,19 +570,16 @@ namespace RibertaGames
         private void _CalcScore()
         {
             // 撃破数によるボーナス => 一体撃破:10ポイント
-            int destroyBonus = _destroyCount * DESTROY_BONUS;
+            int destroyBonus = _destroyCount.Value * DESTROY_BONUS;
 
             // ターン数によるボーナス => 一ターン:30ポイント
-            int turnBonus = (_currentTurn - 1) * TURN_BONUS;
+            int turnBonus = (_currentTurn.Value - 1) * TURN_BONUS;
 
             // ダメージ数によるボーナス => 100ダメージ:1ポイント
             int damageBonus = _totalDamege / DAMEGE_BONUS;
 
-            // 各ボーナスを合算
-            int totalBonus = destroyBonus + turnBonus + damageBonus;
-
-            //スコアを記憶する。
-            _score = totalBonus;
+            // スコアを計算
+            _score.Value = destroyBonus + turnBonus + damageBonus; ;
         }
 
         /// <summary>
@@ -593,26 +587,25 @@ namespace RibertaGames
         /// </summary>
         private void _CreateNextCharacter()
         {
-            if (_nextCharacter != null)
+            if (nextCharacter != null)
             {
                 UnityEngine.Debug.Log("既に次のキャラクターが待機中です。");
                 return;
             }
 
             //指定ターンごとに生成される2の累乗の数字が大きくなっていく
-            int generateCount = (int)(_currentTurn / 30f);
+            int generateCount = (int)(_currentTurn.Value / 30f);
             int[] generateList = _GetElementsArray(CHARACTER_ENABLE_NUM, generateCount);
             var nextCharacterPower = _GetRandomNumber(generateList);
 
             // 常に2で試してみる。
-            if (_gameSetting.ALWAYS_MIN_NUMBER)
+            if (ALWAYS_MIN_NUMBER)
             {
                 nextCharacterPower = 2;
             }
 
             //控室に生成させる。
-            _nextCharacter = Character.CreateCharacter(NEXT_CHARACTER_X, NEXT_CHARACTER_Y, nextCharacterPower);
-            _nextCharacter.SetNextCharacterPosition(NEXT_CHARACTER_X, NEXT_CHARACTER_POSITION_Y);
+            _createCharacter.OnNext(new EntityInfo(NEXT_CHARACTER_X, NEXT_CHARACTER_Y, nextCharacterPower, CHARACTER_MASU_X, CHARACTER_MASU_Y));
 
             int[] _GetElementsArray(int[] array, int maxCount)
             {
@@ -639,10 +632,12 @@ namespace RibertaGames
         private int _GetEnemyStrength()
         {
             //ターン数×倍数: 倍数は1ターン目:0.5倍,100ターン目:1倍,200ターン目:1.5倍,300ターン目:2倍
-            var multiple = (_currentTurn / 100) * 0.5f;
+            //var multiple = 0.2f + ((float)_currentTurn.Value / 100) * 0.3f; // 最初簡単、100ターンぐらいから面白い、150からはきつい
+            var multiple = 0.5f;
 
-            int strongMax = 1 + (int)(_currentTurn * multiple); //強さの上限
-            int strongMin = 1 + strongMax / 3;              //強さの下限
+            int strongMax = 1 + (int)(_currentTurn.Value * multiple); //強さの上限
+            int strongMin = 1 + strongMax / 3;                        //強さの下限
+            //TODO: たまに弱いやつも出てきてほしい
             int result = _random.Next(strongMin, strongMax);
             UnityEngine.Debug.Log($"Random({strongMin}～{strongMax}) => " + result);
             return result;

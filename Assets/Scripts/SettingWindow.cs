@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using System;
 using UniRx;
 using Cysharp.Threading.Tasks;
+using TMPro;
 
 namespace RibertaGames 
 {
@@ -14,7 +15,7 @@ namespace RibertaGames
         [SerializeField] private Button _howToPlayButton;
         [SerializeField] private Slider _seSlider;
         [SerializeField] private Slider _bgmSlider;
-        [SerializeField] private Dropdown _languageDropdown;
+        [SerializeField] private TMP_Dropdown _languageDropdown;
         [SerializeField] private Animator _animator;
 
         private enum eSettingWindowAnim
@@ -22,28 +23,47 @@ namespace RibertaGames
             WindowOpen,
             WindowClose,
         }
-
         public IObservable<Unit> gameEndButton => _gameEndButton.onClickSubject;
         public IObservable<Unit> howToPlayButton => _howToPlayButton.onClickSubject;
 
-        public void Setup()
+        public void Setup(Action closeWindowAction)
         {
+            // •Â‚¶‚é
             _closeWindowButton.onClickSubject
-                .Subscribe(async _ => await _Close())
+                .Subscribe(async _ => {
+                    await _Close();
+                    closeWindowAction?.Invoke();
+                })
                 .AddTo(this);
 
+            // •Â‚¶‚é
             _backWindowButton.onClickSubject
-                .Subscribe(async _ => await _Close())
+                .Subscribe(async _ => {
+                    await _Close();
+                    closeWindowAction?.Invoke();
+                })
                 .AddTo(this);
 
-            _animator.Play(eSettingWindowAnim.WindowOpen.ToString());
+            gameObject.SetActive(false);
         }
 
+        /// <summary>
+        /// ŠJ‚­
+        /// </summary>
+        public void Open()
+        {
+            gameObject.SetActive(true);
+        }
+
+        /// <summary>
+        /// •Â‚¶‚é
+        /// </summary>
+        /// <returns></returns>
         private async UniTask _Close()
         {
             _animator.Play(eSettingWindowAnim.WindowClose.ToString());
-            await UniTask.Delay(1000);
-            Destroy(gameObject);
+            await UniTask.Delay(500);
+            gameObject.SetActive(false);
         }
     }
 }
