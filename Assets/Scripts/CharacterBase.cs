@@ -87,15 +87,22 @@ namespace RibertaGames
         /// </summary>
         public async UniTask Dead()
         {
-            if (this as Character)
+            if (this is Enemy enemy)
             {
-                _animator.Play("DePopAnim", 0, 0f);
+                switch (enemy.gimickType)
+                {
+                    case eGimickType.Enemy:
+                        _animator.Play("DeadAnim", 0, 0f);
+                        break;
+                    case eGimickType.Key:
+                        _animator.Play("GetItemAnim", 0, 0f);
+                        break;
+                    case eGimickType.Timer:
+                        _animator.Play("GetItemAnim", 0, 0f);
+                        break;
+                }
+                await UniTask.Delay(700);
             }
-            else if (this as Enemy)
-            {
-                _animator.Play("DamegeAnim", 0, 0f);
-            }
-            await UniTask.Delay(500);
             Destroy(gameObject);
         }
     }

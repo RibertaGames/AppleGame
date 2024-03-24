@@ -165,12 +165,12 @@ namespace RibertaGames
         /// <summary>
         /// ゲーム開始
         /// </summary>
-        public void GameStart()
+        public async UniTask GameStart()
         {
             if (_gameState == eGameState.Initialize)
             {
                 _gameState = eGameState.GamePlay;
-                _NextTurn();
+                await _NextTurn();
                 _CreateNextCharacter();
             }
         }
@@ -209,7 +209,7 @@ namespace RibertaGames
         /// <summary>
         /// 次のターンへ
         /// </summary>
-        private void _NextTurn()
+        private async UniTask _NextTurn()
         {
             //次のターンへ
             _currentTurn.Value++;
@@ -218,7 +218,7 @@ namespace RibertaGames
             _noKeyTurn++;
 
             //味方の攻撃
-            _CharacterAttack();
+            await _CharacterAttack();
 
             //次のキャラクターが利用可能になったか
             _IsEnableKey();
@@ -261,8 +261,9 @@ namespace RibertaGames
         /// <summary>
         /// キャラクターの攻撃
         /// </summary>
-        private void _CharacterAttack()
+        private async UniTask _CharacterAttack()
         {
+            bool isAttack = false;
             for (int x = 0; x < characters.GetLength(0); x++)
             {
                 for (int y = 0; y < characters.GetLength(1); y++)
@@ -275,6 +276,12 @@ namespace RibertaGames
                 };
             };
 
+            // 攻撃アニメーション中
+            if (isAttack)
+            {
+                await UniTask.Delay(700);
+            }
+
             int Attack(int x, int characterPower)
             {
                 //当たるごとに威力減衰する
@@ -286,6 +293,9 @@ namespace RibertaGames
                     //同じ座標
                     if (enemy != null)
                     {
+                        // 攻撃開始
+                        isAttack = true;
+
                         //エネミーの場合
                         if (enemy.gimickType == eGimickType.Enemy)
                         {
@@ -388,7 +398,7 @@ namespace RibertaGames
                             else
                             {
                                 //ボーナスアイテムは削除
-                                enemy.Dead();
+                                enemy.Dead().Forget();
                                 enemies[x, y] = null;
                                 continue;
                             }
@@ -563,7 +573,7 @@ namespace RibertaGames
             }
 
             //成功!次のターンへ
-            _NextTurn();
+            _NextTurn().Forget();
         }
 
         /// <summary>
