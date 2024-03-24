@@ -36,15 +36,6 @@ namespace RibertaGames
             }
         }
 
-        /// <summary>
-        /// îjâÛÇ∑ÇÈÅB
-        /// </summary>
-        public void Destroy()
-        {
-            Debug.Log(gameObject.name + "Çì|ÇµÇΩ");
-            Destroy(gameObject);
-        }
-
         public void Move()
         {
             y -= 1;

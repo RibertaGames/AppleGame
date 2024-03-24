@@ -2,6 +2,7 @@ using RibertaGames;
 using System;
 using System.Collections.Generic;
 using UniRx;
+using Cysharp.Threading.Tasks;
 
 namespace RibertaGames
 {
@@ -54,7 +55,7 @@ namespace RibertaGames
         private ReactiveProperty<int> _currentTurn = new ReactiveProperty<int>();
         private int _totalDamege;
 
-        private Subject<Unit> _initView = new Subject<Unit>();
+        private Subject<Unit> _gameEnd = new Subject<Unit>();
         private Subject<EntityInfo> _createCharacter = new Subject<EntityInfo>();
         private Subject<EntityInfo> _createEnemy = new Subject<EntityInfo>();
 
@@ -148,7 +149,7 @@ namespace RibertaGames
 
         public IObservable<EntityInfo> createCharacter => _createCharacter;
         public IObservable<EntityInfo> createEnemy => _createEnemy;
-        public IObservable<Unit> initView => _initView;
+        public IObservable<Unit> gameEnd => _gameEnd;
 
         /// <summary>
         /// コンストラクタ
@@ -190,8 +191,6 @@ namespace RibertaGames
             enemies = new Enemy[ENEMY_MASU_X, ENEMY_MASU_Y];
             characters = new Character[CHARACTER_MASU_X, CHARACTER_MASU_Y];
             nextCharacter = null;
-            _initView.OnNext(Unit.Default);
-
             _GetHighScore();
         }
 
@@ -203,6 +202,8 @@ namespace RibertaGames
             _gameState = eGameState.GameEnd;
             _SetHighScore();
             _Initialize();
+
+            _gameEnd.OnNext(Unit.Default);
         }
 
         /// <summary>
@@ -289,12 +290,12 @@ namespace RibertaGames
                         if (enemy.gimickType == eGimickType.Enemy)
                         {
                             int enemyHp = enemy.power;
-                            enemy.ChangePower(enemy.power - characterPower);
+                            enemy.ChangePower(Math.Max(0, enemy.power - characterPower));
                             //敵を倒した(威力減衰して貫通する)
                             if (enemy.power <= 0)
                             {
                                 _destroyCount.Value++; //撃破数加算
-                                enemy.Destroy();
+                                enemy.Dead().Forget();
                                 enemies[x, y] = null;
                                 totalDamege += enemyHp;
                             }
@@ -318,7 +319,7 @@ namespace RibertaGames
                         {
                             //利用可能
                             _currentItem |= eItem.Key;
-                            enemy.Destroy();
+                            enemy.Dead().Forget();
                             enemies[x, y] = null;
                         }
                         //タイマーの場合
@@ -326,7 +327,7 @@ namespace RibertaGames
                         {
                             //エネミーが1ターン待機
                             _currentItem |= eItem.Timer;
-                            enemy.Destroy();
+                            enemy.Dead().Forget();
                             enemies[x, y] = null;
                         }
                     }
@@ -387,7 +388,7 @@ namespace RibertaGames
                             else
                             {
                                 //ボーナスアイテムは削除
-                                enemy.Destroy();
+                                enemy.Dead();
                                 enemies[x, y] = null;
                                 continue;
                             }
@@ -641,7 +642,7 @@ namespace RibertaGames
             var multiple = 0.5f;
 
             int strongMax = 1 + (int)(_currentTurn.Value * multiple); //強さの上限
-            int strongMin = 1 + strongMax / 3;                        //強さの下限
+            int strongMin = 1;                                        //強さの下限
             //TODO: たまに弱いやつも出てきてほしい
             int result = _random.Next(strongMin, strongMax);
             UnityEngine.Debug.Log($"Random({strongMin}～{strongMax}) => " + result);

@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -119,7 +120,7 @@ namespace RibertaGames
             if (IsEnableMarge(targetCharacter))
             {
                 ChangePower(power + targetCharacter.power);
-                Destroy(targetCharacter.gameObject);
+                targetCharacter.Dead().Forget();
             }
         }
 

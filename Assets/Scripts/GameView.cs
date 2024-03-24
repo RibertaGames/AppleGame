@@ -27,6 +27,8 @@ namespace RibertaGames
 
         [SerializeField] private Sprite[]_animal;  // 動物の画像
         [SerializeField] private Sprite[] _fruits; // フルーツの画像
+        [SerializeField] private Sprite _key;      // キー画像
+        [SerializeField] private Sprite _timer;  // タイマー画像
 
         private readonly float NEXT_CHARACTER_POSITION_Y = -1.35f;
 
@@ -150,6 +152,13 @@ namespace RibertaGames
             prefab.Setup(info.x, info.y, info.power);
             prefab.SetGraphicRaycaster(_graphicRaycaster);
             prefab.SetNextCharacterPosition(info.x, NEXT_CHARACTER_POSITION_Y);
+            prefab.SetupImage(_CharacterImg(info.power));
+
+            // 画像更新
+            prefab.changePower
+                .Subscribe(_ => prefab.SetupImage(_CharacterImg(prefab.power)))
+                .AddTo(gameObject);
+
             return prefab;
         }
 
@@ -162,11 +171,62 @@ namespace RibertaGames
         /// <param name="gimickType"></param>
         public Enemy CreateEnemy(EntityInfo info)
         {
-            var prefab = Instantiate(_enemyPrefab);
+            var prefab = Instantiate(_enemyPrefab, _enemyBoard, false);
             prefab.SetOrigin(_enemyBoard, info.boardX, info.boardY);
             prefab.Setup(info.x, info.y, info.gimickType, info.power);
-            prefab.transform.SetParent(_enemyBoard, false);
+            prefab.SetupImage(_EnemyImg(info.power, info.gimickType));
+
+            // 画像更新
+            prefab.changePower
+                .Subscribe(_ => prefab.SetupImage(_EnemyImg(prefab.power, prefab.gimickType)))
+                .AddTo(gameObject);
+
             return prefab;
+        }
+
+        private int[] _powerList = new int[] { 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048 };
+
+        /// <summary>
+        /// キャラクター画像を設定
+        /// </summary>
+        private Sprite _CharacterImg(int power)
+        {
+            for(int i = 0; i < _powerList.Length; i++)
+            {
+                if (power <= _powerList[i])
+                {
+                    return _animal[i];
+                }
+            }
+            return _animal[0];
+        }
+
+        /// <summary>
+        /// エネミー画像を設定
+        /// </summary>
+        /// <param name="power"></param>
+        /// <returns></returns>
+        private Sprite _EnemyImg(int power, eGimickType gimickType)
+        {
+            if (gimickType == eGimickType.Enemy) 
+            {
+                for (int i = 0; i < _powerList.Length; i++)
+                {
+                    if (power <= _powerList[i])
+                    {
+                        return _fruits[i];
+                    }
+                }
+            }
+            else if(gimickType == eGimickType.Key)
+            {
+                return _key;
+            }
+            else if (gimickType == eGimickType.Timer)
+            {
+                return _timer;
+            }
+            return _fruits[0];
         }
     }
 }

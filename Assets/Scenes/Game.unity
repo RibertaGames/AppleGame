@@ -2817,6 +2817,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: db9a24e4c6fa2ef4e871ac299a5969e7, type: 3}
   - {fileID: 21300000, guid: c570ea64210a5b348a2419f2188b632b, type: 3}
   - {fileID: 21300000, guid: 4d212ceb90762a44d942ff1f06fec6ec, type: 3}
+  _key: {fileID: -8345172770787448145, guid: 6340446039c0f3847b5ec4d9ddab383d, type: 3}
+  _timer: {fileID: 4028879726386500619, guid: 6340446039c0f3847b5ec4d9ddab383d, type: 3}
 --- !u!114 &716488110
 MonoBehaviour:
   m_ObjectHideFlags: 0

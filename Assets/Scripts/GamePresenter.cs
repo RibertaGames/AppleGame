@@ -49,9 +49,12 @@ namespace RibertaGames {
                 .Subscribe(currentTurn => _view.SetCurrentTurnText(currentTurn.ToString()))
                 .AddTo(gameObject);
 
-            // 画面を初期化する通知
-            _model.initView
-                .Subscribe(_ => _view.InitializeView())
+            // ゲーム終了通知
+            _model.gameEnd
+                .Subscribe(_ => {
+                    _view.InitializeView();
+                    _view.SetActiveBoardFillter(true);
+                })
                 .AddTo(gameObject);
 
             // キャラクター生成
@@ -81,7 +84,6 @@ namespace RibertaGames {
             _view.gameEndButton
                 .Subscribe(async _ => {
                     _model.GameEnd();
-                    _view.SetActiveBoardFillter(true);
                     await _view.CloseSettingWindow();
                     _view.SetActiveFillter(false);
                 })

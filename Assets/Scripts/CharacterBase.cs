@@ -1,31 +1,32 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
+using UniRx;
+using System;
+using Cysharp.Threading.Tasks;
 
 namespace RibertaGames
 {
     public class CharacterBase : MonoBehaviour
     {
-        /// <summary>
-        /// キャラクターの強さ
-        /// </summary>
-        public int power { get; private set; }
+        [SerializeField] protected private TextMeshProUGUI _hpText;
+        [SerializeField] protected private RectTransform _rect;
+        [SerializeField] protected private Image _image;
+        [SerializeField] protected private Animator _animator;
 
-        /// <summary>
-        /// 現在の座標
-        /// </summary>
         public int x { get; protected private set; }
         public int y { get; protected private set; }
-
-        [SerializeField] private protected TextMeshProUGUI _hpText;
-        [SerializeField] private protected RectTransform _rect;
+        public int power { get; private set; }
 
         //原点座標(0,0) 左下
         protected private float _originX;
         protected private float _originY;
         protected private float _sizeX;
         protected private float _sizeY;
+
+        private Subject<Unit> _changePower = new Subject<Unit>();
+
+        public IObservable<Unit> changePower => _changePower;
 
         /// <summary>
         /// 原点を設定する。
@@ -55,7 +56,7 @@ namespace RibertaGames
         /// <summary>
         /// 強さ表示を更新する
         /// </summary>
-        protected private void _UpdatePowerText()
+        private void _UpdatePowerText()
         {
             _hpText.text = power.ToString();
         }
@@ -64,6 +65,38 @@ namespace RibertaGames
         {
             this.power = power;
             _UpdatePowerText();
+            _changePower.OnNext(Unit.Default);
+
+            if(this as Character)
+            {
+                _animator.Play("PopAnim", 0, 0f);
+            }
+            else if (this as Enemy)
+            {
+                _animator.Play("DamegeAnim", 0, 0f);
+            }
+        }
+
+        public void SetupImage(Sprite s)
+        {
+            _image.sprite = s;
+        }
+
+        /// <summary>
+        /// 死亡
+        /// </summary>
+        public async UniTask Dead()
+        {
+            if (this as Character)
+            {
+                _animator.Play("DePopAnim", 0, 0f);
+            }
+            else if (this as Enemy)
+            {
+                _animator.Play("DamegeAnim", 0, 0f);
+            }
+            await UniTask.Delay(500);
+            Destroy(gameObject);
         }
     }
 }
