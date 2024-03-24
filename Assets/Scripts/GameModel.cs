@@ -54,8 +54,10 @@ namespace RibertaGames
         private ReactiveProperty<int> _currentTurn = new ReactiveProperty<int>();
         private int _totalDamege;
 
+        private Subject<Unit> _initView = new Subject<Unit>();
         private Subject<EntityInfo> _createCharacter = new Subject<EntityInfo>();
         private Subject<EntityInfo> _createEnemy = new Subject<EntityInfo>();
+
         public Enemy[,] enemies;
         public Character[,] characters;
         public Character nextCharacter;
@@ -146,6 +148,7 @@ namespace RibertaGames
 
         public IObservable<EntityInfo> createCharacter => _createCharacter;
         public IObservable<EntityInfo> createEnemy => _createEnemy;
+        public IObservable<Unit> initView => _initView;
 
         /// <summary>
         /// コンストラクタ
@@ -163,13 +166,14 @@ namespace RibertaGames
         /// </summary>
         public void GameStart()
         {
-            if (_currentTurn.Value == 0)
+            if (_gameState == eGameState.Initialize)
             {
                 _gameState = eGameState.GamePlay;
                 _NextTurn();
                 _CreateNextCharacter();
             }
         }
+
         /// <summary>
         /// 初期化する。
         /// </summary>
@@ -186,18 +190,19 @@ namespace RibertaGames
             enemies = new Enemy[ENEMY_MASU_X, ENEMY_MASU_Y];
             characters = new Character[CHARACTER_MASU_X, CHARACTER_MASU_Y];
             nextCharacter = null;
+            _initView.OnNext(Unit.Default);
+
             _GetHighScore();
         }
 
         /// <summary>
         /// ゲーム終了
         /// </summary>
-        private void _GameEnd()
+        public void GameEnd()
         {
             _gameState = eGameState.GameEnd;
             _SetHighScore();
             _Initialize();
-            return;
         }
 
         /// <summary>
@@ -376,7 +381,7 @@ namespace RibertaGames
                             if (enemy.gimickType == eGimickType.Enemy)
                             {
                                 //ゲーム終了！
-                                _GameEnd();
+                                GameEnd();
                                 return false;
                             }
                             else

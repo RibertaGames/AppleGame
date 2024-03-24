@@ -49,8 +49,9 @@ namespace RibertaGames {
                 .Subscribe(currentTurn => _view.SetCurrentTurnText(currentTurn.ToString()))
                 .AddTo(gameObject);
 
-            _view.gamePauseButton
-                .Subscribe()
+            // 画面を初期化する通知
+            _model.initView
+                .Subscribe(_ => _view.InitializeView())
                 .AddTo(gameObject);
 
             // キャラクター生成
@@ -66,6 +67,53 @@ namespace RibertaGames {
             // エネミー生成
             _model.createEnemy
                 .Subscribe(info => _model.enemies[info.x, info.y] = _view.CreateEnemy(info))
+                .AddTo(gameObject);
+
+            // ゲーム開始ボタン
+            _view.gameStartButton
+                .Subscribe(_ => {
+                    _model.GameStart();
+                    _view.SetActiveBoardFillter(false);
+                })
+                .AddTo(gameObject);
+
+            // ゲーム終了ボタン
+            _view.gameEndButton
+                .Subscribe(async _ => {
+                    _model.GameEnd();
+                    _view.SetActiveBoardFillter(true);
+                    await _view.CloseSettingWindow();
+                    _view.SetActiveFillter(false);
+                })
+                .AddTo(gameObject);
+
+            // 設定ウィンドウを開くボタン
+            _view.openSettingWindowButton
+                .Subscribe(_ => {
+                    _view.OpenSettingWindow();
+                    _view.SetActiveFillter(true);
+                })
+                .AddTo(gameObject);
+
+            // 設定ウィンドウを閉じるボタン
+            _view.closeSettingWindowButton
+                .Subscribe(async _ => {
+                    await _view.CloseSettingWindow();
+                    _view.SetActiveFillter(false);
+                })
+                .AddTo(gameObject);
+
+            // 設定ウィンドウを閉じるボタン
+            _view.backSettingWindowButton
+                .Subscribe(async _ => {
+                    await _view.CloseSettingWindow();
+                    _view.SetActiveFillter(false);
+                })
+                .AddTo(gameObject);
+
+            // 遊び方ボタン
+            _view.howToPlayButton
+                .Subscribe(_ => { })
                 .AddTo(gameObject);
         }
     }

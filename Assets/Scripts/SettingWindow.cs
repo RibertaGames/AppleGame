@@ -23,27 +23,14 @@ namespace RibertaGames
             WindowOpen,
             WindowClose,
         }
+
+        public IObservable<Unit> closeWindowButton => _closeWindowButton.onClickSubject;
+        public IObservable<Unit> backWindowButton => _backWindowButton.onClickSubject;
         public IObservable<Unit> gameEndButton => _gameEndButton.onClickSubject;
         public IObservable<Unit> howToPlayButton => _howToPlayButton.onClickSubject;
 
-        public void Setup(Action closeWindowAction)
+        public void Init()
         {
-            // •Â‚¶‚é
-            _closeWindowButton.onClickSubject
-                .Subscribe(async _ => {
-                    await _Close();
-                    closeWindowAction?.Invoke();
-                })
-                .AddTo(this);
-
-            // •Â‚¶‚é
-            _backWindowButton.onClickSubject
-                .Subscribe(async _ => {
-                    await _Close();
-                    closeWindowAction?.Invoke();
-                })
-                .AddTo(this);
-
             gameObject.SetActive(false);
         }
 
@@ -59,7 +46,7 @@ namespace RibertaGames
         /// •Â‚¶‚é
         /// </summary>
         /// <returns></returns>
-        private async UniTask _Close()
+        public async UniTask Close()
         {
             _animator.Play(eSettingWindowAnim.WindowClose.ToString());
             await UniTask.Delay(500);
