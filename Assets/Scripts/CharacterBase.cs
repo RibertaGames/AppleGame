@@ -91,14 +91,9 @@ namespace RibertaGames
         /// </summary>
         public async UniTask Dead()
         {
-            if (this is Enemy enemy)
+            if (this is Enemy enemy && enemy.gimickType == eGimickType.Enemy)
             {
-                switch (enemy.gimickType)
-                {
-                    case eGimickType.Enemy:
-                        _animator.Play("DeadAnim", 0, 0f);
-                        break;
-                }
+                _animator.Play("DeadAnim", 0, 0f);
                 await UniTask.Delay(700);
             }
             Destroy(gameObject);
