@@ -31,5 +31,9 @@ namespace RibertaGames
                 _instance = this;
             }
         }
+        public void Start()
+        {
+            BGMManager.instance.Play(BGMPath.MUS_MUS_BGM, isLoop: true);
+        }
     }
 }

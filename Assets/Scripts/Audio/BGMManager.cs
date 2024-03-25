@@ -16,7 +16,7 @@ namespace RibertaGames
         private AudioPlayer audioPlayer => AUDIO_PLAYER_LIST[0];
 
         //オーディオファイルが入ってるディレクトリへのパス
-        public static readonly string AUDIO_DIRECTORY_PATH = "BGM";
+        public static readonly string AUDIO_DIRECTORY_PATH = "Assets/Resources/Audio/BGM";
 
         //=================================================================================
         //初期化

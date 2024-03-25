@@ -13,7 +13,7 @@ namespace RibertaGames
         protected override int _audioPlayerNum => AudioManagerSetting.entity.sEAudioPlayerNum;
 
         //オーディオファイルが入ってるディレクトリへのパス
-        public static readonly string AUDIO_DIRECTORY_PATH = "SE";
+        public static readonly string AUDIO_DIRECTORY_PATH = "Assets/Resources/Audio/SE";
 
         //ボリューム倍率調整をするか
         [SerializeField]

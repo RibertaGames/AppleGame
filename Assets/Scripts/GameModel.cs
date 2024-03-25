@@ -128,12 +128,12 @@ namespace RibertaGames
         /// <summary>
         /// 鍵の出現確率
         /// </summary>
-        private readonly int KEY_POP_PERCENT = 18;
+        private readonly int KEY_POP_PERCENT = 19;
 
         /// <summary>
         /// タイマーの出現確率
         /// </summary>
-        private readonly int TIMER_POP_PERCENT = 2;
+        private readonly int TIMER_POP_PERCENT = 1;
 
         /// <summary>
         /// 出現する味方が常に最低レベルで登場
@@ -279,6 +279,7 @@ namespace RibertaGames
             // 攻撃アニメーション中
             if (isAttack)
             {
+                SEManager.instance.Play(SEPath.EAT1);
                 await UniTask.Delay(700);
             }
 
