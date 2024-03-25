@@ -330,7 +330,7 @@ namespace RibertaGames
                         {
                             //利用可能
                             _currentItem |= eItem.Key;
-                            enemy.Dead().Forget();
+                            enemy.GetItem().Forget();
                             enemies[x, y] = null;
                         }
                         //タイマーの場合
@@ -338,7 +338,7 @@ namespace RibertaGames
                         {
                             //エネミーが1ターン待機
                             _currentItem |= eItem.Timer;
-                            enemy.Dead().Forget();
+                            enemy.GetItem().Forget();
                             enemies[x, y] = null;
                         }
                     }

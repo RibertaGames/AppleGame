@@ -173,7 +173,7 @@ namespace RibertaGames
         {
             var prefab = Instantiate(_enemyPrefab, _enemyBoard, false);
             prefab.SetOrigin(_enemyBoard, info.boardX, info.boardY);
-            prefab.Setup(info.x, info.y, info.gimickType, info.power);
+            prefab.Setup(info.x, info.y, info.gimickType, info.power).Forget();
             prefab.SetupImage(_EnemyImg(info.power, info.gimickType));
 
             // ‰æ‘œXV

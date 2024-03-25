@@ -9,10 +9,13 @@ namespace RibertaGames
 {
     public class CharacterBase : MonoBehaviour
     {
-        [SerializeField] protected private TextMeshProUGUI _hpText;
         [SerializeField] protected private RectTransform _rect;
-        [SerializeField] protected private Image _image;
         [SerializeField] protected private Animator _animator;
+
+        [SerializeField] protected private Image _image;
+        [SerializeField] protected private Image _additiveImage;
+        [SerializeField] protected private GameObject _numObj;
+        [SerializeField] protected private TextMeshProUGUI _hpText;
 
         public int x { get; protected private set; }
         public int y { get; protected private set; }
@@ -50,21 +53,17 @@ namespace RibertaGames
             this.power = power;
             transform.localPosition = new Vector3(x * _sizeX + _originX, y * _sizeY + _originY, 0);
 
-            _UpdatePowerText();
+            _hpText.SetText(power.ToString());
         }
 
         /// <summary>
-        /// 強さ表示を更新する
+        /// 強さを変更する。
         /// </summary>
-        private void _UpdatePowerText()
-        {
-            _hpText.text = power.ToString();
-        }
-
+        /// <param name="power"></param>
         public void ChangePower(int power)
         {
             this.power = power;
-            _UpdatePowerText();
+            _hpText.SetText(power.ToString());
             _changePower.OnNext(Unit.Default);
 
             if(this as Character)
@@ -77,9 +76,14 @@ namespace RibertaGames
             }
         }
 
+        /// <summary>
+        /// 画像を設定
+        /// </summary>
+        /// <param name="s"></param>
         public void SetupImage(Sprite s)
         {
             _image.sprite = s;
+            _additiveImage.sprite = s;
         }
 
         /// <summary>
@@ -94,10 +98,28 @@ namespace RibertaGames
                     case eGimickType.Enemy:
                         _animator.Play("DeadAnim", 0, 0f);
                         break;
+                }
+                await UniTask.Delay(700);
+            }
+            Destroy(gameObject);
+        }
+
+        /// <summary>
+        /// アイテム獲得
+        /// </summary>
+        /// <returns></returns>
+        public async UniTask GetItem()
+        {
+            if (this is Enemy enemy)
+            {
+                switch (enemy.gimickType)
+                {
                     case eGimickType.Key:
+                        SEManager.instance.Play(SEPath.ITEM1);
                         _animator.Play("GetItemAnim", 0, 0f);
                         break;
                     case eGimickType.Timer:
+                        SEManager.instance.Play(SEPath.ITEM1);
                         _animator.Play("GetItemAnim", 0, 0f);
                         break;
                 }

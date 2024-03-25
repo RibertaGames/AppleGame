@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -16,30 +17,31 @@ namespace RibertaGames
         /// <param name="y"></param>
         /// <param name="gimickType"></param>
         /// <param name="hp"></param>
-        public void Setup(int x, int y, eGimickType gimickType, int power)
+        public async UniTask Setup(int x, int y, eGimickType gimickType, int power)
         {
             _Setup(x, y, power);
             this.gimickType = gimickType;
             name = $"{gimickType} ({x},{y})";
 
-            if (gimickType == eGimickType.Enemy)
+            switch (gimickType)
             {
-                _hpText.text = power.ToString();
-            }
-            else if (gimickType == eGimickType.Key)
-            {
-                _hpText.text = "Key";
-            }
-            else if (gimickType == eGimickType.Timer)
-            {
-                _hpText.text = "Timer";
+                case eGimickType.Enemy:
+                    _hpText.text = power.ToString();
+                    break;
+                case eGimickType.Key:
+                case eGimickType.Timer:
+                    _numObj.SetActive(false);
+                    await UniTask.Delay(500);
+                    _animator.Play("ItemAnim", 0, 0f);
+                    break;
             }
         }
 
         public void Move()
         {
             y -= 1;
-            Setup(x, y, gimickType, power);
+            _Setup(x, y, power);
+            name = $"{gimickType} ({x},{y})";
         }
     }
 }
