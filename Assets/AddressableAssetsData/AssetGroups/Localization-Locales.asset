@@ -83,12 +83,6 @@ MonoBehaviour:
     m_SerializedLabels:
     - Locale
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 0206fd44c4fd6564297e9c1f45bd9baf
-    m_Address: Turkish (tr)
-    m_ReadOnly: 1
-    m_SerializedLabels:
-    - Locale
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b4c8ec2fa9847f142a18f835a01b6cb0
     m_Address: Indonesian (id)
     m_ReadOnly: 1
@@ -97,12 +91,6 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: f4f21dbad718d264eac0b476c9d20dd2
     m_Address: Vietnamese (vi)
-    m_ReadOnly: 1
-    m_SerializedLabels:
-    - Locale
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: e5e9959bc725f4e4893c5082f7f0469f
-    m_Address: Hindi (hi)
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale

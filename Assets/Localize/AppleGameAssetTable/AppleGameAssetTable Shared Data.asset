@@ -1,0 +1,154 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: AppleGameAssetTable Shared Data
+  m_EditorClassIdentifier: 
+  m_TableCollectionName: AppleGameAssetTable
+  m_TableCollectionNameGuidString: 644896f56a6a23a44b65bba931fbbdcd
+  m_Entries:
+  - m_Id: 2133624217481216
+    m_Key: BACK
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2133622040637440
+    m_Key: GAME_END
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2132732864966656
+    m_Key: HIGH_SCORE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2133620081897472
+    m_Key: HOW_TO_PLAY
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2076719642128384
+    m_Key: SCORE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2133617741475840
+    m_Key: TRUN_COUNT
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items:
+    - id: 0
+  m_KeyGenerator:
+    id: 1
+  references:
+    version: 1
+    00000000:
+      type: {class: AssetTypeMetadata, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries:
+        - m_KeyId: 2076719642128384
+          m_TableCodes:
+          - ja
+          - en
+          - zh-Hans
+          - zh-Hant
+          - ko
+          - fr
+          - de
+          - pt
+          - es
+          - th
+          - vi
+          - ru
+          - id
+          - it
+        - m_KeyId: 2132732864966656
+          m_TableCodes:
+          - ja
+          - en
+          - zh-Hans
+          - zh-Hant
+          - ko
+          - fr
+          - de
+          - id
+          - it
+          - pt
+          - ru
+          - es
+          - th
+          - vi
+        - m_KeyId: 2133617741475840
+          m_TableCodes:
+          - ja
+          - pt
+          - it
+          - en
+          - zh-Hans
+          - zh-Hant
+          - ko
+          - fr
+          - de
+          - id
+          - ru
+          - th
+          - es
+          - vi
+        - m_KeyId: 2133624217481216
+          m_TableCodes:
+          - ja
+          - en
+          - zh-Hans
+          - zh-Hant
+          - ko
+          - fr
+          - de
+          - id
+          - it
+          - pt
+          - ru
+          - es
+          - th
+          - vi
+        - m_KeyId: 2133622040637440
+          m_TableCodes:
+          - ja
+          - en
+          - zh-Hans
+          - zh-Hant
+          - ko
+          - fr
+          - de
+          - id
+          - it
+          - pt
+          - ru
+          - es
+          - th
+          - vi
+        - m_KeyId: 2133620081897472
+          m_TableCodes:
+          - ja
+          - en
+          - zh-Hans
+          - zh-Hant
+          - ko
+          - fr
+          - de
+          - id
+          - it
+          - pt
+          - ru
+          - es
+          - th
+          - vi
+        m_TypeString: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+    00000001:
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1711604259764

@@ -63,8 +63,8 @@ MonoBehaviour:
         m_CustomTablePostprocessor:
           id: 6
         m_UseFallback: 0
-        m_MissingTranslationState: 1
-        m_NoTranslationFoundMessage: No translation found for '{key}' in {table.TableCollectionName}
+        m_MissingTranslationState: 0
+        m_NoTranslationFoundMessage: 
         m_SmartFormat:
           id: 7
     00000006:

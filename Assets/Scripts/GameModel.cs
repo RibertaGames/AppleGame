@@ -167,8 +167,9 @@ namespace RibertaGames
         /// </summary>
         public async UniTask GameStart()
         {
-            if (_gameState == eGameState.Initialize)
+            if (_gameState != eGameState.GamePlay)
             {
+                _Initialize();
                 _gameState = eGameState.GamePlay;
                 await _NextTurn();
                 _CreateNextCharacter();
@@ -201,8 +202,6 @@ namespace RibertaGames
         {
             _gameState = eGameState.GameEnd;
             _SetHighScore();
-            _Initialize();
-
             _gameEnd.OnNext(Unit.Default);
         }
 

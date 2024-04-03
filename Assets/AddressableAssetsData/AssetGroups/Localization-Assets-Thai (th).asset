@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Localization-Assets-Thai (th)
+  m_EditorClassIdentifier: 
+  m_GroupName: Localization-Assets-Thai (th)
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 889d503a974a8064caf31cfcb28f415b
+  m_SerializeEntries: []
+  m_ReadOnly: 1
+  m_Settings: {fileID: 11400000, guid: 3e86b923cfa3ba948b167d2ab9087061, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 65ab4218dd7063e409c66f8350cdc0d9, type: 2}
+    - {fileID: 11400000, guid: 738673013a538e24494fd3114d1f39d6, type: 2}

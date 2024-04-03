@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Localization-Asset-Tables-Hindi
+  m_EditorClassIdentifier: 
+  m_GroupName: Localization-Asset-Tables-Hindi
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 2d12e51a2fbd17f4c96b9fce8303a24b
+  m_SerializeEntries:
+  - m_GUID: 07c537d1ce6793e4e989752424b09643
+    m_Address: AppleGameAssetTable_hi
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-hi
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 1
+  m_Settings: {fileID: 11400000, guid: 3e86b923cfa3ba948b167d2ab9087061, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: fc94c60f615c7a54d84837776d4aeaab, type: 2}
+    - {fileID: 11400000, guid: 7ecadb701e39faa4882cc4e216324c41, type: 2}

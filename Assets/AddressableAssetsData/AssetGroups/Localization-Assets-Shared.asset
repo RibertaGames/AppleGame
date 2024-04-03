@@ -22,6 +22,29 @@ MonoBehaviour:
     m_ReadOnly: 1
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 644896f56a6a23a44b65bba931fbbdcd
+    m_Address: Assets/Localize/AppleGameAssetTable Shared Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fd9b34752c80bc84c82e9113141358b5
+    m_Address: "\u900F\u660E\u753B\u50CF"
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-pt
+    - Locale-es
+    - Locale-th
+    - Locale-vi
+    - Locale-ru
+    - Locale-it
+    - Locale-en
+    - Locale-zh-Hans
+    - Locale-zh-Hant
+    - Locale-ko
+    - Locale-fr
+    - Locale-de
+    - Locale-id
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 1
   m_Settings: {fileID: 11400000, guid: 3e86b923cfa3ba948b167d2ab9087061, type: 2}
   m_SchemaSet:

@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97269afb30aa84742ae3f3342603618a, type: 3}
+  m_Name: AppleGameAssetTable_ja
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: ja
+  m_SharedData: {fileID: 11400000, guid: 644896f56a6a23a44b65bba931fbbdcd, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 2076719642128384
+    m_Localized: "cf7e2d54f7144174aace168a2b1b09f8[\u30B9\u30B3\u30A2text]"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2132732864966656
+    m_Localized: "73f0bcff7245ffa4384e5854686c6e30[\u30CF\u30A4\u30B9\u30B3\u30A2text]"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2133617741475840
+    m_Localized: "855591733ab34db438e4b74f521883f2[\u30BF\u30FC\u30F3\u6570]"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2133624217481216
+    m_Localized: "484d81f067e1b0f4da54d4665461f0a3[\u3082\u3069\u308BText]"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2133622040637440
+    m_Localized: "b4e1f76ae6dcd1a43b5aac8fa3cefcbc[\u30B2\u30FC\u30E0\u7D42\u4E86Text]"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2133620081897472
+    m_Localized: "ef80b9b02f5187e4ea769bf4f6777467[\u3042\u305D\u3073\u304B\u305F]"
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 1

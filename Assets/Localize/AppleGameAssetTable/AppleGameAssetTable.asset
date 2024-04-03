@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4db626ad063b13545924a9839ac5fa83, type: 3}
+  m_Name: AppleGameAssetTable
+  m_EditorClassIdentifier: 
+  m_SharedTableData: {fileID: 11400000, guid: 644896f56a6a23a44b65bba931fbbdcd, type: 2}
+  m_Tables:
+  - {fileID: 11400000, guid: ce68c366d7674a34aa5d6cf6e04b83f7, type: 2}
+  - {fileID: 11400000, guid: fc722fb5b22225645bf76215a4b03e4d, type: 2}
+  - {fileID: 11400000, guid: 9758cc768ed90004c93b4f0cba659811, type: 2}
+  - {fileID: 11400000, guid: 0e673068e9f68ac489915e112ad6884f, type: 2}
+  - {fileID: 11400000, guid: b30c7ba6888f47a448b41d2a52e2f248, type: 2}
+  - {fileID: 11400000, guid: 098d33422f6faa3419726ea9737eb3ef, type: 2}
+  - {fileID: 11400000, guid: 645ad4e518a53804b98dadf947f1a251, type: 2}
+  - {fileID: 11400000, guid: 07c537d1ce6793e4e989752424b09643, type: 2}
+  - {fileID: 11400000, guid: cbc8ad7f516dcb3438c417d236e6cc34, type: 2}
+  - {fileID: 11400000, guid: 56ce813fe83d14c4094ebadd93d4422a, type: 2}
+  - {fileID: 11400000, guid: 264d6e1a867f6704498ab2422a6f2262, type: 2}
+  - {fileID: 11400000, guid: 929cb3c843436fc4c86ea30ab4f0ff09, type: 2}
+  - {fileID: 11400000, guid: 2900785c4e979cd48a645d172bb57f11, type: 2}
+  - {fileID: 11400000, guid: 5ed014aee05a0714f9ea083ebc44a66c, type: 2}
+  - {fileID: 11400000, guid: 7057e7bcb7240ad4698676aa55fe879c, type: 2}
+  - {fileID: 11400000, guid: 4a529a4d5c9fde54a9c0d590d5b1e0d9, type: 2}
+  m_Extensions: []
+  m_Group: Asset Table
+  references:
+    version: 1

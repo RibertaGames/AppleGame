@@ -16,13 +16,7 @@ MonoBehaviour:
   m_Data:
     m_SerializedData: []
   m_GUID: 29ff1e826972f0e498628a4a9c97c27c
-  m_SerializeEntries:
-  - m_GUID: ee0a261220ef320419ea3179968d4236
-    m_Address: AppleGameLocalization_tr
-    m_ReadOnly: 1
-    m_SerializedLabels:
-    - Locale-tr
-    FlaggedDuringContentUpdateRestriction: 0
+  m_SerializeEntries: []
   m_ReadOnly: 1
   m_Settings: {fileID: 11400000, guid: 3e86b923cfa3ba948b167d2ab9087061, type: 2}
   m_SchemaSet:
