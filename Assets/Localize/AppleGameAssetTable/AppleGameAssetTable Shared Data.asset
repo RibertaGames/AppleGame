@@ -39,11 +39,69 @@ MonoBehaviour:
     m_Key: TRUN_COUNT
     m_Metadata:
       m_Items: []
+  - m_Id: 2170979720704000
+    m_Key: Game/Canvas/Game/Header/Score/ScoreText/scoreText (1)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2170979922030592
+    m_Key: Game/Canvas/Game/Header/Score/ScoreText/scoreText (1) 1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2173701849165824
+    m_Key: Game/Canvas/Game/Header/HighScore/HighScoreText/Text (TMP)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2173701870137344
+    m_Key: Game/Canvas/Game/Header/HighScore/HighScoreText/Text (TMP) 1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2175712216821760
+    m_Key: Game/Canvas/Game/SettingWindow/BackButton/Image/Text (TMP)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2175712237793280
+    m_Key: Game/Canvas/Game/SettingWindow/BackButton/Image/Text (TMP) 1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2176239931568128
+    m_Key: Game/Canvas/Game/Header/Window/turnCount/Text (TMP)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2176239956733952
+    m_Key: Game/Canvas/Game/Header/Window/turnCount/Text (TMP) 1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2206994489487360
+    m_Key: Game/Canvas/Game/Header/Window/turnCount/Text (TMP) 2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2206994510458880
+    m_Key: Game/Canvas/Game/Header/Window/turnCount/Text (TMP) 3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2207735782387712
+    m_Key: Game/Canvas/Game/SettingWindow/HowToPlay/Image/Text (TMP)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2207735799164928
+    m_Key: Game/Canvas/Game/SettingWindow/HowToPlay/Image/Text (TMP) 1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2208561053642752
+    m_Key: Game/Canvas/Game/SettingWindow/GameEnd/Image/Text (TMP)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2208561074614272
+    m_Key: Game/Canvas/Game/SettingWindow/GameEnd/Image/Text (TMP) 1
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items:
     - id: 0
+    - id: 1
+    - id: 2
   m_KeyGenerator:
-    id: 1
+    id: 3
   references:
     version: 1
     00000000:
@@ -149,6 +207,210 @@ MonoBehaviour:
         m_TypeString: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
     00000001:
+      type: {class: AssetTypeMetadata, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries:
+        - m_KeyId: 2170979720704000
+          m_TableCodes:
+          - ja
+          - en
+          - zh-Hans
+          - zh-Hant
+          - ko
+          - fr
+          - de
+          - id
+          - it
+          - pt
+          - ru
+          - es
+          - vi
+        - m_KeyId: 2173701849165824
+          m_TableCodes:
+          - ja
+          - zh-Hans
+          - zh-Hant
+          - ko
+          - en
+          - fr
+          - de
+          - id
+          - it
+          - pt
+          - ru
+          - es
+          - vi
+        - m_KeyId: 2175712216821760
+          m_TableCodes:
+          - ja
+          - ko
+          - en
+          - zh-Hans
+          - zh-Hant
+          - fr
+          - de
+          - id
+          - it
+          - pt
+          - ru
+          - es
+          - vi
+        - m_KeyId: 2176239931568128
+          m_TableCodes:
+          - ja
+          - zh-Hans
+          - en
+          - zh-Hant
+        - m_KeyId: 2206994489487360
+          m_TableCodes:
+          - ja
+          - en
+          - zh-Hans
+          - zh-Hant
+          - ko
+          - fr
+          - de
+          - id
+          - it
+          - pt
+          - ru
+          - es
+          - vi
+        - m_KeyId: 2207735782387712
+          m_TableCodes:
+          - ja
+          - en
+          - zh-Hans
+          - zh-Hant
+          - ko
+          - fr
+          - de
+          - id
+          - it
+          - pt
+          - ru
+          - es
+          - vi
+        - m_KeyId: 2208561053642752
+          m_TableCodes:
+          - ja
+          - en
+          - zh-Hans
+          - zh-Hant
+          - ko
+          - fr
+          - de
+          - id
+          - it
+          - pt
+          - ru
+          - es
+          - vi
+        m_TypeString: TMPro.TMP_FontAsset, Unity.TextMeshPro, Version=0.0.0.0, Culture=neutral,
+          PublicKeyToken=null
+    00000002:
+      type: {class: AssetTypeMetadata, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries:
+        - m_KeyId: 2170979922030592
+          m_TableCodes:
+          - ja
+          - en
+          - zh-Hans
+          - zh-Hant
+          - ko
+          - fr
+          - de
+          - id
+          - it
+          - pt
+          - ru
+          - es
+          - vi
+        - m_KeyId: 2173701870137344
+          m_TableCodes:
+          - ja
+          - zh-Hans
+          - zh-Hant
+          - ko
+          - en
+          - fr
+          - de
+          - id
+          - it
+          - pt
+          - ru
+          - es
+          - vi
+        - m_KeyId: 2175712237793280
+          m_TableCodes:
+          - ja
+          - ko
+          - en
+          - zh-Hans
+          - zh-Hant
+          - fr
+          - de
+          - id
+          - it
+          - pt
+          - ru
+          - es
+          - vi
+        - m_KeyId: 2176239956733952
+          m_TableCodes:
+          - ja
+          - zh-Hans
+          - en
+          - zh-Hant
+        - m_KeyId: 2206994510458880
+          m_TableCodes:
+          - ja
+          - en
+          - zh-Hans
+          - zh-Hant
+          - ko
+          - fr
+          - de
+          - id
+          - it
+          - pt
+          - ru
+          - es
+          - vi
+        - m_KeyId: 2207735799164928
+          m_TableCodes:
+          - ja
+          - en
+          - zh-Hans
+          - zh-Hant
+          - ko
+          - fr
+          - de
+          - id
+          - it
+          - pt
+          - ru
+          - es
+          - vi
+        - m_KeyId: 2208561074614272
+          m_TableCodes:
+          - ja
+          - en
+          - zh-Hans
+          - zh-Hant
+          - ko
+          - fr
+          - de
+          - id
+          - it
+          - pt
+          - ru
+          - es
+          - vi
+        m_TypeString: UnityEngine.Material, UnityEngine.CoreModule, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+    00000003:
       type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
       data:
         m_CustomEpoch: 1711604259764

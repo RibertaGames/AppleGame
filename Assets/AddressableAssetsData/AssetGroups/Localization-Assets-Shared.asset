@@ -45,6 +45,36 @@ MonoBehaviour:
     - Locale-de
     - Locale-id
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8913940975d16f74ba57e91917487e14
+    m_Address: NotoSansSC-Regular SDF
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-zh-Hans
+    - Locale-zh-Hant
+    - Locale-ja
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fe70ac13c3378df4aaad58dd3a8f208a
+    m_Address: NotoSansKR-Regular SDF
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-ja
+    - Locale-ko
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8f586378b4e144a9851e7b34d9b748ee
+    m_Address: LiberationSans SDF
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-fr
+    - Locale-en
+    - Locale-de
+    - Locale-id
+    - Locale-it
+    - Locale-pt
+    - Locale-ru
+    - Locale-es
+    - Locale-vi
+    - Locale-ja
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 1
   m_Settings: {fileID: 11400000, guid: 3e86b923cfa3ba948b167d2ab9087061, type: 2}
   m_SchemaSet:
