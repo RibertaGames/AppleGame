@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UniRx;
 
 namespace RibertaGames {
@@ -29,27 +29,27 @@ namespace RibertaGames {
 
         protected override void _Subscribe()
         {
-            // ƒXƒRƒA‚ðÝ’è
+            // ã‚¹ã‚³ã‚¢ã‚’è¨­å®š
             _model.score
                 .Subscribe(score => _view.SetScoreText(score.ToString()))
                 .AddTo(gameObject);
 
-            // ƒnƒCƒXƒRƒA‚ðÝ’è‚·‚é
+            // ãƒã‚¤ã‚¹ã‚³ã‚¢ã‚’è¨­å®šã™ã‚‹
             _model.highScore
                 .Subscribe(highScore => _view.SetHighScoreText(highScore.ToString()))
                 .AddTo(gameObject);
 
-            // “|‚µ‚½”‚ðÝ’è
+            // å€’ã—ãŸæ•°ã‚’è¨­å®š
             _model.destroyCount
                 .Subscribe(count => _view.SetDestroyCountText(count.ToString()))
                 .AddTo(gameObject);
 
-            // Œ»Ý‚Ìƒ^[ƒ“‚ðÝ’è
+            // ç¾åœ¨ã®ã‚¿ãƒ¼ãƒ³ã‚’è¨­å®š
             _model.currentTurn
                 .Subscribe(currentTurn => _view.SetCurrentTurnText(currentTurn.ToString()))
                 .AddTo(gameObject);
 
-            // ƒQ[ƒ€I—¹’Ê’m
+            // ã‚²ãƒ¼ãƒ çµ‚äº†é€šçŸ¥
             _model.gameEnd
                 .Subscribe(_ => {
                     _view.InitializeView();
@@ -57,7 +57,7 @@ namespace RibertaGames {
                 })
                 .AddTo(gameObject);
 
-            // ƒLƒƒƒ‰ƒNƒ^[¶¬
+            // ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ç”Ÿæˆ
             _model.createCharacter
                 .Subscribe(info => {
                     _model.nextCharacter = _view.CreateCharacter(info);
@@ -67,12 +67,12 @@ namespace RibertaGames {
                 })
                 .AddTo(gameObject);
 
-            // ƒGƒlƒ~[¶¬
+            // ã‚¨ãƒãƒŸãƒ¼ç”Ÿæˆ
             _model.createEnemy
                 .Subscribe(info => _model.enemies[info.x, info.y] = _view.CreateEnemy(info))
                 .AddTo(gameObject);
 
-            // ƒQ[ƒ€ŠJŽnƒ{ƒ^ƒ“
+            // ã‚²ãƒ¼ãƒ é–‹å§‹ãƒœã‚¿ãƒ³
             _view.gameStartButton
                 .Subscribe(_ => {
                     _model.GameStart();
@@ -80,7 +80,7 @@ namespace RibertaGames {
                 })
                 .AddTo(gameObject);
 
-            // ƒQ[ƒ€I—¹ƒ{ƒ^ƒ“
+            // ã‚²ãƒ¼ãƒ çµ‚äº†ãƒœã‚¿ãƒ³
             _view.gameEndButton
                 .Subscribe(async _ => {
                     _model.GameEnd();
@@ -89,7 +89,7 @@ namespace RibertaGames {
                 })
                 .AddTo(gameObject);
 
-            // Ý’èƒEƒBƒ“ƒhƒE‚ðŠJ‚­ƒ{ƒ^ƒ“
+            // è¨­å®šã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’é–‹ããƒœã‚¿ãƒ³
             _view.openSettingWindowButton
                 .Subscribe(_ => {
                     _view.OpenSettingWindow();
@@ -97,7 +97,7 @@ namespace RibertaGames {
                 })
                 .AddTo(gameObject);
 
-            // Ý’èƒEƒBƒ“ƒhƒE‚ð•Â‚¶‚éƒ{ƒ^ƒ“
+            // è¨­å®šã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’é–‰ã˜ã‚‹ãƒœã‚¿ãƒ³
             _view.closeSettingWindowButton
                 .Subscribe(async _ => {
                     await _view.CloseSettingWindow();
@@ -105,7 +105,7 @@ namespace RibertaGames {
                 })
                 .AddTo(gameObject);
 
-            // Ý’èƒEƒBƒ“ƒhƒE‚ð•Â‚¶‚éƒ{ƒ^ƒ“
+            // è¨­å®šã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’é–‰ã˜ã‚‹ãƒœã‚¿ãƒ³
             _view.backSettingWindowButton
                 .Subscribe(async _ => {
                     await _view.CloseSettingWindow();
@@ -113,9 +113,20 @@ namespace RibertaGames {
                 })
                 .AddTo(gameObject);
 
-            // —V‚Ñ•ûƒ{ƒ^ƒ“
+            // éŠã³æ–¹ãƒœã‚¿ãƒ³
             _view.howToPlayButton
-                .Subscribe(_ => { })
+                .Subscribe(async _ => {
+                    await _view.CloseSettingWindow();
+                    _view.OpenTutorialWindow();
+                })
+                .AddTo(gameObject);
+
+            // ãƒãƒ¥ãƒ¼ãƒˆãƒªã‚¢ãƒ«é–‰ã˜ã‚‹
+            _view.backTutorialWindowButton
+                .Subscribe(async _ => {
+                    await _view.CloseTutorialWindow();
+                    _view.SetActiveFillter(false);
+                })
                 .AddTo(gameObject);
         }
     }

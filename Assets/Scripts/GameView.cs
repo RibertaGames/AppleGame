@@ -1,4 +1,4 @@
-using TMPro;
+ï»¿using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
@@ -24,62 +24,71 @@ namespace RibertaGames
         [SerializeField] private GameObject _fillter;
         [SerializeField] private GameObject _boardFillter;
         [SerializeField] private SettingWindow _settingWindow;
+        [SerializeField] private TutorialWindow _tutorialWindow;
 
-        [SerializeField] private Sprite[]_animal;  // “®•¨‚Ì‰æ‘œ
-        [SerializeField] private Sprite[] _fruits; // ƒtƒ‹[ƒc‚Ì‰æ‘œ
-        [SerializeField] private Sprite _key;      // ƒL[‰æ‘œ
-        [SerializeField] private Sprite _timer;  // ƒ^ƒCƒ}[‰æ‘œ
+        [SerializeField] private Sprite[]_animal;  // å‹•ç‰©ã®ç”»åƒ
+        [SerializeField] private Sprite[] _fruits; // ãƒ•ãƒ«ãƒ¼ãƒ„ã®ç”»åƒ
+        [SerializeField] private Sprite _key;      // ã‚­ãƒ¼ç”»åƒ
+        [SerializeField] private Sprite _timer;  // ã‚¿ã‚¤ãƒãƒ¼ç”»åƒ
 
         private readonly float NEXT_CHARACTER_POSITION_Y = -1.35f;
 
         /// <summary>
-        /// ƒQ[ƒ€ŠJnƒ{ƒ^ƒ“
+        /// ã‚²ãƒ¼ãƒ é–‹å§‹ãƒœã‚¿ãƒ³
         /// </summary>
         public IObservable<Unit> gameStartButton => _gamePauseButton.onClickSubject;
 
         /// <summary>
-        /// ƒQ[ƒ€I—¹ƒ{ƒ^ƒ“
+        /// ã‚²ãƒ¼ãƒ çµ‚äº†ãƒœã‚¿ãƒ³
         /// </summary>
         public IObservable<Unit> gameEndButton => _settingWindow.gameEndButton;
 
         /// <summary>
-        /// —V‚Ñ•ûƒ{ƒ^ƒ“
+        /// éŠã³æ–¹ãƒœã‚¿ãƒ³
         /// </summary>
         public IObservable<Unit> howToPlayButton => _settingWindow.howToPlayButton;
 
         /// <summary>
-        /// İ’èƒEƒBƒ“ƒhƒE‚ğŠJ‚­ƒ{ƒ^ƒ“
+        /// è¨­å®šã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’é–‹ããƒœã‚¿ãƒ³
         /// </summary>
         public IObservable<Unit> openSettingWindowButton => _settingButton.onClickSubject;
 
         /// <summary>
-        /// İ’èƒEƒBƒ“ƒhƒE‚Ì•Â‚¶‚éƒ{ƒ^ƒ“
+        /// è¨­å®šã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®é–‰ã˜ã‚‹ãƒœã‚¿ãƒ³
         /// </summary>
         public IObservable<Unit> closeSettingWindowButton => _settingWindow.closeWindowButton;
 
         /// <summary>
-        /// İ’èƒEƒBƒ“ƒhƒE‚Ì–ß‚éƒ{ƒ^ƒ“
+        /// è¨­å®šã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®æˆ»ã‚‹ãƒœã‚¿ãƒ³
         /// </summary>
         public IObservable<Unit> backSettingWindowButton => _settingWindow.backWindowButton;
 
         /// <summary>
-        /// ‰Šú‰»
+        /// ãƒãƒ¥ãƒ¼ãƒˆãƒªã‚¢ãƒ«ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®æˆ»ã‚‹ãƒœã‚¿ãƒ³
+        /// </summary>
+        public IObservable<Unit> backTutorialWindowButton => _tutorialWindow.closeWindowButton;
+
+        /// <summary>
+        /// åˆæœŸåŒ–
         /// </summary>
         public override void Init()
         {
-            // ‰Šú‰»
+            // åˆæœŸåŒ–
             InitializeView();
 
-            // İ’èƒEƒBƒ“ƒhƒE‚ğ‰Šú‰»
+            // è¨­å®šã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’åˆæœŸåŒ–
             _settingWindow.Init();
 
-            // ƒtƒBƒ‹ƒ^[ƒIƒt
+            // ãƒãƒ¥ãƒ¼ãƒˆãƒªã‚¢ãƒ«ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’åˆæœŸåŒ–
+            _tutorialWindow.Init();
+
+            // ãƒ•ã‚£ãƒ«ã‚¿ãƒ¼ã‚ªãƒ•
             SetActiveFillter(false);
             SetActiveBoardFillter(false);
         }
 
         /// <summary>
-        /// ‰æ–Ê‚ğ‰Šú‰»
+        /// ç”»é¢ã‚’åˆæœŸåŒ–
         /// </summary>
         public void InitializeView()
         {
@@ -94,53 +103,63 @@ namespace RibertaGames
         }
 
         /// <summary>
-        /// İ’èƒEƒBƒ“ƒhƒE‚ğŠJ‚­
+        /// è¨­å®šã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’é–‹ã
         /// </summary>
         public void OpenSettingWindow() => _settingWindow.Open();
 
         /// <summary>
-        /// İ’èƒEƒBƒ“ƒhƒE‚ğ•Â‚¶‚é
+        /// è¨­å®šã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’é–‰ã˜ã‚‹
         /// </summary>
         public async UniTask CloseSettingWindow() => await _settingWindow.Close();
 
         /// <summary>
-        /// ƒ{[ƒhƒtƒBƒ‹ƒ^[ƒIƒ“ƒIƒt
+        /// ãƒãƒ¥ãƒ¼ãƒˆãƒªã‚¢ãƒ«ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’é–‹ã
+        /// </summary>
+        public void OpenTutorialWindow() => _tutorialWindow.Open();
+
+        /// <summary>
+        /// ãƒãƒ¥ãƒ¼ãƒˆãƒªã‚¢ãƒ«ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’é–‰ã˜ã‚‹
+        /// </summary>
+        public async UniTask CloseTutorialWindow() => await _tutorialWindow.Close();
+
+        /// <summary>
+        /// ãƒœãƒ¼ãƒ‰ãƒ•ã‚£ãƒ«ã‚¿ãƒ¼ã‚ªãƒ³ã‚ªãƒ•
         /// </summary>
         /// <param name="active"></param>
         public void SetActiveBoardFillter(bool active) => _boardFillter.SetActive(active);
 
         /// <summary>
-        /// ƒtƒBƒ‹ƒ^[ƒIƒ“ƒIƒt
+        /// ãƒ•ã‚£ãƒ«ã‚¿ãƒ¼ã‚ªãƒ³ã‚ªãƒ•
         /// </summary>
         /// <param name="active"></param>
         public void SetActiveFillter(bool active) => _fillter.SetActive(active);
 
         /// <summary>
-        /// ƒXƒRƒA‚ğ•\¦
+        /// ã‚¹ã‚³ã‚¢ã‚’è¡¨ç¤º
         /// </summary>
         /// <param name="score"></param>
         public void SetScoreText(string score) => _scoreText.SetText(score);
 
         /// <summary>
-        /// ƒnƒCƒXƒRƒA‚ğ•\¦
+        /// ãƒã‚¤ã‚¹ã‚³ã‚¢ã‚’è¡¨ç¤º
         /// </summary>
         /// <param name="highScore"></param>
         public void SetHighScoreText(string highScore) => _highScoreText.SetText(highScore);
 
         /// <summary>
-        /// “|‚µ‚½”‚ğ•\¦
+        /// å€’ã—ãŸæ•°ã‚’è¡¨ç¤º
         /// </summary>
         /// <param name="destroyCount"></param>
         public void SetDestroyCountText(string destroyCount) => _destroyCountText.SetText(destroyCount);
 
         /// <summary>
-        /// Œ»İ‚Ìƒ^[ƒ“‚ğ•\¦
+        /// ç¾åœ¨ã®ã‚¿ãƒ¼ãƒ³ã‚’è¡¨ç¤º
         /// </summary>
         /// <param name="currentTurn"></param>
         public void SetCurrentTurnText(string currentTurn) => _currentTurnText.SetText(currentTurn);
 
         /// <summary>
-        /// ƒLƒƒƒ‰ƒNƒ^[‚ğ¶¬‚·‚éB
+        /// ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã‚’ç”Ÿæˆã™ã‚‹ã€‚
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
@@ -154,7 +173,7 @@ namespace RibertaGames
             prefab.SetNextCharacterPosition(info.x, NEXT_CHARACTER_POSITION_Y);
             prefab.SetupImage(_CharacterImg(info.power));
 
-            // ‰æ‘œXV
+            // ç”»åƒæ›´æ–°
             prefab.changePower
                 .Subscribe(_ => prefab.SetupImage(_CharacterImg(prefab.power)))
                 .AddTo(gameObject);
@@ -163,7 +182,7 @@ namespace RibertaGames
         }
 
         /// <summary>
-        /// ƒGƒlƒ~[‚ğ¶¬‚·‚éB
+        /// ã‚¨ãƒãƒŸãƒ¼ã‚’ç”Ÿæˆã™ã‚‹ã€‚
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
@@ -176,7 +195,7 @@ namespace RibertaGames
             prefab.Setup(info.x, info.y, info.gimickType, info.power).Forget();
             prefab.SetupImage(_EnemyImg(info.power, info.gimickType));
 
-            // ‰æ‘œXV
+            // ç”»åƒæ›´æ–°
             prefab.changePower
                 .Subscribe(_ => prefab.SetupImage(_EnemyImg(prefab.power, prefab.gimickType)))
                 .AddTo(gameObject);
@@ -187,7 +206,7 @@ namespace RibertaGames
         private int[] _powerList = new int[] { 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048 };
 
         /// <summary>
-        /// ƒLƒƒƒ‰ƒNƒ^[‰æ‘œ‚ğİ’è
+        /// ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ç”»åƒã‚’è¨­å®š
         /// </summary>
         private Sprite _CharacterImg(int power)
         {
@@ -202,7 +221,7 @@ namespace RibertaGames
         }
 
         /// <summary>
-        /// ƒGƒlƒ~[‰æ‘œ‚ğİ’è
+        /// ã‚¨ãƒãƒŸãƒ¼ç”»åƒã‚’è¨­å®š
         /// </summary>
         /// <param name="power"></param>
         /// <returns></returns>
