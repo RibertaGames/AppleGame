@@ -42,5 +42,28 @@ MonoBehaviour:
     m_Localized: Kembali
     m_Metadata:
       m_Items: []
+  - m_Id: 41962602981568512
+    m_Localized: Berikutnya
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41962688243380224
+    m_Localized: Sebelum
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41966815790837760
+    m_Localized: Ayo geser tupai yang kamu punya ke kotakmu!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41966865057132544
+    m_Localized: 'Jika Anda memindahkan hewan, mereka akan menyerang dalam satu kolom!
+
+      Mari
+      kita tempatkan hewan yang lebih kuat dari buah-buahan!'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41967042614603776
+    m_Localized: Geser dan susun hewan yang sama untuk menjadikannya lebih kuat!
+    m_Metadata:
+      m_Items: []
   references:
     version: 1

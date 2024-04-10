@@ -42,5 +42,27 @@ MonoBehaviour:
     m_Localized: Voltar
     m_Metadata:
       m_Items: []
+  - m_Id: 41962602981568512
+    m_Localized: "Pr\xF3ximo"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41962688243380224
+    m_Localized: Antes
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41966815790837760
+    m_Localized: "Vamos deslizar o esquilo que voc\xEA tem em m\xE3os para o seu
+      quadrado!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41966865057132544
+    m_Localized: "\rSe voc\xEA mover os animais, eles atacar\xE3o em coluna!\r\nVamos
+      colocar animais mais fortes que frutas!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41967042614603776
+    m_Localized: "\rDeslize e empilhe os mesmos animais para torn\xE1-los mais fortes!"
+    m_Metadata:
+      m_Items: []
   references:
     version: 1

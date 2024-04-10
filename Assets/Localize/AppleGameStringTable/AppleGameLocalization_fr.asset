@@ -42,5 +42,28 @@ MonoBehaviour:
     m_Localized: Dos
     m_Metadata:
       m_Items: []
+  - m_Id: 41962602981568512
+    m_Localized: Suivant
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41962688243380224
+    m_Localized: Avant
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41966815790837760
+    m_Localized: "Glissons l'\xE9cureuil que vous avez sous la main sur votre carr\xE9
+      !"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41966865057132544
+    m_Localized: "Si vous d\xE9placez les animaux, ils attaqueront en colonne !\r\nPla\xE7ons
+      des animaux plus forts que les fruits !"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41967042614603776
+    m_Localized: "Faites glisser et empilez les m\xEAmes animaux pour les rendre
+      plus forts !"
+    m_Metadata:
+      m_Items: []
   references:
     version: 1

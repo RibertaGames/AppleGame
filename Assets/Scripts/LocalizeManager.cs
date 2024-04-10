@@ -1,4 +1,4 @@
-using Cysharp.Threading.Tasks;
+ï»¿using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -11,17 +11,17 @@ namespace RibertaGames
     public class LocalizeManager : SingletonMonoBehaviour<LocalizeManager>
     {
         /// <summary>
-        /// Œ»İ‚ÌŒ¾Œê
+        /// ç¾åœ¨ã®è¨€èª
         /// </summary>
         public SystemLanguage language { get; private set; }
 
         /// <summary>
-        /// Œ»İ‚ÌƒtƒHƒ“ƒg
+        /// ç¾åœ¨ã®ãƒ•ã‚©ãƒ³ãƒˆ
         /// </summary>
         public TMP_FontAsset font { get; private set; }
 
         /// <summary>
-        /// ƒtƒHƒ“ƒgƒAƒZƒbƒg
+        /// ãƒ•ã‚©ãƒ³ãƒˆã‚¢ã‚»ãƒƒãƒˆ
         /// </summary>
         [SerializeField] private TMP_FontAsset _fontBase;
         [SerializeField] private TMP_FontAsset _fontJP;
@@ -35,28 +35,28 @@ namespace RibertaGames
         
         public void Awake()
         {
-            //Œ¾Œêİ’è
+            //è¨€èªè¨­å®š
             SetLanguage(Application.systemLanguage);
         }
 
         /// <summary>
-        /// Œ¾Œê‚ğİ’è‚·‚éB
+        /// è¨€èªã‚’è¨­å®šã™ã‚‹ã€‚
         /// </summary>
         /// <param name="systemLanguage"></param>
         public void SetLanguage(SystemLanguage systemLanguage)
         {
-            // Œ¾Œêİ’è
+            // è¨€èªè¨­å®š
             _SetLanguage(systemLanguage);
 
-            // Œ¾Œê“K‰
+            // è¨€èªé©å¿œ
             _ = _ChangeSelectedLocale(language);
 
-            // ƒtƒHƒ“ƒgİ’è
+            // ãƒ•ã‚©ãƒ³ãƒˆè¨­å®š
             _SetFont(font);
         }
 
         /// <summary>
-        /// Œ¾ŒêØ‚è‘Ö‚¦
+        /// è¨€èªåˆ‡ã‚Šæ›¿ãˆ
         /// </summary>
         /// <param name="locale"></param>
         /// <returns></returns>
@@ -65,23 +65,23 @@ namespace RibertaGames
             LocalizationSettings.SelectedLocale = Locale.CreateLocale(locale);
             await LocalizationSettings.InitializationOperation.Task;
 
-            Debug.Log("Œ¾Œê•ÏX: " + language);
+            Debug.Log("è¨€èªå¤‰æ›´: " + language);
         }
 
         /// <summary>
-        /// Œ¾Œê‚ğİ’è‚·‚éB
+        /// è¨€èªã‚’è¨­å®šã™ã‚‹ã€‚
         /// </summary>
         private void _SetLanguage(SystemLanguage systemLanguage)
         {
             switch (systemLanguage)
             {
-                // “ú–{Œê
+                // æ—¥æœ¬èª
                 case SystemLanguage.Japanese:
                     language = SystemLanguage.Japanese;
                     font = _fontJP;
                     break;
 
-                // ’†‘Œê
+                // ä¸­å›½èª
                 case SystemLanguage.Chinese:
                     language = SystemLanguage.ChineseSimplified;
                     font = _fontCN;
@@ -95,61 +95,61 @@ namespace RibertaGames
                     font = _fontCN;
                     break;
 
-                // ŠØ‘Œê
+                // éŸ“å›½èª
                 case SystemLanguage.Korean:
                     language = SystemLanguage.Korean;
                     font = _fontKR;
                     break;
 
-                // ƒtƒ‰ƒ“ƒXŒê
+                // ãƒ•ãƒ©ãƒ³ã‚¹èª
                 case SystemLanguage.French:
                     language = SystemLanguage.French;
                     font = _fontBase;
                     break;
 
-                // ƒhƒCƒcŒê
+                // ãƒ‰ã‚¤ãƒ„èª
                 case SystemLanguage.German:
                     language = SystemLanguage.German;
                     font = _fontBase;
                     break;
 
-                // ƒCƒ“ƒhƒlƒVƒAŒê
+                // ã‚¤ãƒ³ãƒ‰ãƒã‚·ã‚¢èª
                 case SystemLanguage.Indonesian:
                     language = SystemLanguage.Indonesian;
                     font = _fontBase;
                     break;
 
-                // ƒCƒ^ƒŠƒAŒê
+                // ã‚¤ã‚¿ãƒªã‚¢èª
                 case SystemLanguage.Italian:
                     language = SystemLanguage.Italian;
                     font = _fontBase;
                     break;
 
-                // ƒ|ƒ‹ƒgƒKƒ‹Œê
+                // ãƒãƒ«ãƒˆã‚¬ãƒ«èª
                 case SystemLanguage.Portuguese:
                     language = SystemLanguage.Portuguese;
                     font = _fontBase;
                     break;
 
-                // ƒƒVƒAŒê
+                // ãƒ­ã‚·ã‚¢èª
                 case SystemLanguage.Russian:
                     language = SystemLanguage.Russian;
                     font = _fontBase;
                     break;
 
-                // ƒXƒyƒCƒ“Œê
+                // ã‚¹ãƒšã‚¤ãƒ³èª
                 case SystemLanguage.Spanish:
                     language = SystemLanguage.Spanish;
                     font = _fontBase;
                     break;
 
-                // ƒxƒgƒiƒ€Œê
-                case SystemLanguage.Vietnamese:
-                    language = SystemLanguage.Vietnamese;
-                    font = _fontBase;
-                    break;
+                // ãƒ™ãƒˆãƒŠãƒ èª
+                //case SystemLanguage.Vietnamese:
+                //    language = SystemLanguage.Vietnamese;
+                //    font = _fontBase;
+                //    break;
 
-                // ‰pŒê
+                // è‹±èª
                 default:
                 case SystemLanguage.English:
                     language = SystemLanguage.English;
@@ -159,7 +159,7 @@ namespace RibertaGames
         }
 
         /// <summary>
-        /// ƒtƒHƒ“ƒg‚ğİ’è‚·‚éB
+        /// ãƒ•ã‚©ãƒ³ãƒˆã‚’è¨­å®šã™ã‚‹ã€‚
         /// </summary>
         private void _SetFont(TMP_FontAsset font)
         {

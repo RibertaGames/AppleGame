@@ -75,6 +75,15 @@ MonoBehaviour:
     - Locale-vi
     - Locale-ja
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7aba52db47e77bb4aac342015e081bf3
+    m_Address: NotoSerifJP-Regular SDF
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-ja
+    - Locale-zh-Hans
+    - Locale-zh-Hant
+    - Locale-ru
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 1
   m_Settings: {fileID: 11400000, guid: 3e86b923cfa3ba948b167d2ab9087061, type: 2}
   m_SchemaSet:

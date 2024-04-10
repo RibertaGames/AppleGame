@@ -42,5 +42,28 @@ MonoBehaviour:
     m_Localized: "Zur\xFCck"
     m_Metadata:
       m_Items: []
+  - m_Id: 41962602981568512
+    m_Localized: "N\xE4chste"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41962688243380224
+    m_Localized: Vor
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41966815790837760
+    m_Localized: "Lassen Sie uns das Eichh\xF6rnchen, das Sie zur Hand haben, auf
+      Ihr Quadrat schieben!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41966865057132544
+    m_Localized: "Wenn Sie die Tiere bewegen, greifen sie in einer Kolonne an!\r\nPlatzieren
+      wir Tiere, die st\xE4rker sind als Fr\xFCchte!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41967042614603776
+    m_Localized: "Schieben und stapeln Sie dieselben Tiere, um sie st\xE4rker zu
+      machen!"
+    m_Metadata:
+      m_Items: []
   references:
     version: 1

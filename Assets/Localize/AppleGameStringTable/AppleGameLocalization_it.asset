@@ -42,5 +42,27 @@ MonoBehaviour:
     m_Localized: Indietro
     m_Metadata:
       m_Items: []
+  - m_Id: 41962602981568512
+    m_Localized: Prossimo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41962688243380224
+    m_Localized: Prima
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41966815790837760
+    m_Localized: Facciamo scorrere lo scoiattolo che hai a portata di mano nella
+      tua piazza!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41966865057132544
+    m_Localized: "Se muovi gli animali, attaccheranno in colonna!\r\nMettiamo gli
+      animali pi\xF9 forti dei frutti!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41967042614603776
+    m_Localized: "Fai scorrere e impila gli stessi animali per renderli pi\xF9 forti!"
+    m_Metadata:
+      m_Items: []
   references:
     version: 1

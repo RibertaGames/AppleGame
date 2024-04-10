@@ -90,5 +90,45 @@ MonoBehaviour:
     m_Localized: 8f586378b4e144a9851e7b34d9b748ee[LiberationSans SDF Material]
     m_Metadata:
       m_Items: []
+  - m_Id: 4740111074930688
+    m_Localized: 7aba52db47e77bb4aac342015e081bf3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4740111246897152
+    m_Localized: 7aba52db47e77bb4aac342015e081bf3[NotoSerifJP-Regular SDF Material]
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4740967744745472
+    m_Localized: 7aba52db47e77bb4aac342015e081bf3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4740967895740416
+    m_Localized: 7aba52db47e77bb4aac342015e081bf3[NotoSerifJP-Regular SDF Material]
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4741664364113920
+    m_Localized: 7aba52db47e77bb4aac342015e081bf3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4741664401862656
+    m_Localized: 7aba52db47e77bb4aac342015e081bf3[NotoSerifJP-Regular SDF Material]
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4742507960283136
+    m_Localized: 7aba52db47e77bb4aac342015e081bf3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4742507989643264
+    m_Localized: 7aba52db47e77bb4aac342015e081bf3[NotoSerifJP-Regular SDF Material]
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4742970923364352
+    m_Localized: 7aba52db47e77bb4aac342015e081bf3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4742970948530176
+    m_Localized: 7aba52db47e77bb4aac342015e081bf3[NotoSerifJP-Regular SDF Material]
+    m_Metadata:
+      m_Items: []
   references:
     version: 1

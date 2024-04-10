@@ -42,5 +42,26 @@ MonoBehaviour:
     m_Localized: "Atr\xE1s"
     m_Metadata:
       m_Items: []
+  - m_Id: 41962602981568512
+    m_Localized: "Pr\xF3ximo"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41962688243380224
+    m_Localized: Antes
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41966815790837760
+    m_Localized: "\xA1Deslicemos la ardilla que tienes a mano hasta tu cuadrado!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41966865057132544
+    m_Localized: "\r\xA1Si mueves a los animales, atacar\xE1n en columna!\r\n\xA1Coloquemos
+      animales que sean m\xE1s fuertes que las frutas!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41967042614603776
+    m_Localized: "\xA1Desliza y apila los mismos animales para hacerlos m\xE1s fuertes!"
+    m_Metadata:
+      m_Items: []
   references:
     version: 1

@@ -39,6 +39,26 @@ MonoBehaviour:
     m_Key: BACK
     m_Metadata:
       m_Items: []
+  - m_Id: 41962602981568512
+    m_Key: NEXT_TUTORIAL
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41962688243380224
+    m_Key: BACK_TUTORIAL
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41966815790837760
+    m_Key: TUTORIAL_1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41966865057132544
+    m_Key: TUTORIAL_2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41967042614603776
+    m_Key: TUTORIAL_3
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

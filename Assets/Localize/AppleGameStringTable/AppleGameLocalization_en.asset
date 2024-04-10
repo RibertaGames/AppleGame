@@ -42,5 +42,30 @@ MonoBehaviour:
     m_Localized: Back
     m_Metadata:
       m_Items: []
+  - m_Id: 41962602981568512
+    m_Localized: Next
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41962688243380224
+    m_Localized: Before
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41966815790837760
+    m_Localized: 'Let''s slide the squirrel you have on hand to your square!
+
+'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41966865057132544
+    m_Localized: "\rIf you move the animals, they will attack in a column!\r\nLet's
+      place animals that are stronger than fruits!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41967042614603776
+    m_Localized: 'Slide and stack the same animals to make them stronger!
+
+'
+    m_Metadata:
+      m_Items: []
   references:
     version: 1

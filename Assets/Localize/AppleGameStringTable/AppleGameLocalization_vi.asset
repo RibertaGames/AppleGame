@@ -42,5 +42,29 @@ MonoBehaviour:
     m_Localized: "M\u1EB7t sau"
     m_Metadata:
       m_Items: []
+  - m_Id: 41962602981568512
+    m_Localized: "K\u1EBF ti\u1EBFp"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41962688243380224
+    m_Localized: "Tr\u01B0\u1EDBc"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41966815790837760
+    m_Localized: "\rH\xE3y tr\u01B0\u1EE3t con s\xF3c b\u1EA1n c\xF3 tr\xEAn tay
+      \u0111\u1EBFn qu\u1EA3ng tr\u01B0\u1EDDng c\u1EE7a b\u1EA1n!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41966865057132544
+    m_Localized: "\rN\u1EBFu b\u1EA1n di chuy\u1EC3n c\xE1c con v\u1EADt, ch\xFAng
+      s\u1EBD t\u1EA5n c\xF4ng theo m\u1ED9t c\u1ED9t!\r\nH\xE3y \u0111\u1EB7t nh\u1EEFng
+      con v\u1EADt m\u1EA1nh h\u01A1n tr\xE1i c\xE2y!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 41967042614603776
+    m_Localized: "Tr\u01B0\u1EE3t v\xE0 x\u1EBFp ch\u1ED3ng c\xE1c con v\u1EADt gi\u1ED1ng
+      nhau \u0111\u1EC3 khi\u1EBFn ch\xFAng m\u1EA1nh m\u1EBD h\u01A1n!"
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
