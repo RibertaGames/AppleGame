@@ -130,5 +130,9 @@ MonoBehaviour:
     m_Localized: 7aba52db47e77bb4aac342015e081bf3[NotoSerifJP-Regular SDF Material]
     m_Metadata:
       m_Items: []
+  - m_Id: 2176239931568128
+    m_Localized: 8f586378b4e144a9851e7b34d9b748ee
+    m_Metadata:
+      m_Items: []
   references:
     version: 1

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UniRx;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace RibertaGames 
 {
@@ -14,7 +15,10 @@ namespace RibertaGames
         [SerializeField] private GameObject _panel2;
         [SerializeField] private GameObject _panel3;
 
+        [SerializeField] private Image[] _selectIcon;
+
         private int _currentPageIndex;
+        private readonly int MAX_PAGE_INDEX = 3;
 
         /// <summary>
         /// セットアップ
@@ -52,17 +56,11 @@ namespace RibertaGames
         {
             if (nextPage)
             {
-                if (_currentPageIndex == 0 ||
-                    _currentPageIndex == 1)
-                {
-                    _currentPageIndex++;
-                }
+                _currentPageIndex = Math.Min(MAX_PAGE_INDEX, _currentPageIndex + 1);
             }
             else
             {
-                if(_currentPageIndex == 1 ||
-                    _currentPageIndex == 2)
-                _currentPageIndex--;
+                _currentPageIndex = Math.Max(0, _currentPageIndex - 1);
             }
 
             _ActivePage();
@@ -73,6 +71,13 @@ namespace RibertaGames
             _panel1.SetActive(_currentPageIndex == 0);
             _panel2.SetActive(_currentPageIndex == 1);
             _panel3.SetActive(_currentPageIndex == 2);
+
+            for(int i = 0; i < _selectIcon.Length; i++)
+            {
+                _selectIcon[i].color = Color.white;
+            }
+
+            _selectIcon[_currentPageIndex].color = new Color(1f, 120f /255f , 0f);
         }
     }
 }

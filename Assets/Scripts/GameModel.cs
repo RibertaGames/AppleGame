@@ -1,4 +1,4 @@
-using RibertaGames;
+ï»¿using RibertaGames;
 using System;
 using System.Collections.Generic;
 using UniRx;
@@ -7,7 +7,7 @@ using Cysharp.Threading.Tasks;
 namespace RibertaGames
 {
     /// <summary>
-    /// ƒMƒ~ƒbƒNí—Ş
+    /// ã‚®ãƒŸãƒƒã‚¯ç¨®é¡
     /// </summary>
     public enum eGimickType
     {
@@ -18,7 +18,7 @@ namespace RibertaGames
     }
 
     /// <summary>
-    /// è‚¿‚ÌƒAƒCƒeƒ€
+    /// æ‰‹æŒã¡ã®ã‚¢ã‚¤ãƒ†ãƒ 
     /// </summary>
     [Flags]
     public enum eItem
@@ -69,10 +69,10 @@ namespace RibertaGames
         private Random _random;
         private SaveData _saveData;
 
-        #region ƒQ[ƒ€’è”
+        #region ã‚²ãƒ¼ãƒ å®šæ•°
 
         /// <summary>
-        /// ”Õ–Ê‚Ìƒ}ƒX
+        /// ç›¤é¢ã®ãƒã‚¹
         /// </summary>
         private readonly int ENEMY_MASU_X = 7;
         private readonly int ENEMY_MASU_Y = 7;
@@ -80,63 +80,65 @@ namespace RibertaGames
         private readonly int CHARACTER_MASU_Y = 2;
 
         /// <summary>
-        /// ƒGƒlƒ~[‚ÌƒXƒ|[ƒ“‚·‚éYÀ•W
+        /// ã‚¨ãƒãƒŸãƒ¼ã®ã‚¹ãƒãƒ¼ãƒ³ã™ã‚‹Yåº§æ¨™
         /// </summary>
         public readonly int SPAWN_ENEMY_MASU_Y = 6;
 
         /// <summary>
-        /// ƒLƒƒƒ‰ƒNƒ^[‘¤‚Ìi‰»‰Â”\‚È”š
+        /// ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼å´ã®é€²åŒ–å¯èƒ½ãªæ•°å­—
         /// </summary>
         private readonly int[] CHARACTER_ENABLE_NUM = new int[] { 2, 4, 8, 16, 32, 64 };
 
         /// <summary>
-        /// Ÿ‚Ì¶¬ƒLƒƒƒ‰ƒNƒ^[‚ÌŒÅ’èX,Y
+        /// æ¬¡ã®ç”Ÿæˆã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã®å›ºå®šX,Y
         /// </summary>
         private readonly int NEXT_CHARACTER_X = 3;
         private readonly int NEXT_CHARACTER_Y = -1;
 
         /// <summary>
-        /// ˆê‘ÌŒ‚”j: 10ƒ|ƒCƒ“ƒg
+        /// ä¸€ä½“æ’ƒç ´: 10ãƒã‚¤ãƒ³ãƒˆ
         /// </summary>
         private readonly int DESTROY_BONUS = 10;
 
         /// <summary>
-        /// ˆêƒ^[ƒ“: 5ƒ|ƒCƒ“ƒg
+        /// ä¸€ã‚¿ãƒ¼ãƒ³: 5ãƒã‚¤ãƒ³ãƒˆ
         /// </summary>
         private readonly int TURN_BONUS = 5;
 
         /// <summary>
-        /// 100ƒ_ƒ[ƒW–ˆ: 1ƒ|ƒCƒ“ƒg
+        /// 100ãƒ€ãƒ¡ãƒ¼ã‚¸æ¯: 1ãƒã‚¤ãƒ³ãƒˆ
         /// </summary>
         private readonly int DAMEGE_BONUS = 100;
 
         /// <summary>
-        /// 30ƒ^[ƒ“–ˆ‚Éƒ{[ƒiƒXƒXƒe[ƒW: Œ®‚©Œv
+        /// 30ã‚¿ãƒ¼ãƒ³æ¯ã«ãƒœãƒ¼ãƒŠã‚¹ã‚¹ãƒ†ãƒ¼ã‚¸: éµã‹æ™‚è¨ˆ
         /// </summary>
         private readonly int BONUS_STAGE_TURN = 30;
 
         /// <summary>
-        /// ‹~Ïˆ’u: 5ƒ^[ƒ“Œ®‚ªo‚È‚©‚Á‚½‚çŒ®‚ğo‚·B
+        /// æ•‘æ¸ˆå‡¦ç½®: 5ã‚¿ãƒ¼ãƒ³éµãŒå‡ºãªã‹ã£ãŸã‚‰éµã‚’å‡ºã™ã€‚
         /// </summary>
         private readonly int NO_KEY_TURN = 5;
 
         /// <summary>
-        /// ƒGƒlƒ~[‚ÌoŒ»Šm—¦
+        /// ã‚¨ãƒãƒŸãƒ¼ã®å‡ºç¾ç¢ºç‡
         /// </summary>
         private readonly int ENEMY_POP_PERCENT = 80;
 
         /// <summary>
-        /// Œ®‚ÌoŒ»Šm—¦
+        /// éµã®å‡ºç¾ç¢ºç‡
         /// </summary>
         private readonly int KEY_POP_PERCENT = 19;
 
         /// <summary>
-        /// ƒ^ƒCƒ}[‚ÌoŒ»Šm—¦
+        /// ã‚¿ã‚¤ãƒãƒ¼ã®å‡ºç¾ç¢ºç‡
         /// </summary>
         private readonly int TIMER_POP_PERCENT = 1;
 
+        private readonly float ENEMY_STRONG = 0.5f;
+
         /// <summary>
-        /// oŒ»‚·‚é–¡•û‚ªí‚ÉÅ’áƒŒƒxƒ‹‚Å“oê
+        /// å‡ºç¾ã™ã‚‹å‘³æ–¹ãŒå¸¸ã«æœ€ä½ãƒ¬ãƒ™ãƒ«ã§ç™»å ´
         /// </summary>
         private readonly bool ALWAYS_MIN_NUMBER = true;
 
@@ -152,7 +154,7 @@ namespace RibertaGames
         public IObservable<Unit> gameEnd => _gameEnd;
 
         /// <summary>
-        /// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+        /// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
         /// </summary>
         public GameModel()
         {
@@ -163,7 +165,7 @@ namespace RibertaGames
         }
 
         /// <summary>
-        /// ƒQ[ƒ€ŠJn
+        /// ã‚²ãƒ¼ãƒ é–‹å§‹
         /// </summary>
         public async UniTask GameStart()
         {
@@ -177,7 +179,7 @@ namespace RibertaGames
         }
 
         /// <summary>
-        /// ‰Šú‰»‚·‚éB
+        /// åˆæœŸåŒ–ã™ã‚‹ã€‚
         /// </summary>
         private void _Initialize()
         {
@@ -196,7 +198,7 @@ namespace RibertaGames
         }
 
         /// <summary>
-        /// ƒQ[ƒ€I—¹
+        /// ã‚²ãƒ¼ãƒ çµ‚äº†
         /// </summary>
         public void GameEnd()
         {
@@ -206,40 +208,40 @@ namespace RibertaGames
         }
 
         /// <summary>
-        /// Ÿ‚Ìƒ^[ƒ“‚Ö
+        /// æ¬¡ã®ã‚¿ãƒ¼ãƒ³ã¸
         /// </summary>
         private async UniTask _NextTurn()
         {
-            //Ÿ‚Ìƒ^[ƒ“‚Ö
+            //æ¬¡ã®ã‚¿ãƒ¼ãƒ³ã¸
             _currentTurn.Value++;
 
-            //Œ®‚ğ–á‚¦‚È‚©‚Á‚½ƒ^[ƒ“Œv‘ª
+            //éµã‚’è²°ãˆãªã‹ã£ãŸã‚¿ãƒ¼ãƒ³è¨ˆæ¸¬
             _noKeyTurn++;
 
-            //–¡•û‚ÌUŒ‚
+            //å‘³æ–¹ã®æ”»æ’ƒ
             await _CharacterAttack();
 
-            //Ÿ‚ÌƒLƒƒƒ‰ƒNƒ^[‚ª—˜—p‰Â”\‚É‚È‚Á‚½‚©
+            //æ¬¡ã®ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ãŒåˆ©ç”¨å¯èƒ½ã«ãªã£ãŸã‹
             _IsEnableKey();
 
-            //ƒ^ƒCƒ}[”­“®: ”­“®‚µ‚È‚¢ê‡‚ÍƒGƒlƒ~[isB
+            //ã‚¿ã‚¤ãƒãƒ¼ç™ºå‹•: ç™ºå‹•ã—ãªã„å ´åˆã¯ã‚¨ãƒãƒŸãƒ¼é€²è¡Œã€‚
             if (!_IsEnableTimer())
             {
-                //ƒGƒlƒ~[si
+                //ã‚¨ãƒãƒŸãƒ¼è¡Œé€²
                 if (_EnemyMove())
                 {
-                    //isŒã‚ÍAŸ‚ÌƒGƒlƒ~[¶¬
+                    //é€²è¡Œå¾Œã¯ã€æ¬¡ã®ã‚¨ãƒãƒŸãƒ¼ç”Ÿæˆ
                     _GenerateEnemiesWave();
                 }
-                //1•b‘Ò‹@
+                //1ç§’å¾…æ©Ÿ
                 //Task.Delay(1000).Wait();
             }
-            //ƒXƒRƒA‚ğŒvZ
+            //ã‚¹ã‚³ã‚¢ã‚’è¨ˆç®—
             _CalcScore();
         }
 
         /// <summary>
-        /// ƒnƒCƒXƒRƒAæ“¾
+        /// ãƒã‚¤ã‚¹ã‚³ã‚¢å–å¾—
         /// </summary>
         private void _GetHighScore()
         {
@@ -247,7 +249,7 @@ namespace RibertaGames
         }
 
         /// <summary>
-        /// ƒnƒCƒXƒRƒAXV
+        /// ãƒã‚¤ã‚¹ã‚³ã‚¢æ›´æ–°
         /// </summary>
         private void _SetHighScore()
         {
@@ -258,7 +260,7 @@ namespace RibertaGames
         }
 
         /// <summary>
-        /// ƒLƒƒƒ‰ƒNƒ^[‚ÌUŒ‚
+        /// ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã®æ”»æ’ƒ
         /// </summary>
         private async UniTask _CharacterAttack()
         {
@@ -269,13 +271,13 @@ namespace RibertaGames
                 {
                     if (characters[x, y] != null)
                     {
-                        //UŒ‚‚µ‚½‚ç‘ƒ_ƒ[ƒW”‚ğŒvZ‚µ‚Ä‚¨‚­B
+                        //æ”»æ’ƒã—ãŸã‚‰ç·ãƒ€ãƒ¡ãƒ¼ã‚¸æ•°ã‚’è¨ˆç®—ã—ã¦ãŠãã€‚
                         _totalDamege += Attack(x, characters[x, y].power);
                     }
                 };
             };
 
-            // UŒ‚ƒAƒjƒ[ƒVƒ‡ƒ“’†
+            // æ”»æ’ƒã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ä¸­
             if (isAttack)
             {
                 SEManager.instance.Play(SEPath.EAT1);
@@ -284,58 +286,58 @@ namespace RibertaGames
 
             int Attack(int x, int characterPower)
             {
-                //“–‚½‚é‚²‚Æ‚ÉˆĞ—ÍŒ¸Š‚·‚é
+                //å½“ãŸã‚‹ã”ã¨ã«å¨åŠ›æ¸›è¡°ã™ã‚‹
                 int totalDamege = 0;
 
                 for (int y = 0; y < enemies.GetLength(1); y++)
                 {
                     var enemy = enemies[x, y];
-                    //“¯‚¶À•W
+                    //åŒã˜åº§æ¨™
                     if (enemy != null)
                     {
-                        // UŒ‚ŠJn
+                        // æ”»æ’ƒé–‹å§‹
                         isAttack = true;
 
-                        //ƒGƒlƒ~[‚Ìê‡
+                        //ã‚¨ãƒãƒŸãƒ¼ã®å ´åˆ
                         if (enemy.gimickType == eGimickType.Enemy)
                         {
                             int enemyHp = enemy.power;
                             enemy.ChangePower(Math.Max(0, enemy.power - characterPower));
-                            //“G‚ğ“|‚µ‚½(ˆĞ—ÍŒ¸Š‚µ‚ÄŠÑ’Ê‚·‚é)
+                            //æ•µã‚’å€’ã—ãŸ(å¨åŠ›æ¸›è¡°ã—ã¦è²«é€šã™ã‚‹)
                             if (enemy.power <= 0)
                             {
-                                _destroyCount.Value++; //Œ‚”j”‰ÁZ
+                                _destroyCount.Value++; //æ’ƒç ´æ•°åŠ ç®—
                                 enemy.Dead().Forget();
                                 enemies[x, y] = null;
                                 totalDamege += enemyHp;
                             }
-                            //“G‚ªó‚¯~‚ß‚½(ŠÑ’Ê~‚Ü‚é)
+                            //æ•µãŒå—ã‘æ­¢ã‚ãŸ(è²«é€šæ­¢ã¾ã‚‹)
                             else if (enemy.power > 0)
                             {
                                 totalDamege += characterPower;
                             }
 
-                            //ˆĞ—ÍŒ¸Š
+                            //å¨åŠ›æ¸›è¡°
                             characterPower -= enemyHp;
 
-                            //ˆĞ—Í‚ª‚à‚¤‚È‚¢‚Ì‚Å‹A‚éB
+                            //å¨åŠ›ãŒã‚‚ã†ãªã„ã®ã§å¸°ã‚‹ã€‚
                             if (characterPower <= 0)
                             {
                                 return totalDamege;
                             }
                         }
-                        //Œ®‚Ìê‡
+                        //éµã®å ´åˆ
                         else if (enemy.gimickType == eGimickType.Key)
                         {
-                            //—˜—p‰Â”\
+                            //åˆ©ç”¨å¯èƒ½
                             _currentItem |= eItem.Key;
                             enemy.GetItem().Forget();
                             enemies[x, y] = null;
                         }
-                        //ƒ^ƒCƒ}[‚Ìê‡
+                        //ã‚¿ã‚¤ãƒãƒ¼ã®å ´åˆ
                         else if (enemy.gimickType == eGimickType.Timer)
                         {
-                            //ƒGƒlƒ~[‚ª1ƒ^[ƒ“‘Ò‹@
+                            //ã‚¨ãƒãƒŸãƒ¼ãŒ1ã‚¿ãƒ¼ãƒ³å¾…æ©Ÿ
                             _currentItem |= eItem.Timer;
                             enemy.GetItem().Forget();
                             enemies[x, y] = null;
@@ -347,20 +349,20 @@ namespace RibertaGames
         }
 
         /// <summary>
-        /// Œ®‚ğ‚Á‚Ä‚¢‚é‚©H
+        /// éµã‚’æŒã£ã¦ã„ã‚‹ã‹ï¼Ÿ
         /// </summary>
         private void _IsEnableKey()
         {
             if (_currentItem.HasFlag(eItem.Key))
             {
                 _currentItem &= ~eItem.Key;
-                //Ÿ‚ÌƒLƒƒƒ‰ƒNƒ^[‚ğ¶¬‚·‚éB
+                //æ¬¡ã®ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã‚’ç”Ÿæˆã™ã‚‹ã€‚
                 _CreateNextCharacter();
             }
         }
 
         /// <summary>
-        /// ƒ^ƒCƒ}[‚Í‚Á‚Ä‚¢‚é‚©H
+        /// ã‚¿ã‚¤ãƒãƒ¼ã¯æŒã£ã¦ã„ã‚‹ã‹ï¼Ÿ
         /// </summary>
         /// <returns></returns>
         private bool _IsEnableTimer()
@@ -374,7 +376,7 @@ namespace RibertaGames
         }
 
         /// <summary>
-        /// ƒGƒlƒ~[‚Ìsi
+        /// ã‚¨ãƒãƒŸãƒ¼ã®è¡Œé€²
         /// </summary>
         private bool _EnemyMove()
         {
@@ -385,62 +387,62 @@ namespace RibertaGames
                     var enemy = enemies[x, y];
                     if (enemy != null)
                     {
-                        //ƒGƒlƒ~[‘®«‚ªÅŒã‚Ü‚Ås‚Á‚½‚çI—¹
+                        //ã‚¨ãƒãƒŸãƒ¼å±æ€§ãŒæœ€å¾Œã¾ã§è¡Œã£ãŸã‚‰çµ‚äº†
                         var nextY = y - 1;
                         if (nextY < 0)
                         {
                             if (enemy.gimickType == eGimickType.Enemy)
                             {
-                                //ƒQ[ƒ€I—¹I
+                                //ã‚²ãƒ¼ãƒ çµ‚äº†ï¼
                                 GameEnd();
                                 return false;
                             }
                             else
                             {
-                                //ƒ{[ƒiƒXƒAƒCƒeƒ€‚Ííœ
+                                //ãƒœãƒ¼ãƒŠã‚¹ã‚¢ã‚¤ãƒ†ãƒ ã¯å‰Šé™¤
                                 enemy.Dead().Forget();
                                 enemies[x, y] = null;
                                 continue;
                             }
                         }
-                        //Ÿ‚ÖˆÚ“®
+                        //æ¬¡ã¸ç§»å‹•
                         enemy.Move();
                         enemies[x, nextY] = enemies[x, y];
                         enemies[x, y] = null;
                     }
                 }
             };
-            //si¬Œ÷
+            //è¡Œé€²æˆåŠŸ
             return true;
         }
 
         /// <summary>
-        /// ƒGƒlƒ~[ƒEƒF[ƒu‚ğ¶¬
+        /// ã‚¨ãƒãƒŸãƒ¼ã‚¦ã‚§ãƒ¼ãƒ–ã‚’ç”Ÿæˆ
         /// </summary>
         private void _GenerateEnemiesWave()
         {
-            //‚±‚Ìƒ^[ƒ“¶¬‚·‚é“G‚Ì”
+            //ã“ã®ã‚¿ãƒ¼ãƒ³ç”Ÿæˆã™ã‚‹æ•µã®æ•°
             for (int i = 0; i < _GetEnemyCount(); i++)
             {
-                //”­¶êŠ
+                //ç™ºç”Ÿå ´æ‰€
                 int[] canMove = _CheckGenerateMasu();
                 var x = _GetRandomNumber(canMove);
-                //“G‚Ì‹­‚³
+                //æ•µã®å¼·ã•
                 var hp = _GetEnemyStrength();
-                //“G‚©Œ®‚©ƒ^ƒCƒ}[‚©
+                //æ•µã‹éµã‹ã‚¿ã‚¤ãƒãƒ¼ã‹
                 var gimick = _GetRandomGimickType();
-                //“G¶¬
+                //æ•µç”Ÿæˆ
                 _createEnemy.OnNext(new EntityInfo(x, SPAWN_ENEMY_MASU_Y, hp, ENEMY_MASU_X, ENEMY_MASU_Y, gimick));
             }
         }
 
         /// <summary>
-        /// ƒGƒlƒ~[‚Ì”‚ğŒvZ
+        /// ã‚¨ãƒãƒŸãƒ¼ã®æ•°ã‚’è¨ˆç®—
         /// </summary>
         /// <returns></returns>
         private int _GetEnemyCount()
         {
-            //ƒ{[ƒiƒXƒ^ƒCƒ€: ˆê—ñ‘S•”Œ®‚©Œv
+            //ãƒœãƒ¼ãƒŠã‚¹ã‚¿ã‚¤ãƒ : ä¸€åˆ—å…¨éƒ¨éµã‹æ™‚è¨ˆ
             if (_currentTurn.Value % BONUS_STAGE_TURN == 0)
             {
                 return enemies.GetLength(0);
@@ -450,7 +452,7 @@ namespace RibertaGames
         }
 
         /// <summary>
-        /// ƒGƒlƒ~[‚ğ¶¬‚·‚éÛ‚É¶¬‚Å‚«‚éêŠ‚©’²‚×‚éB
+        /// ã‚¨ãƒãƒŸãƒ¼ã‚’ç”Ÿæˆã™ã‚‹éš›ã«ç”Ÿæˆã§ãã‚‹å ´æ‰€ã‹èª¿ã¹ã‚‹ã€‚
         /// </summary>
         /// <returns></returns>
         private int[] _CheckGenerateMasu()
@@ -467,16 +469,16 @@ namespace RibertaGames
         }
 
         /// <summary>
-        /// w’è‚µ‚½”z—ñ‚Ì’†‚Åƒ‰ƒ“ƒ_ƒ€‚È’l‚ğ•Ô‚·B
+        /// æŒ‡å®šã—ãŸé…åˆ—ã®ä¸­ã§ãƒ©ãƒ³ãƒ€ãƒ ãªå€¤ã‚’è¿”ã™ã€‚
         /// </summary>
         /// <param name="values"></param>
         /// <returns></returns>
         private int _GetRandomNumber(int[] values)
         {
-            // ”z—ñ‚Ì’†‚©‚çƒ‰ƒ“ƒ_ƒ€‚Éˆê‚Â‚ğ‘I‚Ô
+            // é…åˆ—ã®ä¸­ã‹ã‚‰ãƒ©ãƒ³ãƒ€ãƒ ã«ä¸€ã¤ã‚’é¸ã¶
             //int randomIndex = random.Next(0, values.Length);
 
-            // ”z—ñ‚Ì’†‚©‚çá‚¢”Ô†‚ª‚æ‚è‘I‚Î‚ê‚â‚·‚¢
+            // é…åˆ—ã®ä¸­ã‹ã‚‰è‹¥ã„ç•ªå·ãŒã‚ˆã‚Šé¸ã°ã‚Œã‚„ã™ã„
             double adjustedRandom = Math.Pow(_random.NextDouble(), 2);
             int randomIndex = (int)(adjustedRandom * values.Length);
 
@@ -486,39 +488,39 @@ namespace RibertaGames
         }
 
         /// <summary>
-        /// ƒGƒlƒ~[‚Ìí—Ş‚ğ’Š‘I
+        /// ã‚¨ãƒãƒŸãƒ¼ã®ç¨®é¡ã‚’æŠ½é¸
         /// </summary>
         /// <returns></returns>
         private eGimickType _GetRandomGimickType()
         {
             int rand = _random.Next(0, 101);
 
-            //30ƒ^[ƒ“–ˆ‚Éƒ{[ƒiƒXƒXƒe[ƒW: Œ®‚©Œv
+            //30ã‚¿ãƒ¼ãƒ³æ¯ã«ãƒœãƒ¼ãƒŠã‚¹ã‚¹ãƒ†ãƒ¼ã‚¸: éµã‹æ™‚è¨ˆ
             if (_currentTurn.Value % BONUS_STAGE_TURN == 0)
             {
                 rand = _random.Next(81, 101);
             }
 
-            //5ƒ^[ƒ“ˆÈãŒ®‚ª–á‚¦‚Ä‚¢‚È‚¢
+            //5ã‚¿ãƒ¼ãƒ³ä»¥ä¸ŠéµãŒè²°ãˆã¦ã„ãªã„
             if (_noKeyTurn >= NO_KEY_TURN)
             {
-                UnityEngine.Debug.Log("‹~Ïˆ’u”­“®");
+                UnityEngine.Debug.Log("æ•‘æ¸ˆå‡¦ç½®ç™ºå‹•");
                 _noKeyTurn = 0;
                 return eGimickType.Key;
             }
 
-            // “G
+            // æ•µ
             if (rand <= ENEMY_POP_PERCENT)
             {
                 return eGimickType.Enemy;
             }
-            // Œ®
+            // éµ
             else if (rand <= ENEMY_POP_PERCENT + KEY_POP_PERCENT)
             {
                 _noKeyTurn = 0;
                 return eGimickType.Key;
             }
-            // Œv
+            // æ™‚è¨ˆ
             else if (rand <= ENEMY_POP_PERCENT + KEY_POP_PERCENT + TIMER_POP_PERCENT)
             {
                 return eGimickType.Timer;
@@ -530,39 +532,39 @@ namespace RibertaGames
         }
 
         /// <summary>
-        /// ƒvƒŒƒCƒ„[‚ªƒLƒƒƒ‰ƒNƒ^[‚ğˆÚ“®‚³‚¹‚éˆ—B
+        /// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã‚’ç§»å‹•ã•ã›ã‚‹å‡¦ç†ã€‚
         /// </summary>
         public void PlayerMoveCharacter(int newX, int newY, Character selectCharacter)
         {
-            //ˆÚ“®Œ³
+            //ç§»å‹•å…ƒ
             var oldX = selectCharacter.x;
             var oldY = selectCharacter.y;
-            //ˆÚ“®æ
+            //ç§»å‹•å…ˆ
             var chara = characters[newX, newY];
 
-            //ˆÚ“®æ‚ÉƒLƒƒƒ‰ƒNƒ^[‚ª‚¢‚é: ƒ}[ƒW
+            //ç§»å‹•å…ˆã«ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ãŒã„ã‚‹: ãƒãƒ¼ã‚¸
             if (chara != null)
             {
                 if (chara.IsEnableMarge(selectCharacter))
                 {
-                    //”š‚ğƒ}[ƒW‚·‚é
+                    //æ•°å­—ã‚’ãƒãƒ¼ã‚¸ã™ã‚‹
                     chara.Marge(selectCharacter);
                 }
-                //Šù‚ÉƒLƒƒƒ‰ƒNƒ^[‚ª‚¢‚é ‚©‚Â ƒ}[ƒWo—ˆ‚È‚¢B
+                //æ—¢ã«ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ãŒã„ã‚‹ ã‹ã¤ ãƒãƒ¼ã‚¸å‡ºæ¥ãªã„ã€‚
                 else
                 {
                     return;
                 }
             }
-            //ˆÚ“®æ‚ÉƒLƒƒƒ‰ƒNƒ^[‚ª‚¢‚È‚¢: ˆÚ“®
+            //ç§»å‹•å…ˆã«ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ãŒã„ãªã„: ç§»å‹•
             else if (chara == null)
             {
-                //Ä“xƒZƒbƒgƒAƒbƒv
+                //å†åº¦ã‚»ãƒƒãƒˆã‚¢ãƒƒãƒ—
                 selectCharacter.Setup(newX, newY, selectCharacter.power);
                 characters[newX, newY] = selectCharacter;
             }
 
-            //ˆÚ“®Œ³‚ğÁ‚·
+            //ç§»å‹•å…ƒã‚’æ¶ˆã™
             if (oldX == NEXT_CHARACTER_X && oldY == NEXT_CHARACTER_Y)
             {
                 nextCharacter = null;
@@ -572,12 +574,12 @@ namespace RibertaGames
                 characters[oldX, oldY] = null;
             }
 
-            //¬Œ÷!Ÿ‚Ìƒ^[ƒ“‚Ö
+            //æˆåŠŸ!æ¬¡ã®ã‚¿ãƒ¼ãƒ³ã¸
             _NextTurn().Forget();
         }
 
         /// <summary>
-        /// ƒXƒRƒA‚ğŒvZ‚·‚éB
+        /// ã‚¹ã‚³ã‚¢ã‚’è¨ˆç®—ã™ã‚‹ã€‚
         /// </summary>
         /// <param name="defeatedEnemies"></param>
         /// <param name="turnsElapsed"></param>
@@ -585,47 +587,47 @@ namespace RibertaGames
         /// <returns></returns>
         private void _CalcScore()
         {
-            // Œ‚”j”‚É‚æ‚éƒ{[ƒiƒX => ˆê‘ÌŒ‚”j:10ƒ|ƒCƒ“ƒg
+            // æ’ƒç ´æ•°ã«ã‚ˆã‚‹ãƒœãƒ¼ãƒŠã‚¹ => ä¸€ä½“æ’ƒç ´:10ãƒã‚¤ãƒ³ãƒˆ
             int destroyBonus = _destroyCount.Value * DESTROY_BONUS;
 
-            // ƒ^[ƒ“”‚É‚æ‚éƒ{[ƒiƒX => ˆêƒ^[ƒ“:30ƒ|ƒCƒ“ƒg
+            // ã‚¿ãƒ¼ãƒ³æ•°ã«ã‚ˆã‚‹ãƒœãƒ¼ãƒŠã‚¹ => ä¸€ã‚¿ãƒ¼ãƒ³:30ãƒã‚¤ãƒ³ãƒˆ
             int turnBonus = (_currentTurn.Value - 1) * TURN_BONUS;
 
-            // ƒ_ƒ[ƒW”‚É‚æ‚éƒ{[ƒiƒX => 100ƒ_ƒ[ƒW:1ƒ|ƒCƒ“ƒg
+            // ãƒ€ãƒ¡ãƒ¼ã‚¸æ•°ã«ã‚ˆã‚‹ãƒœãƒ¼ãƒŠã‚¹ => 100ãƒ€ãƒ¡ãƒ¼ã‚¸:1ãƒã‚¤ãƒ³ãƒˆ
             int damageBonus = _totalDamege / DAMEGE_BONUS;
 
-            // ƒXƒRƒA‚ğŒvZ
+            // ã‚¹ã‚³ã‚¢ã‚’è¨ˆç®—
             _score.Value = destroyBonus + turnBonus + damageBonus; ;
         }
 
         /// <summary>
-        /// Ÿ‚ÌƒLƒƒƒ‰ƒNƒ^[‚ğ¶¬‚·‚éB
+        /// æ¬¡ã®ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã‚’ç”Ÿæˆã™ã‚‹ã€‚
         /// </summary>
         private void _CreateNextCharacter()
         {
             if (nextCharacter != null)
             {
-                UnityEngine.Debug.Log("Šù‚ÉŸ‚ÌƒLƒƒƒ‰ƒNƒ^[‚ª‘Ò‹@’†‚Å‚·B");
+                UnityEngine.Debug.Log("æ—¢ã«æ¬¡ã®ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ãŒå¾…æ©Ÿä¸­ã§ã™ã€‚");
                 return;
             }
 
-            //w’èƒ^[ƒ“‚²‚Æ‚É¶¬‚³‚ê‚é2‚Ì—İæ‚Ì”š‚ª‘å‚«‚­‚È‚Á‚Ä‚¢‚­
+            //æŒ‡å®šã‚¿ãƒ¼ãƒ³ã”ã¨ã«ç”Ÿæˆã•ã‚Œã‚‹2ã®ç´¯ä¹—ã®æ•°å­—ãŒå¤§ãããªã£ã¦ã„ã
             int generateCount = (int)(_currentTurn.Value / 30f);
             int[] generateList = _GetElementsArray(CHARACTER_ENABLE_NUM, generateCount);
             var nextCharacterPower = _GetRandomNumber(generateList);
 
-            // í‚É2‚Å‚µ‚Ä‚İ‚éB
+            // å¸¸ã«2ã§è©¦ã—ã¦ã¿ã‚‹ã€‚
             if (ALWAYS_MIN_NUMBER)
             {
                 nextCharacterPower = 2;
             }
 
-            //Tº‚É¶¬‚³‚¹‚éB
+            //æ§å®¤ã«ç”Ÿæˆã•ã›ã‚‹ã€‚
             _createCharacter.OnNext(new EntityInfo(NEXT_CHARACTER_X, NEXT_CHARACTER_Y, nextCharacterPower, CHARACTER_MASU_X, CHARACTER_MASU_Y));
 
             int[] _GetElementsArray(int[] array, int maxCount)
             {
-                // w’è‚³‚ê‚½’l‚Ü‚Å‚Ì—v‘f‚ğæ“¾
+                // æŒ‡å®šã•ã‚ŒãŸå€¤ã¾ã§ã®è¦ç´ ã‚’å–å¾—
                 List<int> list = new List<int>();
                 for (int i = 0; i < array.Length; i++)
                 {
@@ -641,21 +643,18 @@ namespace RibertaGames
         }
 
         /// <summary>
-        /// ƒ^[ƒ“”‚É‰‚¶‚ÄƒGƒlƒ~[‚Ì‹­‚³‚ğŒvZ‚·‚é
+        /// ã‚¿ãƒ¼ãƒ³æ•°ã«å¿œã˜ã¦ã‚¨ãƒãƒŸãƒ¼ã®å¼·ã•ã‚’è¨ˆç®—ã™ã‚‹
         /// </summary>
         /// <param name="currentTurn"></param>
         /// <returns></returns>
         private int _GetEnemyStrength()
         {
-            //ƒ^[ƒ“”~”{”: ”{”‚Í1ƒ^[ƒ“–Ú:0.5”{,100ƒ^[ƒ“–Ú:1”{,200ƒ^[ƒ“–Ú:1.5”{,300ƒ^[ƒ“–Ú:2”{
-            //var multiple = 0.2f + ((float)_currentTurn.Value / 100) * 0.3f; // Å‰ŠÈ’PA100ƒ^[ƒ“‚®‚ç‚¢‚©‚ç–Ê”’‚¢A150‚©‚ç‚Í‚«‚Â‚¢
-            var multiple = 0.5f;
+            int strongMax = 1 + (int)(_currentTurn.Value * ENEMY_STRONG); //å¼·ã•ã®ä¸Šé™
+            int strongMin = 1;                                        //å¼·ã•ã®ä¸‹é™
 
-            int strongMax = 1 + (int)(_currentTurn.Value * multiple); //‹­‚³‚ÌãŒÀ
-            int strongMin = 1;                                        //‹­‚³‚Ì‰ºŒÀ
-            //TODO: ‚½‚Ü‚Éã‚¢‚â‚Â‚ào‚Ä‚«‚Ä‚Ù‚µ‚¢
+            //ãŸã¾ã«å¼±ã„ã‚„ã¤ã‚‚å‡ºã¦ãã‚‹
             int result = _random.Next(strongMin, strongMax);
-            UnityEngine.Debug.Log($"Random({strongMin}`{strongMax}) => " + result);
+            UnityEngine.Debug.Log($"Random({strongMin}ï½{strongMax}) => " + result);
             return result;
         }
     }

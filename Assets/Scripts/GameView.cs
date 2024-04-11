@@ -217,7 +217,7 @@ namespace RibertaGames
                     return _animal[i];
                 }
             }
-            return _animal[0];
+            return _animal[_animal.Length - 1];
         }
 
         /// <summary>
@@ -236,6 +236,7 @@ namespace RibertaGames
                         return _fruits[i];
                     }
                 }
+                return _fruits[_fruits.Length - 1];
             }
             else if(gimickType == eGimickType.Key)
             {

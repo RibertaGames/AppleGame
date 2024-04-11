@@ -301,6 +301,15 @@ MonoBehaviour:
           - zh-Hans
           - en
           - zh-Hant
+          - fr
+          - de
+          - id
+          - it
+          - pt
+          - ru
+          - es
+          - vi
+          - ko
         - m_KeyId: 2206994489487360
           m_TableCodes:
           - ja

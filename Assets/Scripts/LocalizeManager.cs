@@ -43,7 +43,7 @@ namespace RibertaGames
         /// 言語を設定する。
         /// </summary>
         /// <param name="systemLanguage"></param>
-        public void SetLanguage(SystemLanguage systemLanguage)
+        public void SetLanguage(SystemLanguage systemLanguage = SystemLanguage.English)
         {
             // 言語設定
             _SetLanguage(systemLanguage);
@@ -52,7 +52,7 @@ namespace RibertaGames
             _ = _ChangeSelectedLocale(language);
 
             // フォント設定
-            _SetFont(font);
+            //_SetFont(font);
         }
 
         /// <summary>

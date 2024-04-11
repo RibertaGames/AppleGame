@@ -130,5 +130,9 @@ MonoBehaviour:
     m_Localized: fe70ac13c3378df4aaad58dd3a8f208a[NotoSansKR-Regular SDF2 Material]
     m_Metadata:
       m_Items: []
+  - m_Id: 2176239931568128
+    m_Localized: fe70ac13c3378df4aaad58dd3a8f208a
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
