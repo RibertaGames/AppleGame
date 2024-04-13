@@ -58,6 +58,7 @@ namespace RibertaGames
         private Subject<Unit> _gameEnd = new Subject<Unit>();
         private Subject<EntityInfo> _createCharacter = new Subject<EntityInfo>();
         private Subject<EntityInfo> _createEnemy = new Subject<EntityInfo>();
+        private ReactiveProperty<bool> _isEnableMove = new ReactiveProperty<bool>(true);
 
         public Enemy[,] enemies;
         public Character[,] characters;
@@ -137,11 +138,6 @@ namespace RibertaGames
 
         private readonly float ENEMY_STRONG = 0.5f;
 
-        /// <summary>
-        /// 出現する味方が常に最低レベルで登場
-        /// </summary>
-        private readonly bool ALWAYS_MIN_NUMBER = true;
-
         #endregion
 
         public IObservable<int> score => _score;
@@ -152,6 +148,7 @@ namespace RibertaGames
         public IObservable<EntityInfo> createCharacter => _createCharacter;
         public IObservable<EntityInfo> createEnemy => _createEnemy;
         public IObservable<Unit> gameEnd => _gameEnd;
+        public IObservable<bool> isEnableMove => _isEnableMove;
 
         /// <summary>
         /// コンストラクタ
@@ -280,8 +277,10 @@ namespace RibertaGames
             // 攻撃アニメーション中
             if (isAttack)
             {
+                _isEnableMove.Value = false;
                 SEManager.instance.Play(SEPath.EAT1);
                 await UniTask.Delay(700);
+                _isEnableMove.Value = true;
             }
 
             int Attack(int x, int characterPower)
@@ -479,7 +478,9 @@ namespace RibertaGames
             //int randomIndex = random.Next(0, values.Length);
 
             // 配列の中から若い番号がより選ばれやすい
-            double adjustedRandom = Math.Pow(_random.NextDouble(), 2);
+            //double adjustedRandom = Math.Pow(_random.NextDouble(), 2);
+
+            double adjustedRandom = _random.NextDouble();
             int randomIndex = (int)(adjustedRandom * values.Length);
 
             int randomValue = values[randomIndex];
@@ -612,34 +613,31 @@ namespace RibertaGames
             }
 
             //指定ターンごとに生成される2の累乗の数字が大きくなっていく
-            int generateCount = (int)(_currentTurn.Value / 30f);
-            int[] generateList = _GetElementsArray(CHARACTER_ENABLE_NUM, generateCount);
-            var nextCharacterPower = _GetRandomNumber(generateList);
+            //int generateCount = (int)(_currentTurn.Value / 30f);
+            //int[] generateList = _GetElementsArray(CHARACTER_ENABLE_NUM, generateCount);
+            //var nextCharacterPower = _GetRandomNumber(generateList);
 
-            // 常に2で試してみる。
-            if (ALWAYS_MIN_NUMBER)
-            {
-                nextCharacterPower = 2;
-            }
+            // 常にリス(2)で試してみる。
+            int nextCharacterPower = 2;
 
             //控室に生成させる。
             _createCharacter.OnNext(new EntityInfo(NEXT_CHARACTER_X, NEXT_CHARACTER_Y, nextCharacterPower, CHARACTER_MASU_X, CHARACTER_MASU_Y));
 
-            int[] _GetElementsArray(int[] array, int maxCount)
-            {
-                // 指定された値までの要素を取得
-                List<int> list = new List<int>();
-                for (int i = 0; i < array.Length; i++)
-                {
-                    if (i > maxCount)
-                    {
-                        break;
-                    }
-                    list.Add(array[i]);
-                }
+            //int[] _GetElementsArray(int[] array, int maxCount)
+            //{
+            //    // 指定された値までの要素を取得
+            //    List<int> list = new List<int>();
+            //    for (int i = 0; i < array.Length; i++)
+            //    {
+            //        if (i > maxCount)
+            //        {
+            //            break;
+            //        }
+            //        list.Add(array[i]);
+            //    }
 
-                return list.ToArray();
-            }
+            //    return list.ToArray();
+            //}
         }
 
         /// <summary>

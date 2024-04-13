@@ -1,4 +1,4 @@
-using Cysharp.Threading.Tasks;
+ï»¿using Cysharp.Threading.Tasks;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -14,27 +14,32 @@ namespace RibertaGames
     public class Character : CharacterBase
     {
         /// <summary>
-        /// ƒ}ƒEƒX“®‚©‚·‘O‚ÌÀ•W
+        /// ãƒã‚¦ã‚¹å‹•ã‹ã™å‰ã®åº§æ¨™
         /// </summary>
         private Vector3 _defaultPosition;
 
         /// <summary>
-        /// ƒLƒƒƒ‰ƒNƒ^[ƒ€[ƒu
+        /// ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ãƒ ãƒ¼ãƒ–
         /// </summary>
         private Subject<(int, int, Character)> _moveCharacter = new Subject<(int, int, Character)>();
 
         /// <summary>
-        /// ŠO•”ŒöŠJ: ƒLƒƒƒ‰ƒNƒ^[ƒ€[ƒu
+        /// å¤–éƒ¨å…¬é–‹: ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ãƒ ãƒ¼ãƒ–
         /// </summary>
         public IObservable<(int x, int y, Character character)> moveCharacter => _moveCharacter;
 
         /// <summary>
-        /// UI‚ÌƒŒƒCƒLƒƒƒXƒ^
+        /// UIã®ãƒ¬ã‚¤ã‚­ãƒ£ã‚¹ã‚¿
         /// </summary>
         private GraphicRaycaster _graphicRaycaster;
 
         /// <summary>
-        /// ƒZƒbƒgƒAƒbƒv
+        /// ç§»å‹•å¯èƒ½ã‹
+        /// </summary>
+        private bool _isEnableMove = true;
+
+        /// <summary>
+        /// ã‚»ãƒƒãƒˆã‚¢ãƒƒãƒ—
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
@@ -47,7 +52,7 @@ namespace RibertaGames
         }
 
         /// <summary>
-        /// ƒŒƒCƒLƒƒƒXƒ^‚ğİ’è
+        /// ãƒ¬ã‚¤ã‚­ãƒ£ã‚¹ã‚¿ã‚’è¨­å®š
         /// </summary>
         /// <param name="graphicRaycaster"></param>
         public void SetGraphicRaycaster(GraphicRaycaster graphicRaycaster)
@@ -56,21 +61,33 @@ namespace RibertaGames
         }
 
         /// <summary>
-        /// ƒhƒ‰ƒbƒOƒAƒ“ƒhƒhƒƒbƒv
+        /// ç§»å‹•å¯èƒ½
+        /// </summary>
+        public void SetEnableMove(bool active)
+        {
+            _isEnableMove = active;
+        }
+
+        /// <summary>
+        /// ãƒ‰ãƒ©ãƒƒã‚°ã‚¢ãƒ³ãƒ‰ãƒ‰ãƒ­ãƒƒãƒ—
         /// </summary>
         public void OnMouseDrag()
         {
+            if (!_isEnableMove) return;
+
             var worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             worldPosition.z = 1;
             _rect.position = worldPosition;
         }
 
         /// <summary>
-        /// ƒ}ƒEƒX‚ğ—£‚µ‚½‚ç
+        /// ãƒã‚¦ã‚¹ã‚’é›¢ã—ãŸã‚‰
         /// </summary>
         public void OnMouseUp()
         {
-            //Œ»İ‚Ìƒ}ƒEƒX‚ÌˆÊ’u‚©‚çƒŒƒCƒLƒƒƒXƒg‚ğŒ‚‚Á‚Äƒqƒbƒg‚µ‚½‚à‚Ì‚ğæ“¾‚µ‚Ü‚·B
+            if (!_isEnableMove) return;
+
+            //ç¾åœ¨ã®ãƒã‚¦ã‚¹ã®ä½ç½®ã‹ã‚‰ãƒ¬ã‚¤ã‚­ãƒ£ã‚¹ãƒˆã‚’æ’ƒã£ã¦ãƒ’ãƒƒãƒˆã—ãŸã‚‚ã®ã‚’å–å¾—ã—ã¾ã™ã€‚
             PointerEventData poiner = new PointerEventData(EventSystem.current);
             poiner.position = Input.mousePosition;
             List<RaycastResult> result = new List<RaycastResult>();
@@ -88,18 +105,18 @@ namespace RibertaGames
                 }
             }
 
-            //¸”s‚µ‚½‚Ì‚ÅAŒ³‚ÌˆÊ’u‚É–ß‚·B
+            //å¤±æ•—ã—ãŸã®ã§ã€å…ƒã®ä½ç½®ã«æˆ»ã™ã€‚
             transform.localPosition = _defaultPosition;
         }
 
         /// <summary>
-        /// ƒ}[ƒW‰Â”\‚©H
+        /// ãƒãƒ¼ã‚¸å¯èƒ½ã‹ï¼Ÿ
         /// </summary>
         /// <param name="targetCharacter"></param>
         /// <returns></returns>
         public bool IsEnableMarge(Character targetCharacter)
         {
-            //ƒ}[ƒW‰Â”\: ƒ^[ƒQƒbƒg‚ª©•ª©g‚Å‚Í‚È‚¢A‚©‚Âƒpƒ[‚ª“™‚µ‚¢B
+            //ãƒãƒ¼ã‚¸å¯èƒ½: ã‚¿ãƒ¼ã‚²ãƒƒãƒˆãŒè‡ªåˆ†è‡ªèº«ã§ã¯ãªã„ã€ã‹ã¤ãƒ‘ãƒ¯ãƒ¼ãŒç­‰ã—ã„ã€‚
             if (!(x == targetCharacter.x && y == targetCharacter.y) &&
                 power == targetCharacter.power)
             {
@@ -112,7 +129,7 @@ namespace RibertaGames
         }
 
         /// <summary>
-        /// ƒ}[ƒW‚·‚éB
+        /// ãƒãƒ¼ã‚¸ã™ã‚‹ã€‚
         /// </summary>
         /// <param name="targetCharacter"></param>
         public void Marge(Character targetCharacter)
@@ -125,7 +142,7 @@ namespace RibertaGames
         }
 
         /// <summary>
-        /// Ÿ‚ÌƒLƒƒƒ‰ƒNƒ^[‚Ìƒ|ƒWƒVƒ‡ƒ“‚ğİ’è‚·‚éB
+        /// æ¬¡ã®ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã®ãƒã‚¸ã‚·ãƒ§ãƒ³ã‚’è¨­å®šã™ã‚‹ã€‚
         /// </summary>
         public void SetNextCharacterPosition(float x, float y)
         {

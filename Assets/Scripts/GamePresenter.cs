@@ -72,6 +72,12 @@ namespace RibertaGames {
                 .Subscribe(info => _model.enemies[info.x, info.y] = _view.CreateEnemy(info))
                 .AddTo(gameObject);
 
+            // 移動可能か？
+            _model.isEnableMove
+                .Subscribe(active => _view.SetEnableMove(active))
+                .AddTo(gameObject);
+
+
             // ゲーム開始ボタン
             _view.gameStartButton
                 .Subscribe(_ => {

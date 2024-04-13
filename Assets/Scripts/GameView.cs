@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using System;
 using UniRx;
 using Cysharp.Threading.Tasks;
+using System.Linq;
 
 namespace RibertaGames
 {
@@ -157,6 +158,16 @@ namespace RibertaGames
         /// </summary>
         /// <param name="currentTurn"></param>
         public void SetCurrentTurnText(string currentTurn) => _currentTurnText.SetText(currentTurn);
+
+        /// <summary>
+        /// キャラクターが移動できるか設定
+        /// </summary>
+        /// <param name="active"></param>
+        public void SetEnableMove(bool active)
+        {
+            var charaList = _characterBoard.GetComponentsInChildren<Character>();
+            charaList.ToList().ForEach(chara => chara.SetEnableMove(active));
+        }
 
         /// <summary>
         /// キャラクターを生成する。

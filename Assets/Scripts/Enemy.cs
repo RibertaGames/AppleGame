@@ -1,4 +1,4 @@
-using Cysharp.Threading.Tasks;
+ï»¿using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -11,7 +11,7 @@ namespace RibertaGames
         public eGimickType gimickType = eGimickType.None;
 
         /// <summary>
-        /// ƒZƒbƒgƒAƒbƒv
+        /// ã‚»ãƒƒãƒˆã‚¢ãƒƒãƒ—
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>

@@ -1,11 +1,11 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class AppManager : MonoBehaviour
 {
     /// <summary>
-    /// ƒAƒvƒŠŠJn
+    /// ã‚¢ãƒ—ãƒªé–‹å§‹æ™‚
     /// </summary>
     public void Start()
     {
@@ -14,7 +14,7 @@ public class AppManager : MonoBehaviour
 
     private void _InitializeSetting()
     {
-        // ƒtƒŒ[ƒ€ƒŒ[ƒg‚ğŒÅ’è
+        // ãƒ•ãƒ¬ãƒ¼ãƒ ãƒ¬ãƒ¼ãƒˆã‚’å›ºå®š
         Time.fixedDeltaTime = 1f / GameDefine.FRAME_COUNT;
         Application.targetFrameRate = GameDefine.FRAME_COUNT;
 

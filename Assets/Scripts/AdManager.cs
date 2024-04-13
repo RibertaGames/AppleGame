@@ -1,285 +1,285 @@
-using GoogleMobileAds.Api;
-using System.Collections;
-using Unity.VisualScripting;
-using UnityEngine;
+ï»¿//using GoogleMobileAds.Api;
+//using System.Collections;
+//using Unity.VisualScripting;
+//using UnityEngine;
 
-public class AdManager : MonoBehaviour
-{
-    /// <summary>
-    /// ƒeƒXƒgƒ‚[ƒh
-    /// </summary>
-    public static readonly bool AD_TEST_MODE = true;
+//public class AdManager : MonoBehaviour
+//{
+//    /// <summary>
+//    /// ãƒ†ã‚¹ãƒˆãƒ¢ãƒ¼ãƒ‰
+//    /// </summary>
+//    public static readonly bool AD_TEST_MODE = true;
 
-#if UNITY_ANDROID
+//#if UNITY_ANDROID
 
-    //–{”ÔID
-    private static readonly string ANDROID_BANNER_ID = "";
-    private static readonly string ANDROID_INTERSTITIAL_ID = "";
-    private static readonly string ANDROID_REWARD_ID = "";
+//    //æœ¬ç•ªID
+//    private static readonly string ANDROID_BANNER_ID = "";
+//    private static readonly string ANDROID_INTERSTITIAL_ID = "";
+//    private static readonly string ANDROID_REWARD_ID = "";
 
-    //ƒeƒXƒgID
-    private static readonly string TEST_ANDROID_BANNER_ID = "ca-app-pub-3940256099942544/6300978111";
-    private static readonly string TEST_ANDROID_INTERSTITIAL_ID = "ca-app-pub-3940256099942544/1033173712";
-    private static readonly string TEST_ANDROID_REWARD_ID = "ca-app-pub-3940256099942544/5224354917";
+//    //ãƒ†ã‚¹ãƒˆID
+//    private static readonly string TEST_ANDROID_BANNER_ID = "ca-app-pub-3940256099942544/6300978111";
+//    private static readonly string TEST_ANDROID_INTERSTITIAL_ID = "ca-app-pub-3940256099942544/1033173712";
+//    private static readonly string TEST_ANDROID_REWARD_ID = "ca-app-pub-3940256099942544/5224354917";
 
-#elif UNITY_IPHONE
+//#elif UNITY_IPHONE
 
-    //–{”ÔID
-    private static readonly string IPONE_BANNER_ID = "";
-    private static readonly string IPONE_INTERSTITIAL_ID = "";
-    private static readonly string IPONE_REWARD_ID = "";
+//    //æœ¬ç•ªID
+//    private static readonly string IPONE_BANNER_ID = "";
+//    private static readonly string IPONE_INTERSTITIAL_ID = "";
+//    private static readonly string IPONE_REWARD_ID = "";
 
-    //ƒeƒXƒgID
-    private static readonly string TEST_IPONE_BANNER_ID = "ca-app-pub-3940256099942544/2934735716";
-    private static readonly string TEST_IPONE_INTERSTITIAL_ID = "ca-app-pub-3940256099942544/4411468910";
-    private static readonly string TEST_IPONE_REWARD_ID = "ca-app-pub-3940256099942544/1712485313";
+//    //ãƒ†ã‚¹ãƒˆID
+//    private static readonly string TEST_IPONE_BANNER_ID = "ca-app-pub-3940256099942544/2934735716";
+//    private static readonly string TEST_IPONE_INTERSTITIAL_ID = "ca-app-pub-3940256099942544/4411468910";
+//    private static readonly string TEST_IPONE_REWARD_ID = "ca-app-pub-3940256099942544/1712485313";
 
-#endif
+//#endif
 
-    /// <summary>
-    /// AdMob‚ÌLí—Ş
-    /// </summary>
-    public enum eAdMob
-    {
-        Banner = 0,
-        Interstitial = 1,
-        Reward = 2,
-    }
+//    /// <summary>
+//    /// AdMobã®åºƒå‘Šç¨®é¡
+//    /// </summary>
+//    public enum eAdMob
+//    {
+//        Banner = 0,
+//        Interstitial = 1,
+//        Reward = 2,
+//    }
 
-    /// <summary>
-    /// AdMob: ƒoƒi[L
-    /// </summary>
-    private BannerView _bannerView;
+//    /// <summary>
+//    /// AdMob: ãƒãƒŠãƒ¼åºƒå‘Š
+//    /// </summary>
+//    private BannerView _bannerView;
 
-    /// <summary>
-    /// AdMob: ƒCƒ“ƒ^[ƒXƒeƒBƒVƒƒƒ‹L
-    /// </summary>
-    private InterstitialAd _interstitial;
+//    /// <summary>
+//    /// AdMob: ã‚¤ãƒ³ã‚¿ãƒ¼ã‚¹ãƒ†ã‚£ã‚·ãƒ£ãƒ«åºƒå‘Š
+//    /// </summary>
+//    private InterstitialAd _interstitial;
 
-    /// <summary>
-    /// AdMob: ƒŠƒ[ƒhL
-    /// </summary>
-    private RewardedAd _rewardedAd;
+//    /// <summary>
+//    /// AdMob: ãƒªãƒ¯ãƒ¼ãƒ‰åºƒå‘Š
+//    /// </summary>
+//    private RewardedAd _rewardedAd;
 
-    /// <summary>
-    /// ƒŠƒ[ƒh‰ñ”
-    /// </summary>
-    private int _rewardCount = 0;
+//    /// <summary>
+//    /// ãƒªãƒ¯ãƒ¼ãƒ‰å›æ•°
+//    /// </summary>
+//    private int _rewardCount = 0;
 
-    public void Start()
-    {
-        MobileAds.Initialize(initStatus => { });
-    }
+//    public void Start()
+//    {
+//        MobileAds.Initialize(initStatus => { });
+//    }
 
-    /// <summary>
-    /// AdMob‚ÌLƒ[ƒh
-    /// </summary>
-    /// <param name="adType"></param>
-    public void LoadAdMob(eAdMob adType)
-    {
-        switch (adType)
-        {
-            case eAdMob.Banner:
-                _LoadBanner();
-                break;
-            case eAdMob.Interstitial:
-                _LoadInterstitial();
-                break;
-            case eAdMob.Reward:
-                _LoadReward();
-                break;
-        }
-    }
+//    /// <summary>
+//    /// AdMobã®åºƒå‘Šãƒ­ãƒ¼ãƒ‰
+//    /// </summary>
+//    /// <param name="adType"></param>
+//    public void LoadAdMob(eAdMob adType)
+//    {
+//        switch (adType)
+//        {
+//            case eAdMob.Banner:
+//                _LoadBanner();
+//                break;
+//            case eAdMob.Interstitial:
+//                _LoadInterstitial();
+//                break;
+//            case eAdMob.Reward:
+//                _LoadReward();
+//                break;
+//        }
+//    }
 
-    /// <summary>
-    /// L‚Ì•\¦
-    /// </summary>
-    /// <param name="adType"></param>
-    public void ShowAdMob(eAdMob adType)
-    {
-        switch (adType)
-        {
-            case eAdMob.Banner:
-                _ShowBanner();
-                break;
-            case eAdMob.Interstitial:
-                _ShowInterstitialAd();
-                break;
-            case eAdMob.Reward:
-                _ShowReward();
-                break;
-        }
-    }
+//    /// <summary>
+//    /// åºƒå‘Šã®è¡¨ç¤º
+//    /// </summary>
+//    /// <param name="adType"></param>
+//    public void ShowAdMob(eAdMob adType)
+//    {
+//        switch (adType)
+//        {
+//            case eAdMob.Banner:
+//                _ShowBanner();
+//                break;
+//            case eAdMob.Interstitial:
+//                _ShowInterstitialAd();
+//                break;
+//            case eAdMob.Reward:
+//                _ShowReward();
+//                break;
+//        }
+//    }
 
-    #region Lƒ[ƒh
-    private void _LoadBanner()
-    {
-        string adUnitId;
-        #if UNITY_ANDROID
-            if(AD_TEST_MODE) adUnitId = TEST_ANDROID_BANNER_ID;
-            else adUnitId = ANDROID_BANNER_ID;
-        #elif UNITY_IPHONE
-            if (AD_TEST_MODE) adUnitId = TEST_IPONE_BANNER_ID;
-            else adUnitId = IPONE_BANNER_ID;
-        #else
-            adUnitId = "unexpected_platform";
-        #endif
+//    #region åºƒå‘Šãƒ­ãƒ¼ãƒ‰
+//    private void _LoadBanner()
+//    {
+//        string adUnitId;
+//        #if UNITY_ANDROID
+//            if(AD_TEST_MODE) adUnitId = TEST_ANDROID_BANNER_ID;
+//            else adUnitId = ANDROID_BANNER_ID;
+//        #elif UNITY_IPHONE
+//            if (AD_TEST_MODE) adUnitId = TEST_IPONE_BANNER_ID;
+//            else adUnitId = IPONE_BANNER_ID;
+//        #else
+//            adUnitId = "unexpected_platform";
+//        #endif
 
-        StartCoroutine(_HandleOnBannerAdClose());
+//        StartCoroutine(_HandleOnBannerAdClose());
 
-        _bannerView = new BannerView(adUnitId, AdSize.Banner, AdPosition.Bottom);
+//        _bannerView = new BannerView(adUnitId, AdSize.Banner, AdPosition.Bottom);
 
-        _bannerView.OnBannerAdLoaded += () => { };
-        _bannerView.OnAdClicked += () => { };
-        _bannerView.OnAdFullScreenContentOpened += () => { };
-        _bannerView.OnAdFullScreenContentClosed += () => StartCoroutine(_HandleOnBannerAdClose()); ;
-        _bannerView.OnBannerAdLoadFailed += (LoadAdError error) => StartCoroutine(_HandleOnBannerAdClose());
-        _bannerView.OnAdImpressionRecorded += () => { };
-        _bannerView.OnAdPaid += (AdValue value) => { };
-    }
+//        _bannerView.OnBannerAdLoaded += () => { };
+//        _bannerView.OnAdClicked += () => { };
+//        _bannerView.OnAdFullScreenContentOpened += () => { };
+//        _bannerView.OnAdFullScreenContentClosed += () => StartCoroutine(_HandleOnBannerAdClose()); ;
+//        _bannerView.OnBannerAdLoadFailed += (LoadAdError error) => StartCoroutine(_HandleOnBannerAdClose());
+//        _bannerView.OnAdImpressionRecorded += () => { };
+//        _bannerView.OnAdPaid += (AdValue value) => { };
+//    }
 
-    private void _LoadInterstitial()
-    {
-        string adUnitId;
-        #if UNITY_ANDROID
-            if (AD_TEST_MODE) adUnitId = TEST_ANDROID_INTERSTITIAL_ID;
-            else adUnitId = ANDROID_INTERSTITIAL_ID;
-        #elif UNITY_IPHONE
-            if (AD_TEST_MODE) adUnitId = TEST_IPONE_INTERSTITIAL_ID;
-            else adUnitId = IPONE_INTERSTITIAL_ID;
-        #else
-            adUnitId = "unexpected_platform";
-        #endif
+//    private void _LoadInterstitial()
+//    {
+//        string adUnitId;
+//        #if UNITY_ANDROID
+//            if (AD_TEST_MODE) adUnitId = TEST_ANDROID_INTERSTITIAL_ID;
+//            else adUnitId = ANDROID_INTERSTITIAL_ID;
+//        #elif UNITY_IPHONE
+//            if (AD_TEST_MODE) adUnitId = TEST_IPONE_INTERSTITIAL_ID;
+//            else adUnitId = IPONE_INTERSTITIAL_ID;
+//        #else
+//            adUnitId = "unexpected_platform";
+//        #endif
 
-        InterstitialAd.Load(
-            adUnitId,
-            new AdRequest(),
-          (InterstitialAd ad, LoadAdError loadAdError) =>
-          {
-              StartCoroutine(_HandleOnInterstitialAdClose());
-              if (loadAdError != null || ad == null) return;
+//        InterstitialAd.Load(
+//            adUnitId,
+//            new AdRequest(),
+//          (InterstitialAd ad, LoadAdError loadAdError) =>
+//          {
+//              StartCoroutine(_HandleOnInterstitialAdClose());
+//              if (loadAdError != null || ad == null) return;
 
-              ad.OnAdClicked += () => { };
-              ad.OnAdFullScreenContentOpened += () => { };
-              ad.OnAdFullScreenContentClosed += () => StartCoroutine(_HandleOnInterstitialAdClose()); ;
-              ad.OnAdFullScreenContentFailed += (AdError error) => StartCoroutine(_HandleOnInterstitialAdClose());
-              ad.OnAdImpressionRecorded += () => { };
-              ad.OnAdPaid += (AdValue value) => { };
+//              ad.OnAdClicked += () => { };
+//              ad.OnAdFullScreenContentOpened += () => { };
+//              ad.OnAdFullScreenContentClosed += () => StartCoroutine(_HandleOnInterstitialAdClose()); ;
+//              ad.OnAdFullScreenContentFailed += (AdError error) => StartCoroutine(_HandleOnInterstitialAdClose());
+//              ad.OnAdImpressionRecorded += () => { };
+//              ad.OnAdPaid += (AdValue value) => { };
 
-              _interstitial = ad;
-          });
-    }
+//              _interstitial = ad;
+//          });
+//    }
 
-    private void _LoadReward()
-    {
-        string adUnitId;
-        #if UNITY_ANDROID
-            if(AD_TEST_MODE) adUnitId = TEST_ANDROID_REWARD_ID;
-            else adUnitId = ANDROID_REWARD_ID;
-        #elif UNITY_IPHONE
-            if(AD_TEST_MODE) adUnitId = TEST_IPONE_REWARD_ID;
-            else adUnitId = IPONE_REWARD_ID;
-        #else
-            adUnitId = "unexpected_platform";
-        #endif
+//    private void _LoadReward()
+//    {
+//        string adUnitId;
+//        #if UNITY_ANDROID
+//            if(AD_TEST_MODE) adUnitId = TEST_ANDROID_REWARD_ID;
+//            else adUnitId = ANDROID_REWARD_ID;
+//        #elif UNITY_IPHONE
+//            if(AD_TEST_MODE) adUnitId = TEST_IPONE_REWARD_ID;
+//            else adUnitId = IPONE_REWARD_ID;
+//        #else
+//            adUnitId = "unexpected_platform";
+//        #endif
 
-        RewardedAd.Load(adUnitId, new AdRequest(),
-        (RewardedAd ad, LoadAdError loadError) =>
-        {
-            StartCoroutine(_HandleOnRewardAdClose());
-            if (loadError != null || ad == null) return;
+//        RewardedAd.Load(adUnitId, new AdRequest(),
+//        (RewardedAd ad, LoadAdError loadError) =>
+//        {
+//            StartCoroutine(_HandleOnRewardAdClose());
+//            if (loadError != null || ad == null) return;
 
-            ad.OnAdClicked += () => { };
-            ad.OnAdFullScreenContentOpened += () => { };
-            ad.OnAdFullScreenContentClosed += () => StartCoroutine(_HandleOnRewardAdClose());
-            ad.OnAdFullScreenContentFailed += (AdError error) => StartCoroutine(_HandleOnRewardAdClose());
-            ad.OnAdImpressionRecorded += () => { };
-            ad.OnAdPaid += (AdValue value) => { };
+//            ad.OnAdClicked += () => { };
+//            ad.OnAdFullScreenContentOpened += () => { };
+//            ad.OnAdFullScreenContentClosed += () => StartCoroutine(_HandleOnRewardAdClose());
+//            ad.OnAdFullScreenContentFailed += (AdError error) => StartCoroutine(_HandleOnRewardAdClose());
+//            ad.OnAdImpressionRecorded += () => { };
+//            ad.OnAdPaid += (AdValue value) => { };
 
-            _rewardedAd = ad;
-        });
-    }
-    #endregion
+//            _rewardedAd = ad;
+//        });
+//    }
+//    #endregion
 
-    #region L•\¦
+//    #region åºƒå‘Šè¡¨ç¤º
 
-    /// <summary>
-    /// ƒoƒi[L‚ğ•\¦
-    /// </summary>
-    private void _ShowBanner()
-    {
-        if (_bannerView != null)
-        {
-            AdRequest request = new AdRequest();
-            _bannerView.LoadAd(request);
-        }
-    }
+//    /// <summary>
+//    /// ãƒãƒŠãƒ¼åºƒå‘Šã‚’è¡¨ç¤º
+//    /// </summary>
+//    private void _ShowBanner()
+//    {
+//        if (_bannerView != null)
+//        {
+//            AdRequest request = new AdRequest();
+//            _bannerView.LoadAd(request);
+//        }
+//    }
 
-    /// <summary>
-    /// ƒCƒ“ƒ^[ƒXƒeƒBƒVƒƒƒ‹L‚ğ•\¦
-    /// </summary>
-    private void _ShowInterstitialAd()
-    {
-        if (_interstitial != null &&
-            _interstitial.CanShowAd())
-        {
-            _interstitial.Show();
-        }
-    }
+//    /// <summary>
+//    /// ã‚¤ãƒ³ã‚¿ãƒ¼ã‚¹ãƒ†ã‚£ã‚·ãƒ£ãƒ«åºƒå‘Šã‚’è¡¨ç¤º
+//    /// </summary>
+//    private void _ShowInterstitialAd()
+//    {
+//        if (_interstitial != null &&
+//            _interstitial.CanShowAd())
+//        {
+//            _interstitial.Show();
+//        }
+//    }
 
-    /// <summary>
-    /// ƒŠƒ[ƒhL•\¦
-    /// </summary>
-    private void _ShowReward()
-    {
-        if (_rewardedAd != null && _rewardedAd.CanShowAd())
-        {
-            _rewardedAd.Show((Reward reward) => _HandleUserEarnedReward(reward));
-        }
-    }
+//    /// <summary>
+//    /// ãƒªãƒ¯ãƒ¼ãƒ‰åºƒå‘Šè¡¨ç¤º
+//    /// </summary>
+//    private void _ShowReward()
+//    {
+//        if (_rewardedAd != null && _rewardedAd.CanShowAd())
+//        {
+//            _rewardedAd.Show((Reward reward) => _HandleUserEarnedReward(reward));
+//        }
+//    }
 
-    #endregion
+//    #endregion
 
-    #region LI—¹
+//    #region åºƒå‘Šçµ‚äº†æ™‚
 
-    private IEnumerator _HandleOnBannerAdClose()
-    {
-        if(_bannerView != null)
-        {
-            _bannerView.Destroy();
-            yield return null;
-            _bannerView = null;
-        }
-    }
-    private IEnumerator _HandleOnInterstitialAdClose()
-    {
-        if (_interstitial != null)
-        {
-            _interstitial.Destroy();
-            yield return null;
-            _interstitial = null;
-        }
-    }
-    private IEnumerator _HandleOnRewardAdClose()
-    {
-        if (_rewardedAd != null)
-        {
-            _rewardedAd.Destroy();
-            //ˆêƒtƒŒ[ƒ€‘Ò‹@
-            yield return null;
-            _rewardedAd = null;
-        }
-    }
+//    private IEnumerator _HandleOnBannerAdClose()
+//    {
+//        if(_bannerView != null)
+//        {
+//            _bannerView.Destroy();
+//            yield return null;
+//            _bannerView = null;
+//        }
+//    }
+//    private IEnumerator _HandleOnInterstitialAdClose()
+//    {
+//        if (_interstitial != null)
+//        {
+//            _interstitial.Destroy();
+//            yield return null;
+//            _interstitial = null;
+//        }
+//    }
+//    private IEnumerator _HandleOnRewardAdClose()
+//    {
+//        if (_rewardedAd != null)
+//        {
+//            _rewardedAd.Destroy();
+//            //ä¸€ãƒ•ãƒ¬ãƒ¼ãƒ å¾…æ©Ÿ
+//            yield return null;
+//            _rewardedAd = null;
+//        }
+//    }
 
-    #endregion
+//    #endregion
 
-    /// <summary>
-    /// ƒŠƒ[ƒhLŠ®—¹Œã‚Ì•ñV
-    /// </summary>
-    /// <param name="args"></param>
-    private void _HandleUserEarnedReward(Reward args)
-    {
-        Debug.Log(args.Type + " - " + args.Amount);
-        _rewardCount++;
-    }
-}
+//    /// <summary>
+//    /// ãƒªãƒ¯ãƒ¼ãƒ‰åºƒå‘Šå®Œäº†å¾Œã®å ±é…¬
+//    /// </summary>
+//    /// <param name="args"></param>
+//    private void _HandleUserEarnedReward(Reward args)
+//    {
+//        Debug.Log(args.Type + " - " + args.Amount);
+//        _rewardCount++;
+//    }
+//}

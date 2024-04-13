@@ -1,11 +1,11 @@
-using TMPro;
+ï»¿using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace RibertaGames
 {
     /// <summary>
-    /// ƒQ[ƒ€‚Ìó‘Ô
+    /// ã‚²ãƒ¼ãƒ ã®çŠ¶æ…‹
     /// </summary>
     public enum eGameState
     {

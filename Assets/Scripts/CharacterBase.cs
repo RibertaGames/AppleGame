@@ -1,4 +1,4 @@
-using TMPro;
+ï»¿using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UniRx;
@@ -21,7 +21,7 @@ namespace RibertaGames
         public int y { get; protected private set; }
         public int power { get; private set; }
 
-        //Œ´“_À•W(0,0) ¶‰º
+        //åŸç‚¹åº§æ¨™(0,0) å·¦ä¸‹
         protected private float _originX;
         protected private float _originY;
         protected private float _sizeX;
@@ -32,7 +32,7 @@ namespace RibertaGames
         public IObservable<Unit> changePower => _changePower;
 
         /// <summary>
-        /// Œ´“_‚ğİ’è‚·‚éB
+        /// åŸç‚¹ã‚’è¨­å®šã™ã‚‹ã€‚
         /// </summary>
         /// <param name="setBoard"></param>
         public void SetOrigin(RectTransform boardRect, float boardX, float boardY)
@@ -44,7 +44,7 @@ namespace RibertaGames
         }
 
         /// <summary>
-        /// ƒZƒbƒgƒAƒbƒv
+        /// ã‚»ãƒƒãƒˆã‚¢ãƒƒãƒ—
         /// </summary>
         protected private void _Setup(int x, int y, int power)
         {
@@ -57,7 +57,7 @@ namespace RibertaGames
         }
 
         /// <summary>
-        /// ‹­‚³‚ğ•ÏX‚·‚éB
+        /// å¼·ã•ã‚’å¤‰æ›´ã™ã‚‹ã€‚
         /// </summary>
         /// <param name="power"></param>
         public void ChangePower(int power)
@@ -77,7 +77,7 @@ namespace RibertaGames
         }
 
         /// <summary>
-        /// ‰æ‘œ‚ğİ’è
+        /// ç”»åƒã‚’è¨­å®š
         /// </summary>
         /// <param name="s"></param>
         public void SetupImage(Sprite s)
@@ -87,7 +87,7 @@ namespace RibertaGames
         }
 
         /// <summary>
-        /// €–S
+        /// æ­»äº¡
         /// </summary>
         public async UniTask Dead()
         {
@@ -100,7 +100,7 @@ namespace RibertaGames
         }
 
         /// <summary>
-        /// ƒAƒCƒeƒ€Šl“¾
+        /// ã‚¢ã‚¤ãƒ†ãƒ ç²å¾—
         /// </summary>
         /// <returns></returns>
         public async UniTask GetItem()
