@@ -11,14 +11,11 @@ namespace RibertaGames
     {
         [SerializeField] private Button _nextButton;
         [SerializeField] private Button _previousButton;
-        [SerializeField] private GameObject _panel1;
-        [SerializeField] private GameObject _panel2;
-        [SerializeField] private GameObject _panel3;
 
+        [SerializeField] private GameObject[] _panel;
         [SerializeField] private Image[] _selectIcon;
 
         private int _currentPageIndex;
-        private readonly int MAX_PAGE_INDEX = 3;
 
         /// <summary>
         /// セットアップ
@@ -56,7 +53,7 @@ namespace RibertaGames
         {
             if (nextPage)
             {
-                _currentPageIndex = Math.Min(MAX_PAGE_INDEX, _currentPageIndex + 1);
+                _currentPageIndex = Math.Min(_panel.Length - 1, _currentPageIndex + 1);
             }
             else
             {
@@ -68,11 +65,15 @@ namespace RibertaGames
 
         private void _ActivePage()
         {
-            _panel1.SetActive(_currentPageIndex == 0);
-            _panel2.SetActive(_currentPageIndex == 1);
-            _panel3.SetActive(_currentPageIndex == 2);
+            // ページ表示
+            for(int i = 0; i < _panel.Length; i++)
+            {
+                var index = i;
+                _panel[index].SetActive(_currentPageIndex == index);
+            }
 
-            for(int i = 0; i < _selectIcon.Length; i++)
+            // アイコンをオレンジ色に
+            for (int i = 0; i < _selectIcon.Length; i++)
             {
                 _selectIcon[i].color = Color.white;
             }

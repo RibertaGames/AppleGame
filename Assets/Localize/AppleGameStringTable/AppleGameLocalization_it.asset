@@ -64,5 +64,16 @@ MonoBehaviour:
     m_Localized: "Fai scorrere e impila gli stessi animali per renderli pi\xF9 forti!"
     m_Metadata:
       m_Items: []
+  - m_Id: 43109263648829440
+    m_Localized: 'Se il frutto supera questa linea, il gioco finisce!
+
+'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43125883318382592
+    m_Localized: "Quando ottieni una ghianda, uno scoiattolo verr\xE0 in tuo soccorso!\r\nSe
+      ottieni un orologio, il frutto non potr\xE0 muoversi per un turno!"
+    m_Metadata:
+      m_Items: []
   references:
     version: 1

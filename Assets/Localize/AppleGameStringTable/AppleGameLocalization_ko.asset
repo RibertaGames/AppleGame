@@ -66,5 +66,16 @@ MonoBehaviour:
       \uAC70\uB4ED\uD558\uBA74 \uB3D9\uBB3C\uC774 \uAC15\uD574\uC838\uC694!"
     m_Metadata:
       m_Items: []
+  - m_Id: 43109263648829440
+    m_Localized: "\uACFC\uC77C\uC774\uC774 \uB77C\uC778\uC744 \uB118\uC73C\uBA74
+      \uAC8C\uC784 \uC624\uBC84\uAC00\uB429\uB2C8\uB2E4!\r\n"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43125883318382592
+    m_Localized: "\uB3C4\uD1A0\uB9AC\uB97C \uC5BB\uC73C\uBA74 \uB2E4\uB78C\uC950\uAC00
+      \uB3C4\uC640\uC8FC\uC138\uC694!\r\n\uC2DC\uACC4\uB97C \uD68D\uB4DD\uD558\uBA74
+      \uACFC\uC77C\uC774 \uD55C \uD134 \uC6C0\uC9C1\uC77C \uC218 \uC5C6\uAC8C \uB429\uB2C8\uB2E4!"
+    m_Metadata:
+      m_Items: []
   references:
     version: 1

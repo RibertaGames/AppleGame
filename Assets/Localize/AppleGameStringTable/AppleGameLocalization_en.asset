@@ -67,5 +67,18 @@ MonoBehaviour:
 '
     m_Metadata:
       m_Items: []
+  - m_Id: 43109263648829440
+    m_Localized: 'If the fruit crosses this line, the game is over!
+
+'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43125883318382592
+    m_Localized: 'When you get an acorn, a squirrel will come to your rescue!
+
+      If
+      you get a clock, the fruit will not be able to move for one turn!'
+    m_Metadata:
+      m_Items: []
   references:
     version: 1

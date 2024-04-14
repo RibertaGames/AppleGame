@@ -41,7 +41,7 @@ namespace RibertaGames
             _LoadAudioClip(AUDIO_DIRECTORY_PATH, setting.seCacheType, setting.isReleaseSECache);
 
             _shouldAdjustVolumeRate = setting.shouldAdjustSeVolumeRate;
-            ChangeBaseVolume(setting.sEBaseVolume);
+            ChangeBaseVolume(setting.seBaseVolume);
             if (!setting.isDestroySEManager)
             {
                 DontDestroyOnLoad(gameObject);

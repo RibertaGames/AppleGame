@@ -257,6 +257,27 @@ namespace RibertaGames
         }
 
         /// <summary>
+        /// 既にチュートリアルクリアしているか？
+        /// </summary>
+        public bool AlreadyTutorialClear()
+        {
+            var flag = _saveData.GetInt(eSaveDataType.Tutorial.ToString(), 0);
+            if (flag == 1)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// チュートリアルクリアした
+        /// </summary>
+        public void SetTutorialClear()
+        {
+            _saveData.SetInt(eSaveDataType.Tutorial.ToString(), 1);
+        }
+
+        /// <summary>
         /// キャラクターの攻撃
         /// </summary>
         private async UniTask _CharacterAttack()

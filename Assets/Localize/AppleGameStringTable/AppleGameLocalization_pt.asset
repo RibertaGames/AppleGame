@@ -64,5 +64,16 @@ MonoBehaviour:
     m_Localized: "\rDeslize e empilhe os mesmos animais para torn\xE1-los mais fortes!"
     m_Metadata:
       m_Items: []
+  - m_Id: 43109263648829440
+    m_Localized: 'Se a fruta ultrapassar essa linha, o jogo acaba!
+
+'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43125883318382592
+    m_Localized: "Quando voc\xEA pegar uma bolota, um esquilo vir\xE1 em seu socorro!\r\nSe
+      voc\xEA conseguir um rel\xF3gio, a fruta n\xE3o poder\xE1 se mover nem um turno!"
+    m_Metadata:
+      m_Items: []
   references:
     version: 1

@@ -12,7 +12,8 @@ namespace RibertaGames
 	/// </summary>
 	public enum eSaveDataType
 	{
-		HighScore //ハイスコア
+		HighScore, // ハイスコア
+		Tutorial,  // チュートリアル
 	}
 
 	/// <summary>

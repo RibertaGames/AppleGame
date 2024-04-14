@@ -65,5 +65,15 @@ MonoBehaviour:
       machen!"
     m_Metadata:
       m_Items: []
+  - m_Id: 43109263648829440
+    m_Localized: "Wenn die Frucht diese Linie \xFCberschreitet, ist das Spiel vorbei!\r\n"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43125883318382592
+    m_Localized: "Wenn Sie eine Eichel bekommen, kommt Ihnen ein Eichh\xF6rnchen
+      zu Hilfe!\r\nWenn Sie eine Uhr bekommen, kann sich die Frucht eine Runde lang
+      nicht bewegen!\r\n"
+    m_Metadata:
+      m_Items: []
   references:
     version: 1

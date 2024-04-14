@@ -41,10 +41,7 @@ namespace RibertaGames
         public int sEAudioPlayerNum => _seAudioPlayerNum;
 
         //基準ボリューム
-        [SerializeField]
-        private float _bgmBaseVolume = 1f, _seBaseVolume = 1f;
-        public float bGMBaseVolume => _bgmBaseVolume;
-        public float sEBaseVolume => _seBaseVolume;
+        public float bgmBaseVolume = 1f, seBaseVolume = 1f;
 
         //SEのボリューム倍率調整をするか
         [SerializeField]

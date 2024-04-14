@@ -14,7 +14,7 @@ namespace RibertaGames {
 
         protected override void _Main()
         {
-            _model.GameStart();
+            _ = _model.GameStart();
         }
 
         protected override void _SetupModel()
@@ -25,6 +25,14 @@ namespace RibertaGames {
         protected override void _SetupView()
         {
             _view.Init();
+
+            // チュートリアルを表示
+            if (!_model.AlreadyTutorialClear())
+            {
+                _view.SetActiveFillter(true);
+                _view.OpenTutorialWindow();
+                _model.SetTutorialClear();
+            }
         }
 
         protected override void _Subscribe()
@@ -80,8 +88,8 @@ namespace RibertaGames {
 
             // ゲーム開始ボタン
             _view.gameStartButton
-                .Subscribe(_ => {
-                    _model.GameStart();
+                .Subscribe(async _ => {
+                    await _model.GameStart();
                     _view.SetActiveBoardFillter(false);
                 })
                 .AddTo(gameObject);

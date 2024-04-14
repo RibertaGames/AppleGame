@@ -66,5 +66,17 @@ MonoBehaviour:
       nhau \u0111\u1EC3 khi\u1EBFn ch\xFAng m\u1EA1nh m\u1EBD h\u01A1n!"
     m_Metadata:
       m_Items: []
+  - m_Id: 43109263648829440
+    m_Localized: "N\u1EBFu tr\xE1i c\xE2y v\u01B0\u1EE3t qua \u0111\u01B0\u1EDDng
+      n\xE0y, tr\xF2 ch\u01A1i k\u1EBFt th\xFAc!\r\n"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43125883318382592
+    m_Localized: "Khi b\u1EA1n nh\u1EADn \u0111\u01B0\u1EE3c m\u1ED9t qu\u1EA3 tr\u1EE9ng
+      c\xE1, m\u1ED9t con s\xF3c s\u1EBD \u0111\u1EBFn gi\u1EA3i c\u1EE9u b\u1EA1n!\r\nN\u1EBFu
+      b\u1EA1n nh\u1EADn \u0111\u01B0\u1EE3c \u0111\u1ED3ng h\u1ED3, tr\xE1i c\xE2y
+      s\u1EBD kh\xF4ng th\u1EC3 di chuy\u1EC3n trong m\u1ED9t l\u01B0\u1EE3t!"
+    m_Metadata:
+      m_Items: []
   references:
     version: 1

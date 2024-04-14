@@ -65,5 +65,15 @@ MonoBehaviour:
       plus forts !"
     m_Metadata:
       m_Items: []
+  - m_Id: 43109263648829440
+    m_Localized: "Si le fruit franchit cette ligne, le jeu est termin\xE9 !\r\n"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43125883318382592
+    m_Localized: "\rLorsque vous recevrez un gland, un \xE9cureuil viendra \xE0 votre
+      secours !\r\nSi vous obtenez une horloge, le fruit ne pourra pas bouger pendant
+      un tour !"
+    m_Metadata:
+      m_Items: []
   references:
     version: 1

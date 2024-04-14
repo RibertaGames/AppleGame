@@ -65,5 +65,19 @@ MonoBehaviour:
     m_Localized: Geser dan susun hewan yang sama untuk menjadikannya lebih kuat!
     m_Metadata:
       m_Items: []
+  - m_Id: 43109263648829440
+    m_Localized: 'Jika buah melewati garis ini, permainan berakhir!
+
+'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43125883318382592
+    m_Localized: 'Saat Anda mendapatkan biji ek, seekor tupai akan datang menyelamatkan
+      Anda!
+
+      Jika mendapat jam, buah tidak akan bisa bergerak satu putaran
+      pun!'
+    m_Metadata:
+      m_Items: []
   references:
     version: 1

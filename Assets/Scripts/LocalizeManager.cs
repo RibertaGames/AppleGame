@@ -144,10 +144,10 @@ namespace RibertaGames
                     break;
 
                 // ベトナム語
-                //case SystemLanguage.Vietnamese:
-                //    language = SystemLanguage.Vietnamese;
-                //    font = _fontBase;
-                //    break;
+                case SystemLanguage.Vietnamese:
+                    language = SystemLanguage.Vietnamese;
+                    font = _fontBase;
+                    break;
 
                 // 英語
                 default:

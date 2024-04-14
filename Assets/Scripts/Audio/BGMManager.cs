@@ -39,7 +39,7 @@ namespace RibertaGames
 
             _LoadAudioClip(AUDIO_DIRECTORY_PATH, setting.bgmCacheType, setting.isReleaseBGMCache);
 
-            ChangeBaseVolume(setting.bGMBaseVolume);
+            ChangeBaseVolume(setting.bgmBaseVolume / 4f);
             if (!setting.isDestroyBGMManager)
             {
                 DontDestroyOnLoad(gameObject);

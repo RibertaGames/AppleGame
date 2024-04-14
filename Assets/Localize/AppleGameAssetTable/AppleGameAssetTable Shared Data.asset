@@ -135,6 +135,10 @@ MonoBehaviour:
     m_Key: Game/Canvas/Game/TutorialWindow/Panel3/Text (TMP) 1
     m_Metadata:
       m_Items: []
+  - m_Id: 6124133894139904
+    m_Key: Game/Canvas/Game/TutorialWindow/Panel5/Image
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items:
     - id: 0
@@ -243,6 +247,10 @@ MonoBehaviour:
           - ru
           - es
           - th
+          - vi
+        - m_KeyId: 6124133894139904
+          m_TableCodes:
+          - ja
           - vi
         m_TypeString: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null

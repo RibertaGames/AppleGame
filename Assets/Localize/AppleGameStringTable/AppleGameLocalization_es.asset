@@ -63,5 +63,14 @@ MonoBehaviour:
     m_Localized: "\xA1Desliza y apila los mismos animales para hacerlos m\xE1s fuertes!"
     m_Metadata:
       m_Items: []
+  - m_Id: 43109263648829440
+    m_Localized: "Si la fruta cruza esta l\xEDnea, \xA1el juego termina!\r\n"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43125883318382592
+    m_Localized: "\xA1Cuando consigas una bellota, una ardilla vendr\xE1 a rescatarte!\r\n\xA1Si
+      consigues un reloj, la fruta no podr\xE1 moverse durante un turno!"
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
