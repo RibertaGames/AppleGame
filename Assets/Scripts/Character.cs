@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UniRx;
 using UnityEngine;
@@ -74,6 +75,16 @@ namespace RibertaGames
         public void OnMouseDrag()
         {
             if (!_isEnableMove) return;
+            
+            // 描画順を一番上にする。
+            var characterList = transform.parent.GetComponentsInChildren<Character>();
+            for(int i = 0; i < characterList.Length; i++)
+            {
+                if(characterList[i] == this)
+                {
+                    characterList[i].transform.SetAsLastSibling();
+                }
+            }
 
             var worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             worldPosition.z = 1;

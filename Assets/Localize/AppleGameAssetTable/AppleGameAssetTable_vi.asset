@@ -134,9 +134,5 @@ MonoBehaviour:
     m_Localized: 8f586378b4e144a9851e7b34d9b748ee
     m_Metadata:
       m_Items: []
-  - m_Id: 6124133894139904
-    m_Localized: "b37f27e98ecc51e4dbec33308d349056[\u30C1\u30E5\u30FC\u30C8\u30EA\u30A2\u30EB\u753B\u50CF8]"
-    m_Metadata:
-      m_Items: []
   references:
     version: 1
