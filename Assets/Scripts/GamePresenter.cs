@@ -57,14 +57,6 @@ namespace RibertaGames {
                 .Subscribe(currentTurn => _view.SetCurrentTurnText(currentTurn.ToString()))
                 .AddTo(gameObject);
 
-            // ゲーム終了通知
-            _model.gameEnd
-                .Subscribe(_ => {
-                    _view.InitializeView();
-                    _view.SetActiveBoardFillter(true);
-                })
-                .AddTo(gameObject);
-
             // キャラクター生成
             _model.createCharacter
                 .Subscribe(info => {
@@ -89,8 +81,13 @@ namespace RibertaGames {
             // ゲーム開始ボタン
             _view.gameStartButton
                 .Subscribe(async _ => {
-                    await _model.GameStart();
-                    _view.SetActiveBoardFillter(false);
+
+                    if (_model.GetCurrentGameState() != eGameState.GamePlay)
+                    {
+                        _view.InitializeView();
+                        await _model.GameStart();
+                        _view.SetActiveBoardFillter(false);
+                    }
                 })
                 .AddTo(gameObject);
 
@@ -100,6 +97,14 @@ namespace RibertaGames {
                     _model.GameEnd();
                     await _view.CloseSettingWindow();
                     _view.SetActiveFillter(false);
+                })
+                .AddTo(gameObject);
+
+            // ゲーム終了通知
+            _model.gameEnd
+                .Subscribe(_ => {
+                    _view.SetActiveBoardFillter(true);
+                    _view.SetEnableMove(false);
                 })
                 .AddTo(gameObject);
 

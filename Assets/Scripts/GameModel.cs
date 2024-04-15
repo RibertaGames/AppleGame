@@ -166,13 +166,10 @@ namespace RibertaGames
         /// </summary>
         public async UniTask GameStart()
         {
-            if (_gameState != eGameState.GamePlay)
-            {
-                _Initialize();
-                _gameState = eGameState.GamePlay;
-                await _NextTurn();
-                _CreateNextCharacter();
-            }
+            _Initialize();
+            _gameState = eGameState.GamePlay;
+            await _NextTurn();
+            _CreateNextCharacter();
         }
 
         /// <summary>
@@ -278,6 +275,15 @@ namespace RibertaGames
         }
 
         /// <summary>
+        /// ゲームステートを返す
+        /// </summary>
+        /// <returns></returns>
+        public eGameState GetCurrentGameState()
+        {
+            return _gameState;
+        }
+
+        /// <summary>
         /// キャラクターの攻撃
         /// </summary>
         private async UniTask _CharacterAttack()
@@ -299,7 +305,7 @@ namespace RibertaGames
             if (isAttack)
             {
                 _isEnableMove.Value = false;
-                SEManager.instance.Play(SEPath.EAT1);
+                SEManager.instance.Play(SEPath.EAT);
                 await UniTask.Delay(700);
                 _isEnableMove.Value = true;
             }

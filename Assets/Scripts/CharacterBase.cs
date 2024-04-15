@@ -110,11 +110,11 @@ namespace RibertaGames
                 switch (enemy.gimickType)
                 {
                     case eGimickType.Key:
-                        SEManager.instance.Play(SEPath.ITEM1);
+                        SEManager.instance.Play(SEPath.GET_ITEM);
                         _animator.Play("GetItemAnim", 0, 0f);
                         break;
                     case eGimickType.Timer:
-                        SEManager.instance.Play(SEPath.ITEM1);
+                        SEManager.instance.Play(SEPath.GET_ITEM);
                         _animator.Play("GetItemAnim", 0, 0f);
                         break;
                 }

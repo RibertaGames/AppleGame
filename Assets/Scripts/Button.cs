@@ -158,6 +158,9 @@ namespace RibertaGames
                 //戻る音
             }
 
+            // 決定ボタン
+            SEManager.instance.Play(SEPath.DECIDE2);
+
             //クリックイベント発動
             onClick?.Invoke();
             _onClickSubject?.OnNext(Unit.Default);

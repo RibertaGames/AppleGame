@@ -31,6 +31,7 @@ namespace RibertaGames
         /// </summary>
         public virtual void Open()
         {
+            SEManager.instance.Play(SEPath.WINDOW_OPEN);
             gameObject.SetActive(true);
         }
 
@@ -40,6 +41,7 @@ namespace RibertaGames
         /// <returns></returns>
         public async UniTask Close()
         {
+            SEManager.instance.Play(SEPath.WINDOW_CLOSE);
             _animator.Play(eSettingWindowAnim.WindowClose.ToString());
             await UniTask.Delay(500);
             gameObject.SetActive(false);

@@ -1,47 +1,239 @@
 name: Build
 
 on:
-  pull_request: {}
-  push: { branches: [develop] }
+    workflow_dispatch:
+      inputs:
+        repository:
+          description: "ビルド対象リポジトリ"
+          required: true
+          type: string
+        branch:
+          description: "ビルド対象ブランチ"
+          required: true
+          type: string
+        stage:
+          description: "ビルドステージ develop / staging / release"
+          type: choice
+          options:
+            - "develop"
+            - "staging"
+            - "release"
+          required: true
+        target:
+          description: "ビルド対象OS ios / android"
+          required: true
+          type: choice
+          options:
+            - "ios"
+            - "android"
+        version_code:
+          description: "ビルド番号 androidビルドのみ使用 整数を指定"
+          required: false
+          type: string
+        output:
+          description: "出力形式 androidビルドのみ使用 apk / aab"
+          required: false
+          type: choice
+          default: "apk"
+        slack_channel:
+          description: "Slackのチャンネル名"
+          required: false
+          type: string
+          default: "21_app_build"
+        slack_ts:
+          description: "結果を書き込むSlackのスレッドID"
+          required: false
+          type: string
+        play_track:
+          description: "Play console に送信するトラック名(Android)"
+          required: false
+          type: string
+        unity_version:
+          description: "使用するUnityのバージョン(eg. 2021.3.31)"
+          default: "2021.3.31"
+          required: false
+          type: string
 
-jobs:
-  build:
-    name: ${{ matrix.targetPlatform }}
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        targetPlatform:
-          - iOS # Build an iOS player.
-          - Android # Build an Android .apk standalone app.
+    env:
+      LC_ALL: C
+      BUILDER_DIR: ${{ github.workspace }}
+      SCRIPT_DIR: ${{ github.workspace }}
 
-    steps:
-      # Checkout
-      - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-          lfs: true
+      GIT_TOKEN: ${{ secrets.GIT_TOKEN }}
+      GIT_USER: ${{ secrets.GIT_USER }}
+      UNITY_APP: /Applications/Unity/Hub/Editor/${{ github.event.inputs.unity_version }}f1/Unity.app/Contents/MacOS/Unity
+      UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+      UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
 
-      # Cache
-      - name: Cache
-        uses: actions/cache@v2
-        with:
-          path: Library
-          key: Library-${{ matrix.targetPlatform }}
-          restore-keys: Library-
+      GIT_TEAM: TechRiberta
+      MATCH_PASSWORD: 
+      TEAM_ID: 
+      APP_STORE_CONNET_KEY_ID:
+      APP_STORE_CONNET_ISSUER_ID:
+      APP_STORE_CONNET_KEY_CONTENT:
+      IS_BUILD_SERVER: TRUE
 
-      # Build
-      - name: Build
-        uses: game-ci/unity-builder@v3
-        env:
-          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
-        with:
-          targetPlatform: ${{ matrix.targetPlatform }}
+      repository: ${{ github.event.inputs.repository }}
+      branch: ${{ github.event.inputs.branch }}
+      stage: ${{ github.event.inputs.stage }}
+      BUILD_TARGET: ${{ github.event.inputs.target }}
+      play_track: ${{ github.event.inputs.play_track }}
+      unity_version: ${{ github.event.inputs.unity_version }}
+      android_output_type: ${{ github.event.inputs.output }}
 
-      # Upload Build
-      - name: Upload Build
-        uses: actions/upload-artifact@v2
-        with:
-          name: Build-${{ matrix.targetPlatform }}
-          path: build/${{ matrix.targetPlatform }}
+    defaults:
+      run:
+        shell: bash --login {0}
+
+    jobs:
+      build:
+        runs-on: {self-hosted, macOS}
+
+        steps:
+          - name: ビルドスクリプトのリポジトリをクローン
+            timeout-minutes: 15
+            uses: actions/checkout@v4
+
+          - name: ビルド対象のリポジトリをクローン
+            timeout-minutes: 15
+            run: |
+              security unlock-keychain -p "${{secrets.MAC_LOGIN_PASSWORD}}"
+              source $SCRIPT_DIR/clone_project.sh
+              cd "app/"
+              echo "GIT_COMMIT=$(git show --format= '%H' --no-patch)" >> $GITHUB_ENV
+              echo "PROJECT_PATH='pwd'" >> $GITHUB_ENV
+
+          - name: 変数の設定(共通)
+            timeout-minutes: 1
+            id: init-env-common
+            run: |
+              source $SCRIPT_DIR/determine_project_type.sh $PROJECT_PATH
+              echo "project_type=${PROJECT_TYPE}" >> $GITHUB_OUTPUT
+              echo "WORKFLOW_URL=${{ github.server_url }}/${{ github.repository }}/actions/run/${{ github.run_id }}" >> $GITHUB_ENV
+
+          - name: 変数の設定(Android)
+            timeout-minutes: 1
+            run: |
+              version_code=$(source $SCRIPT_DIR/resolve_version_code.sh ${{github.event.inputs.version_code}})
+              echo "version_code=$version_code" >> $GITHUB_ENV
+              echo "BUILD_OUTPUT=$PROJECT_PATH/build/${stage}-${repository}-${version_code}.${android_output_type}" >> $GITHUB_ENV
+            if: ${{ github.event.inputs.target == 'android' }}
+
+          - name: 変数の設定(iOS)
+            timeout-minutes: 1
+            run: |
+              echo "BUILD_OUTPUT=$PROJECT_PATH/build/iOS" >> $GITHUB_ENV
+              echo "FASTLANE_SCHEME=Runner" >> $GITHUB_ENV
+              echo "FASTLANE_TARGETS=Runner" >> $GITHUB_ENV
+            if: ${{ github.event.inputs.target == 'ios' && steps.init-env-common.outputs.project_type == 'Unity' }}
+
+          - name: 初期化失敗通知
+            timeout-minutes: 1
+            run: |
+              SLACK_TEXT="GitHub Actions の初期化に失敗しました
+              ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+
+              curl -w "\n" --request POST \
+                     --form token=${{ secrets.SLACK_BOT_TOKEN }} \
+                     --form channel=${{ github.event.inputs.slack_channel }} \
+                     --form thread_ts=${{ github.event.inputs.slack_ts }} \
+                     --form text="$SLACK_TEXT" \
+                     https://slack.com/api/chat.postMessage
+            if: ${{ failure() && github.event.inputs.slack_ts != '' }}
+
+          - name: ビルド開始通知
+            timeout-minutes: 1
+            id: start-slack
+            run: |
+              SLACK_TEXT="Github Actions 開始: ${WORKFLOW_URL}
+              runner: ${{ runner.arch }}
+              repository: ${repository}
+              branch: ${branch}
+              commit: ${GIT_COMMIT}
+              stage: ${stage}
+              target: ${BUILD_TARGET}
+              version_code(Androidのみ): ${version_code}
+              output(Androidのみ): ${android_output_type}
+              play_track(Androidのみ): ${play_track}
+              unity_version(使用するUnityのバージョン): ${unity_version}"
+
+              if [ "${{github.event.inputs.slack_ts}}" = "" ]; then
+                SLACK_RESPONSE=$(curl --request POST \
+                     --form token=${{ secrets.SLACK_BOT_TOKEN }} \
+                     --form channel=${{ github.event.inputs.slack_channel }} \
+                     --form text="$SLACK_TEXT" \
+                     https://slack.com/api/chat.postMessage)
+                SLACK_TS=$(echo "$SLACK_RESPONSE" | jq .ts)
+                echo "slack_ts: $SLACK_TS"
+                echo "slack_ts=${SLACK_TS}" >> $GITHUB_OUTPUT
+              else
+                curl -w "\n" --request POST \
+                     --form token=${{ secrets.SLACK_BOT_TOKEN }} \
+                     --form channel=${{ github.event.inputs.slack_channel }} \
+                     --form thread_ts=${{ github.event.inputs.slack_ts }} \
+                     --form text="$SLACK_TEXT" \
+                     https://slack.com/api/chat.postMessage
+                echo "slack_ts=${{ github.event.inputs.slack_ts }}" >> $GITHUB_OUTPUT
+              fi
+          - name: Unity ビルド
+            timeout-minutes: 60
+            run: |
+              source $SCRIPT_DIR/build_unity_project.sh
+            if: ${{ steps.init-env-common.outputs.project_type == 'Unity' }}
+
+          - name: Unity成果物チェック
+            timeout-minutes: 1
+            run: |
+              if [ ! -e $BUILD_OUTPUT ]; then
+                curl -w "\n" --request POST \
+                     --form token=${{ secrets.SLACK_BOT_TOKEN }} \
+                     --form channel=${{ github.event.inputs.slack_channel }} \
+                     --form thread_ts=${{ github.event.inputs.slack_ts }} \
+                     --form text="Unity ビルドエラー ${WORKFLOW_URL}" \
+                     https://slack.com/api/chat.postMessage
+
+                curl -w "\n" --request POST \
+                     --form content="text" \
+                     --form token=${{ secrets.SLACK_BOT_TOKEN }} \
+                     --form file=@$PROJECT_PATH/log/build.log \
+                     --form channel=${{ github.event.inputs.slack_channel }} \
+                     --form thread_ts=${{ github.event.inputs.slack_ts }} \
+                     --form title="build.log" \
+                     https://slack.com/api/files.upload
+                tail -n 1000 $PROJECT_PATH/log/build.log
+                exit 1
+              fi
+            if: ${{ always() && steps.start-slack.outputs.slack_ts != '' && steps.init-env-common.outputs.project_type == 'Unity' }}
+
+          - name: 成果物アップロード(iOS)
+            timeout-minutes: 50
+            run: source $SCRIPT_DIR/ios_upload_to_testflight.sh
+            if: ${{ github.event.inputs.target == 'ios' }}
+            
+          - name: 成果物をアップロード(Android)
+            timeout-minutes: 50
+            run: |
+              curl -w "\n" --retry 1 --http1.1 --request POST \
+                     --form token=${{ secrets.SLACK_BOT_TOKEN }} \
+                     --form file=@${BUILD_OUTPUT} \
+                     --form channel=${{ github.event.inputs.slack_channel }} \
+                     --form thread_ts=${{ github.event.inputs.slack_ts }} \
+                     --form title="${stage}-${repository}-${version_code}"
+                     https://slack.com/api/files.upload
+            if: ${{github.event.inputs.target == 'android' && steps.start.slack.outputs.slack_ts != '' }}
+
+          - name: 成果物アップロード(Android Play console)
+            timeout-minutes: 50
+            run: source $SCRIPT_DIR/android_upload_to_playstore.sh
+            if: ${{ github.event.inputs.play_track != '' }}
+
+          - name: 成功通知
+            timeout-minutes: 1
+            run: |
+              curl -w "\n" --request POST \
+                     --form token=${{ secrets.SLACK_BOT_TOKEN }} \
+                     --form channel=${{ github.event.inputs.slack_channel }} \
+                     --form thread_ts=${{ github.event.inputs.slack_ts }} \
+                     --form title="結果: ${{ job.status }} ( ${WORKFLOW_URL})" \
+                     https://slack.com/api/chat.postMessage
+            if: ${{ always() && steps.start-slack.outputs.slack_ts != '' }}
