@@ -31,7 +31,7 @@ public class ScriptableObjectCreator : EditorWindow
     //}
 
     // メニューにアイテムを追加.
-    [MenuItem("Tools/ScriptableObject更新")]
+    //[MenuItem("RibertaGames/ScriptableObject更新")]
     // 呼び出す関数.
     public static void UpdateAssets()
     {

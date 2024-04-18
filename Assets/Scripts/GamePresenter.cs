@@ -7,19 +7,25 @@ namespace RibertaGames {
         private GameModel _model;
         [SerializeField] private GameView _view;
 
+        private SaveData _saveData = new SaveData();
+
         public void Start()
         {
             Init();
-        }
-
-        protected override void _Main()
-        {
             _ = _model.GameStart();
         }
 
         protected override void _SetupModel()
         {
-            _model = new GameModel();
+            var game = _saveData.GetClass(eSaveDataType.GameCached.ToString(), new GameModel());
+            if (game != null)
+            {
+                _model = game;
+            }
+            else
+            {
+                _model = new GameModel();
+            }
         }
 
         protected override void _SetupView()

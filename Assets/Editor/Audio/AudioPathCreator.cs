@@ -70,7 +70,7 @@ namespace RibertaGames
 		//=================================================================================
 
 		//BGMとSEファイルへのパスを定数で管理するクラスを作成
-		[MenuItem("Tools/Create BGM&SE Path")]
+		[MenuItem("RibertaGames/Create BGM&SE Path")]
 		private static void _CreateAudionPath()
 		{
 			_CreateBGMPath();

@@ -9,7 +9,6 @@ namespace RibertaGames
             _SetupModel();
             _SetupView();
             _Subscribe();
-            _Main();
         }
 
         protected abstract void _SetupModel();
@@ -17,7 +16,5 @@ namespace RibertaGames
         protected abstract void _SetupView();
 
         protected abstract void _Subscribe();
-
-        protected abstract void _Main();
     }
 }

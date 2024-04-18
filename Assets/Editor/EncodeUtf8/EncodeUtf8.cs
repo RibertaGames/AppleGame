@@ -8,7 +8,7 @@ using UnityEngine;
 
 public class EncodeUtf8 : Editor
 {
-    const string ITEM_NAME = "Tools/Encode Utf8";
+    const string ITEM_NAME = "RibertaGames/Encode Utf8";
 
     /// <summary>
     /// Assets/ 内にある非 UTF8 コードを UTF8 コードに一括変換します

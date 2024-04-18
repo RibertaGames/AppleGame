@@ -166,10 +166,13 @@ namespace RibertaGames
         /// </summary>
         public async UniTask GameStart()
         {
-            _Initialize();
-            _gameState = eGameState.GamePlay;
-            await _NextTurn();
-            _CreateNextCharacter();
+            if (_gameState != eGameState.GamePlay)
+            {
+                _Initialize();
+                _gameState = eGameState.GamePlay;
+                await _NextTurn();
+                _CreateNextCharacter();
+            }
         }
 
         /// <summary>
@@ -199,6 +202,7 @@ namespace RibertaGames
             _gameState = eGameState.GameEnd;
             _SetHighScore();
             _gameEnd.OnNext(Unit.Default);
+            _SetGameCached(null);
         }
 
         /// <summary>
@@ -232,6 +236,9 @@ namespace RibertaGames
             }
             //スコアを計算
             _CalcScore();
+
+            //キャッシュ作成
+            _SetGameCached(this);
         }
 
         /// <summary>
@@ -272,6 +279,14 @@ namespace RibertaGames
         public void SetTutorialClear()
         {
             _saveData.SetInt(eSaveDataType.Tutorial.ToString(), 1);
+        }
+
+        /// <summary>
+        /// ゲームキャッシュをセット
+        /// </summary>
+        private void _SetGameCached(GameModel gameModel = null)
+        {
+            _saveData.SetClass(eSaveDataType.GameCached.ToString(), gameModel);
         }
 
         /// <summary>

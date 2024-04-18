@@ -103,7 +103,7 @@ namespace RibertaGames
         //=================================================================================
 
         //全オーディオファイルの設定を更新する
-        [MenuItem("Tools/Update BGM&SE Setting")]
+        [MenuItem("RibertaGames/Update BGM&SE Setting")]
         private static void _UpdateSetting()
         {
             UpdateBGMSetting();

@@ -14,6 +14,7 @@ namespace RibertaGames
 	{
 		HighScore, // ハイスコア
 		Tutorial,  // チュートリアル
+		GameCached,// ゲームキャッシュ
 	}
 
 	/// <summary>

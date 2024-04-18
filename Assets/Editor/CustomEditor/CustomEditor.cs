@@ -59,7 +59,7 @@ namespace RibertaGames
             }
         }
 
-        [MenuItem("Tools/セーブデータ削除")]
+        [MenuItem("RibertaGames/セーブデータ削除")]
         public static void ResetSaveData()
         {
             var savedata = new SaveData();
