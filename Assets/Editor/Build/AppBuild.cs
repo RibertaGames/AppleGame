@@ -22,9 +22,9 @@ namespace RibertaGames
             _BumpBuildNumberForAndroid();
             DateTime currentDate = DateTime.Now;
 #if UNITY_EDITOR_WIN
-            string path = $"/Users/user/Desktop/UnityBuild/android/{ currentDate.ToString("yyyy-MM-dd") }/game.apk";
+            string path = $"/Users/user/Desktop/UnityBuild/android/{ currentDate.ToString("yyyy-MM-dd-HH") }/game.apk";
 #elif UNITY_EDITOR_OSX
-            string path = $"/Users/yanosyoki/Desktop/UnityBuild/android/{ currentDate.ToString("yyyy-MM-dd") }/game.apk";
+            string path = $"/Users/yanosyoki/Desktop/UnityBuild/android/{ currentDate.ToString("yyyy-MM-dd-HH") }/game.apk";
 #endif
             var report = BuildPipeline.BuildPlayer(_GetAllScenePaths(), path, BuildTarget.Android, BuildOptions.None);
             BuildSummary summary = report.summary;
@@ -47,9 +47,9 @@ namespace RibertaGames
             // 出力パス。絶対パスで指定すること。また、最後にスラッシュを入れないこと。PostBuildProcess に渡る path が通常ビルドと異なってしまい、思わぬバグを引き起こすことがあります。
             DateTime currentDate = DateTime.Now;
 #if UNITY_EDITOR_WIN
-            string path = $"/Users/user/Desktop/UnityBuild/ios/{ currentDate.ToString("yyyy-MM-dd") }";
+            string path = $"/Users/user/Desktop/UnityBuild/ios/{ currentDate.ToString("yyyy-MM-dd-HH") }";
 #elif UNITY_EDITOR_OSX
-            string path = $"/Users/yanosyoki/Desktop/UnityBuild/android/{ currentDate.ToString("yyyy-MM-dd") }/game.apk";
+            string path = $"/Users/yanosyoki/Desktop/UnityBuild/ios/{ currentDate.ToString("yyyy-MM-dd-HH") }";
 #endif
             var report = BuildPipeline.BuildPlayer(_GetAllScenePaths(), path, BuildTarget.iOS, BuildOptions.None);
             BuildSummary summary = report.summary;
