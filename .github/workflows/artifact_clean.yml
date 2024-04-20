@@ -1,4 +1,4 @@
-name: 'artifacts cleanup'
+name: アーティファクト自動削除
 on:
   workflow_dispatch:
   schedule:
