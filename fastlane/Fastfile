@@ -1,0 +1,109 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+
+platform :android do
+
+  desc "Upload a new Android version to the Google Play Store"
+  lane :playprod do
+    upload_to_play_store(aab: "#{ENV['ANDROID_BUILD_FILE_PATH']}")
+  end
+
+end
+
+
+platform :ios do
+
+  desc "Initialize for GitHub Actions"
+  lane :init_ci do
+    org, repo = (ENV["GITHUB_REPOSITORY"]||"").split("/")
+    match_org, match_repo = (ENV["MATCH_REPOSITORY"]||"").split("/")
+    setup_ci
+    github_action(
+      api_token: ENV["MATCH_PERSONAL_ACCESS_TOKEN"],
+      org: org,
+      repo: repo,
+      match_org: match_org,
+      match_repo: match_repo,
+      writable_deploy_key: true
+    )
+  end
+
+  desc "Sync codesigning certificates"
+  lane :sync_certificates do
+    org, repo = (ENV["GITHUB_REPOSITORY"]||"").split("/")
+    match_org, match_repo = (ENV["MATCH_REPOSITORY"]||"").split("/")
+    app_store_connect_api_key(
+      key_id: ENV["APPSTORE_KEY_ID"],
+      issuer_id: ENV["APPSTORE_ISSUER_ID"],
+      key_content: ENV['APPSTORE_P8']
+    )
+    match(
+      type: "appstore",
+      storage_mode: "git",
+      git_url: "git@github.com:#{match_org}/#{match_repo}.git",
+      app_identifier: ENV["IOS_BUNDLE_ID"]
+    )
+  end
+
+  desc "Deliver a new Release build to the App Store"
+  lane :release do
+    build
+    deliver
+  end
+
+  desc "Deliver a new Beta build to Apple TestFlight"
+  lane :beta do
+    build
+    upload_to_testflight(skip_waiting_for_build_processing: true)
+  end
+
+  desc "Create .ipa"
+  lane :build do
+    setup_ci
+    sync_certificates
+    update_code_signing_settings(
+      use_automatic_signing: true,
+      path: "#{ENV['IOS_BUILD_PATH']}/iOS/Unity-iPhone.xcodeproj"
+    )
+    update_code_signing_settings(
+      use_automatic_signing: false,
+      team_id: ENV["sigh_#{ENV['IOS_BUNDLE_ID']}_appstore_team-id"],
+      code_sign_identity: 'iPhone Distribution',
+      targets: 'Unity-iPhone',
+      path: "#{ENV['IOS_BUILD_PATH']}/iOS/Unity-iPhone.xcodeproj",
+      profile_name: ENV["sigh_#{ENV['IOS_BUNDLE_ID']}_appstore_profile-name"],
+      profile_uuid: ENV["sigh_#{ENV['IOS_BUNDLE_ID']}_appstore"]
+    )
+    build_app( #alias: gym
+      project: "#{ENV['IOS_BUILD_PATH']}/iOS/Unity-iPhone.xcodeproj",
+      scheme: 'Unity-iPhone',
+      xcargs: '-allowProvisioningUpdates'
+    )
+  end
+
+end
+
+
+platform :mac do
+
+  desc "Hack so that Apple doesn't reject the mac build due to a mistake in versioning" 
+  lane :fixversion do
+    update_plist(
+      plist_path: "#{ENV['MAC_BUILD_PATH']}/StandaloneOSX.app/Contents/Info.plist",
+      block: proc do |plist|
+        plist[:CFBundleVersion] = '9' + plist['CFBundleVersion']
+      end
+    )
+  end
+
+  desc "Upload a new Mac version to the Mac App Store"
+  lane :macupload do
+    app_store_connect_api_key(
+      key_id: ENV['APPSTORE_KEY_ID'],
+      issuer_id: ENV['APPSTORE_ISSUER_ID'],
+      key_content: ENV['APPSTORE_P8']
+    )
+    deliver
+  end
+
+end
