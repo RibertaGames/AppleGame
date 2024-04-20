@@ -1,8 +1,8 @@
 name: 'artifacts cleanup'
 on:
-  workflow_dispatch :
+  workflow_dispatch:
   schedule:
-    - cron: '0 20 * * *' # UTC
+    - cron: '0 5 * * *' # UTCで5時に実行
 
 jobs:
   delete-artifacts:
@@ -11,4 +11,4 @@ jobs:
       - uses: kolpav/purge-artifacts-action@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          expire-in: 30 minutes
+          expire-in: 0
