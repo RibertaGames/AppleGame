@@ -1,4 +1,4 @@
-name: Acquire activation file
+name: アクティベーションファイル取得
 
 on:
   workflow_dispatch:
@@ -17,4 +17,4 @@ jobs:
         with:
           name: ${{ steps.requestActivationFile.outputs.filePath }}
           path: ${{ steps.requestActivationFile.outputs.filePath }}
-          retention-days: 3
+          retention-days: 1
