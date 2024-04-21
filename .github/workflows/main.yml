@@ -96,8 +96,8 @@ jobs:
           customParameters: -buildNumber ${{ github.run_number }}
           targetPlatform: ${{ matrix.targetPlatform }}
           buildMethod: Cgs.Editor.BuildCgs.BuildOptions
-          androidAppBundle: true
-          androidKeystoreName: keystore.keystore
+          androidExportType: 'androidAppBundle'
+          androidKeystoreName: user.keystore                             #user.keystore
           androidKeystoreBase64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
           androidKeystorePass: ${{ secrets.ANDROID_KEYSTORE_PASS }}
           androidKeyaliasName: ${{ secrets.ANDROID_KEYALIAS_NAME }}
