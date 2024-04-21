@@ -3,6 +3,7 @@ name: Test, Build, and Release CGS
 on:
   workflow_dispatch:
   push: { branches: [develop] }
+  release: { types: [develop] }
 
 env:
   UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
@@ -11,190 +12,24 @@ env:
   BUILD_NUMBER: ${{ github.run_number }}
 
 jobs:
-  buildWithLinux:
-    name: Build for ${{ matrix.targetPlatform }} by Unity
+  tests:
+    name: Test Code Quality
     runs-on: ubuntu-latest
-    timeout-minutes: 90
-    needs: tests
-    strategy:
-      fail-fast: false
-      matrix:
-        targetPlatform:
-          - Android
-          - iOS
+    timeout-minutes: 60
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-          lfs: true
       - name: Cache Library
         uses: actions/cache@v2
         with:
-          path: |
-            Library
-            build/${{ matrix.targetPlatform }}
-          key: Library-${{ matrix.targetPlatform }}-
-          restore-keys: Library-
-      - name: Free Disk Space for Android
-        if: matrix.targetPlatform == 'Android'
-        run: |
-          sudo swapoff -a
-          sudo rm -f /swapfile
-          sudo apt clean
-          docker rmi $(docker image ls -aq)
-          df -h
-      - name: Build Unity Project
-        uses: game-ci/unity-builder@main
+          path: Library
+          key: Library
+      - name: Run EditMode and PlayMode Tests
+        uses: game-ci/unity-test-runner@main
+      - name: Publish Test Results
+        if: ${{ always() }} # Avoid skipping on failed tests
+        uses: davidmfinol/unity-test-publisher@main
         with:
-          customParameters: -buildNumber ${{ github.run_number }}
-          targetPlatform: ${{ matrix.targetPlatform }}
-          buildMethod: Cgs.Editor.BuildCgs.BuildOptions
-          androidAppBundle: true
-          androidKeystoreName: keystore.keystore
-          androidKeystoreBase64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
-          androidKeystorePass: ${{ secrets.ANDROID_KEYSTORE_PASS }}
-          androidKeyaliasName: ${{ secrets.ANDROID_KEYALIAS_NAME }}
-          androidKeyaliasPass: ${{ secrets.ANDROID_KEYALIAS_PASS }}
-      - name: Upload Build
-        uses: actions/upload-artifact@v2
-        if: github.event.ref != 'refs/heads/develop'
-        with:
-          name: cgs-${{ matrix.targetPlatform }}
-          path: build/${{ matrix.targetPlatform }}
-
-  #releaseToGooglePlay:
-  #  name: Release to the Google Play Store
-  #  runs-on: ubuntu-latest
-  #  timeout-minutes: 60
-  #  needs: buildWithLinux
-  #  if: github.event.action == 'published'
-  #  env:
-  #    GOOGLE_PLAY_KEY_FILE: ${{ secrets.GOOGLE_PLAY_KEY_FILE }}
-  #    GOOGLE_PLAY_KEY_FILE_PATH: ${{ format('{0}/fastlane/api-finoldigital.json', github.workspace) }}
-  #    ANDROID_BUILD_FILE_PATH: ${{ format('{0}/build/Android/Android.aab', github.workspace) }}
-  #    ANDROID_PACKAGE_NAME: com.sample.app # 自分のアプリのパッケージ名に合わせよう！
-  #    RELEASE_NOTES: ${{ github.event.release.body }}
-  #  steps:
-  #    - name: Checkout Repository
-  #      uses: actions/checkout@v2
-  #    - name: Download Android Artifact
-  #      uses: actions/download-artifact@v2
-  #      with:
-  #        name: cgs-Android
-  #        path: build/Android
-  #    - name: Prepare for Upload
-  #      run: |
-  #        echo "$GOOGLE_PLAY_KEY_FILE" > $GOOGLE_PLAY_KEY_FILE_PATH
-  #        echo "$RELEASE_NOTES" > fastlane/metadata/android/en-US/changelogs/default.txt
-  #    - name: Upload to Google Play
-  #      uses: maierj/fastlane-action@v1.4.0
-  #      with:
-  #        lane: 'android playstore'
-
-  buildIOS:
-    name: Build Archive for iOS
-    runs-on: macos-latest
-    timeout-minutes: 60
-    needs: buildWithLinux
-    if: github.event.action == 'published'
-    env:
-      APPLE_CONNECT_EMAIL: ${{ secrets.APPLE_CONNECT_EMAIL }}
-      APPLE_DEVELOPER_EMAIL: ${{ secrets.APPLE_DEVELOPER_EMAIL }}
-      APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
-      APPLE_TEAM_NAME: ${{ secrets.APPLE_TEAM_NAME }}
-      #APPLE_ITC_TEAM_ID: ${{ secrets.APPLE_ITC_TEAM_ID }}
-      MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
-      MATCH_PERSONAL_ACCESS_TOKEN: ${{ secrets.MATCH_PERSONAL_ACCESS_TOKEN }}
-      IOS_APP_ID: com.sample.app # bundle idを指定します
-      IOS_BUILD_PATH: ${{ format('{0}/build/iOS', github.workspace) }}
-      PROJECT_NAME: sampleapp
-      RELEASE_NOTES: ${{ github.event.release.body }}
-      MATCH_REPOSITORY_ACCOUNT: ${{ secrets.MATCH_REPOSITORY_ACCOUNT }}
-      USYM_UPLOAD_AUTH_TOKEN: 'fake' # ビルドが途中でこけるのでfake用に環境変数を追加。
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-      - name: Cache restore for debug
-        uses: actions/cache@v2
-        with:
-          path: |
-            Library
-            build/iOS
-          key: Library-iOS-
-          restore-keys: Library-
-      - name: Download iOS Artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: cgs-iOS
-          path: build/iOS
-      - name: Cache restore cocoapods # firebase使ってるとcocoapodsを使うのですが、cocoapodsのキャッシュとらないと毎回時間かかるのでキャッシュしておきます。
-        uses: actions/cache@v2
-        if: ${{ always() }}
-        with:
-          path: |
-            build/iOS/iOS/Pods
-            ~/.cocoapods/repos
-          key: Pods-${{ hashFiles('**/Podfile') }}
-          restore-keys: Pods-
-      - uses: actions/setup-ruby@v1
-        with:
-          ruby-version: 2.7
-      - name: Prepare for fastlane # GateKeeper対策
-        run: |
-          sudo spctl --master-disable
-      - name: Archive iOS
-        uses: maierj/fastlane-action@v2.0.1
-        with:
-          lane: 'ios build'
-      - name: run if fail_step failed # ビルドがコケた原因がわかるようにcatしておきます
-        if: failure()
-        run: cat /Users/runner/Library/Logs/gym/*Unity-iPhone.log
-      - name: Upload Build
-        uses: actions/upload-artifact@v2
-        if: github.event.ref != 'refs/heads/develop'
-        with:
-          name: ipa
-          path: |
-            ${{ github.workspace }}/*.ipa
-            ${{ github.workspace }}/*.dSYM.zip
-
-    #releaseToAppStore:
-    #name: Release to the App Store
-    #runs-on: macos-latest
-    #timeout-minutes: 60
-    #needs: buildIOS
-    #if: github.event.action == 'published'
-    #env:
-      #APPLE_CONNECT_EMAIL: ${{ secrets.APPLE_CONNECT_EMAIL }}
-      #APPLE_DEVELOPER_EMAIL: ${{ secrets.APPLE_DEVELOPER_EMAIL }}
-      #APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
-      #APPLE_TEAM_NAME: ${{ secrets.APPLE_TEAM_NAME }}
-      #APPLE_ITC_TEAM_ID: ${{ secrets.APPLE_ITC_TEAM_ID }}
-      #FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
-      #FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: ${{ secrets.FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD }}
-      #MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
-      #MATCH_PERSONAL_ACCESS_TOKEN: ${{ secrets.MATCH_PERSONAL_ACCESS_TOKEN }}
-      #ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
-      #ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
-      #ASC_KEY_CONTENT: ${{ secrets.ASC_KEY_CONTENT }}
-      #IOS_APP_ID: com.sample.app # bundle idを指定します
-      #IOS_BUILD_PATH: ${{ format('{0}/build/iOS', github.workspace) }}
-      #PROJECT_NAME: sampleapp
-      #RELEASE_NOTES: ${{ github.event.release.body }}
-      #MATCH_REPOSITORY_ACCOUNT: ${{ secrets.MATCH_REPOSITORY_ACCOUNT }}
-    #steps:
-      #- name: Checkout Repository
-      #  uses: actions/checkout@v2
-      #- name: Download iOS Artifact
-      #  uses: actions/download-artifact@v2
-      #  with:
-      #    name: ipa
-      #    path: |
-      #      ${{ github.workspace }}/*.ipa
-      #      ${{ github.workspace }}/*.dSYM.zip
-      #- name: Upload to the App Store
-      #  uses: maierj/fastlane-action@v1.4.0
-      #  with:
-      #    lane: 'ios release'
-      #
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
