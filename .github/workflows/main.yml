@@ -1,6 +1,7 @@
 name: Test, Build, and Release CGS
 
 on:
+  workflow_dispatch:
   # push: { branches: [master] } #master‚Épush‚³‚ê‚½‚Æ‚«‚É‚â‚è‚½‚¢l‚Í‚±‚¿‚ç‚ğ‚¨g‚¢‚­‚¾‚³‚¢
   release: { types: [develop] }
 
