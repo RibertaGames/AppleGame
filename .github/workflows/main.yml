@@ -91,7 +91,7 @@ jobs:
           docker rmi $(docker image ls -aq)
           df -h
       - name: Build Unity Project
-        uses: game-ci/unity-builder@main
+        uses: game-ci/unity-builder@v4
         with:
           customParameters: -buildNumber ${{ github.run_number }}
           targetPlatform: ${{ matrix.targetPlatform }}
