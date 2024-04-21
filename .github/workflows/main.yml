@@ -28,9 +28,9 @@ jobs:
           path: Library
           key: Library
       - name: Run EditMode and PlayMode Tests
-        uses: game-ci/unity-test-runner@main
+        uses: game-ci/unity-test-runner@develop #developブランチ
       - name: Publish Test Results
         if: ${{ always() }} # Avoid skipping on failed tests
-        uses: davidmfinol/unity-test-publisher@main
+        uses: davidmfinol/unity-test-publisher@develop #developブランチ
         with:
           githubToken: ${{ secrets.GITHUB_TOKEN }}
