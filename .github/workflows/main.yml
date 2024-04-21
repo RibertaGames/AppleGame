@@ -13,24 +13,46 @@ env:
   BUILD_NUMBER: ${{ github.run_number }}
 
 jobs:
-  tests:
-    name: Test Code Quality
+  test:
+    name: ${{ matrix.testMode }} on ${{ matrix.unityVersion }}
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        projectPath:
+          - .
+        unityVersion:
+        # Unityプロジェクトの現バージョンを指定してください。
+          - 2021.1.20f1
+        testMode:
+          - playmode
+          - editmode
     steps:
-      - name: Checkout Repository
+      # Checkout
+      - name: Checkout
         uses: actions/checkout@v2
         with:
-          fetch-depth: 0
-      - name: Cache Library
+          lfs: true
+
+      # Cache
+      - name: Cache
         uses: actions/cache@v2
         with:
-          path: Library
-          key: Library
-      - name: Run EditMode and PlayMode Tests
-        uses: game-ci/unity-test-runner@develop #developブランチ
-      - name: Publish Test Results
-        if: ${{ always() }} # Avoid skipping on failed tests
-        uses: davidmfinol/unity-test-publisher@develop #developブランチ
+          path: ${{ matrix.projectPath }}/Library
+          key: Library-${{ matrix.projectPath }}
+          restore-keys: |
+            Library-
+
+      # Tests
+      - name: Tests
+        uses: game-ci/unity-test-runner@v2
+        id: tests
+        env:
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+          UNITY_SERIAL: ${{ secrets.UNITY_SERIAL }}
         with:
+          projectPath: ${{ matrix.projectPath }}
+          unityVersion: ${{ matrix.unityVersion }}
+          testMode: ${{ matrix.testMode }}
           githubToken: ${{ secrets.GITHUB_TOKEN }}
