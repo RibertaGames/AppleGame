@@ -97,7 +97,7 @@ jobs:
           targetPlatform: ${{ matrix.targetPlatform }}
           buildMethod: Cgs.Editor.BuildCgs.BuildOptions
           androidExportType: 'androidAppBundle'
-          androidKeystoreName: user.keystore                             #user.keystore
+          androidKeystoreName: user.keystore
           androidKeystoreBase64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
           androidKeystorePass: ${{ secrets.ANDROID_KEYSTORE_PASS }}
           androidKeyaliasName: ${{ secrets.ANDROID_KEYALIAS_NAME }}

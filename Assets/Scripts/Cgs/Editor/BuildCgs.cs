@@ -26,11 +26,12 @@ namespace Cgs.Editor
             var options = GetValidatedOptions();
 
             // Set version for this build
-            PlayerSettings.bundleVersion = options["buildNumber"];
-            PlayerSettings.macOS.buildNumber = options["buildNumber"];
-            PlayerSettings.iOS.buildNumber = options["buildNumber"];
-            PlayerSettings.Android.bundleVersionCode = int.Parse(options["buildNumber"]);
-            PlayerSettings.WSA.packageVersion = new Version(options["buildVersion"]);
+            var version = options["buildVersion"];
+            PlayerSettings.bundleVersion = version;
+            PlayerSettings.macOS.buildNumber = version;
+            while (version.Split(new[] {'.'}, StringSplitOptions.RemoveEmptyEntries).Length < 4)
+                version += ".0";
+            PlayerSettings.WSA.packageVersion = new Version(version);
 
             // Apply build target
             var buildTarget = (BuildTarget) Enum.Parse(typeof(BuildTarget), options["buildTarget"]);
