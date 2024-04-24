@@ -47,6 +47,22 @@ namespace RibertaGames
         public eGimickType gimickType;
     }
 
+    public class GameCached
+    {
+        public int score;
+        public int highScore;
+        public int destroyCount;
+        public int currentTurn;
+        public int totalDamege;
+        public bool isEnableMove;
+        public eItem currentItem;
+        public eGameState gameState;
+        public int nextCharacterPower;
+        
+        public string serializedEnemies;
+        public string serializedCharacters;
+    }
+
     public class GameModel
     {
         private ReactiveProperty<int> _score = new ReactiveProperty<int>();
@@ -54,19 +70,20 @@ namespace RibertaGames
         private ReactiveProperty<int> _destroyCount = new ReactiveProperty<int>();
         private ReactiveProperty<int> _currentTurn = new ReactiveProperty<int>();
         private int _totalDamege;
-
-        private Subject<Unit> _gameEnd = new Subject<Unit>();
-        private Subject<EntityInfo> _createCharacter = new Subject<EntityInfo>();
-        private Subject<EntityInfo> _createEnemy = new Subject<EntityInfo>();
-        private ReactiveProperty<bool> _isEnableMove = new ReactiveProperty<bool>(true);
+        private int _noKeyTurn;
+        private eItem _currentItem = new eItem();
+        private eGameState _gameState = eGameState.Initialize;
 
         public Enemy[,] enemies;
         public Character[,] characters;
         public Character nextCharacter;
 
-        private eItem _currentItem = new eItem();
-        private eGameState _gameState = eGameState.Initialize;
-        private int _noKeyTurn;
+        private Subject<Unit> _gameEnd = new Subject<Unit>();
+        private Subject<EntityInfo> _createCharacter = new Subject<EntityInfo>();
+        private Subject<EntityInfo> _createNextCharacter = new Subject<EntityInfo>();
+        private Subject<EntityInfo> _createEnemy = new Subject<EntityInfo>();
+        private ReactiveProperty<bool> _isEnableMove = new ReactiveProperty<bool>(true);
+
         private Random _random;
         private SaveData _saveData;
 
@@ -146,6 +163,7 @@ namespace RibertaGames
         public IObservable<int> currentTurn => _currentTurn;
 
         public IObservable<EntityInfo> createCharacter => _createCharacter;
+        public IObservable<EntityInfo> createNextCharacter => _createNextCharacter;
         public IObservable<EntityInfo> createEnemy => _createEnemy;
         public IObservable<Unit> gameEnd => _gameEnd;
         public IObservable<bool> isEnableMove => _isEnableMove;
@@ -238,7 +256,7 @@ namespace RibertaGames
             _CalcScore();
 
             //キャッシュ作成
-            _SetGameCached(this);
+            _SetGameCached(_CreateGameCached());
         }
 
         /// <summary>
@@ -281,12 +299,136 @@ namespace RibertaGames
             _saveData.SetInt(eSaveDataType.Tutorial.ToString(), 1);
         }
 
+        public void SetGameModel(GameCached gameCached)
+        {
+            _score.Value = gameCached.score;
+            _highScore.Value = gameCached.highScore;
+            _destroyCount.Value = gameCached.destroyCount;
+            _currentTurn.Value = gameCached.currentTurn;
+            _totalDamege = gameCached.totalDamege;
+            _isEnableMove.Value = gameCached.isEnableMove;
+            _currentItem = gameCached.currentItem;
+            _gameState = gameCached.gameState;
+
+            _DeserializeCharacters(gameCached.serializedCharacters);
+            _DeserializeEnemies(gameCached.serializedEnemies);
+            if (gameCached.nextCharacterPower != 0)
+            {
+                _createNextCharacter.OnNext(new EntityInfo(NEXT_CHARACTER_X, NEXT_CHARACTER_Y, gameCached.nextCharacterPower, CHARACTER_MASU_X, CHARACTER_MASU_Y));
+            }
+        }
+
+        private GameCached _CreateGameCached()
+        {
+            if(_gameState == eGameState.GameEnd)
+            {
+                return null;
+            }
+            string serializeCharacter = _SerializeCharacters(characters);
+            string serializeEnemy = _SerializeEnemies(enemies);
+            int nextCharacterPower = nextCharacter != null ? nextCharacter.power : 0;
+
+            return new GameCached()
+            {
+                score = _score.Value,
+                highScore = _highScore.Value,
+                destroyCount = _destroyCount.Value,
+                currentTurn = _currentTurn.Value,
+                totalDamege = _totalDamege,
+                isEnableMove = _isEnableMove.Value,
+                currentItem = _currentItem,
+                gameState = _gameState,
+                nextCharacterPower = nextCharacterPower,
+                serializedCharacters = serializeCharacter,
+                serializedEnemies = serializeEnemy,
+            };
+        }
+
         /// <summary>
         /// ゲームキャッシュをセット
         /// </summary>
-        private void _SetGameCached(GameModel gameModel = null)
+        private void _SetGameCached(GameCached gameCached = null)
         {
-            _saveData.SetClass(eSaveDataType.GameCached.ToString(), gameModel);
+            _saveData.SetClass(eSaveDataType.GameCached.ToString(), gameCached);
+        }
+
+        private string _SerializeEnemies(Enemy[,] enemies)
+        {
+            List<string> serializedEnemies = new List<string>();
+            for (int i = 0; i < ENEMY_MASU_X; i++)
+            {
+                for (int j = 0; j < ENEMY_MASU_Y; j++)
+                {
+                    string s = "";
+                    if (enemies[i, j] != null) 
+                    { 
+                        s = $"{enemies[i, j].x},{enemies[i, j].y},{enemies[i, j].power},{(int)enemies[i, j].gimickType}";
+                    }
+                    serializedEnemies.Add(s);
+                }
+            }
+            return string.Join(";", serializedEnemies);
+        }
+
+        private void _DeserializeEnemies(string serializedEnemies)
+        {
+            string[] enemyStrings = serializedEnemies.Split(';');
+            int index = 0;
+            for (int i = 0; i < ENEMY_MASU_X; i++)
+            {
+                for (int j = 0; j < ENEMY_MASU_Y; j++)
+                {
+                    if (enemyStrings[index] != "")
+                    {
+                        string[] parts = enemyStrings[index].Split(',');
+                        int x = int.Parse(parts[0]);
+                        int y = int.Parse(parts[1]);
+                        int power = int.Parse(parts[2]);
+                        eGimickType gimick = (eGimickType)int.Parse(parts[3]);
+                        _createEnemy.OnNext(new EntityInfo(x, y, power, ENEMY_MASU_X, ENEMY_MASU_Y, gimick));
+                    }
+                    index++;
+                }
+            }
+        }
+
+        private string _SerializeCharacters(Character[,] characters)
+        {
+            List<string> serializedCharacters = new List<string>();
+            for (int i = 0; i < CHARACTER_MASU_X; i++)
+            {
+                for (int j = 0; j < CHARACTER_MASU_Y; j++)
+                {
+                    string s = "";
+                    if (characters[i, j] != null)
+                    {
+                        s = $"{characters[i, j].x},{characters[i, j].y},{characters[i, j].power}";
+                    }
+                    serializedCharacters.Add(s);
+                }
+            }
+            return string.Join(";", serializedCharacters);
+        }
+
+        private void _DeserializeCharacters(string serializedCharacters)
+        {
+            string[] characterStrings = serializedCharacters.Split(';');
+            int index = 0;
+            for (int i = 0; i < CHARACTER_MASU_X; i++)
+            {
+                for (int j = 0; j < CHARACTER_MASU_Y; j++)
+                {
+                    if (characterStrings[index] != "")
+                    {
+                        string[] parts = characterStrings[index].Split(',');
+                        int x = int.Parse(parts[0]);
+                        int y = int.Parse(parts[1]);
+                        int power = int.Parse(parts[2]);
+                        _createCharacter.OnNext(new EntityInfo(x, y, power, CHARACTER_MASU_X, CHARACTER_MASU_Y));
+                    }
+                    index++;
+                }
+            }
         }
 
         /// <summary>
@@ -663,7 +805,7 @@ namespace RibertaGames
             int nextCharacterPower = 2;
 
             //控室に生成させる。
-            _createCharacter.OnNext(new EntityInfo(NEXT_CHARACTER_X, NEXT_CHARACTER_Y, nextCharacterPower, CHARACTER_MASU_X, CHARACTER_MASU_Y));
+            _createNextCharacter.OnNext(new EntityInfo(NEXT_CHARACTER_X, NEXT_CHARACTER_Y, nextCharacterPower, CHARACTER_MASU_X, CHARACTER_MASU_Y));
 
             //int[] _GetElementsArray(int[] array, int maxCount)
             //{

@@ -12,20 +12,22 @@ namespace RibertaGames {
         public void Start()
         {
             Init();
-            _ = _model.GameStart();
+
+            //途中のセーブデータが存在した時
+            var game = _saveData.GetClass(eSaveDataType.GameCached.ToString(), new GameCached());
+            if (game != null && game.currentTurn > 0)
+            {
+                _model.SetGameModel(game);
+            }
+            else
+            {
+                _ = _model.GameStart();
+            }
         }
 
         protected override void _SetupModel()
         {
-            var game = _saveData.GetClass(eSaveDataType.GameCached.ToString(), new GameModel());
-            if (game != null)
-            {
-                _model = game;
-            }
-            else
-            {
-                _model = new GameModel();
-            }
+            _model = new GameModel();
         }
 
         protected override void _SetupView()
@@ -63,10 +65,21 @@ namespace RibertaGames {
                 .Subscribe(currentTurn => _view.SetCurrentTurnText(currentTurn.ToString()))
                 .AddTo(gameObject);
 
-            // キャラクター生成
+            // 直接キャラクター生成
             _model.createCharacter
                 .Subscribe(info => {
-                    _model.nextCharacter = _view.CreateCharacter(info);
+                     var character = _view.CreateCharacter(info);
+                    _model.characters[info.x, info.y] = character;
+                    _ = character.moveCharacter
+                    .Subscribe(moveInfo => _model.PlayerMoveCharacter(moveInfo.x, moveInfo.y, moveInfo.character))
+                    .AddTo(character.gameObject);
+                })
+                .AddTo(gameObject);
+
+            // 次のキャラクター生成
+            _model.createNextCharacter
+                .Subscribe(info => {
+                    _model.nextCharacter = _view.CreateCharacter(info, true);
                     _ = _model.nextCharacter.moveCharacter
                     .Subscribe(moveInfo => _model.PlayerMoveCharacter(moveInfo.x, moveInfo.y, moveInfo.character))
                     .AddTo(_model.nextCharacter.gameObject);

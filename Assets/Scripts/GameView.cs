@@ -175,14 +175,18 @@ namespace RibertaGames
         /// <param name="x"></param>
         /// <param name="y"></param>
         /// <param name="power"></param>
-        public Character CreateCharacter(EntityInfo info)
+        public Character CreateCharacter(EntityInfo info, bool nextCharacter = false)
         {
             var prefab = Instantiate(_characterPrefab, _characterBoard, false);
             prefab.SetOrigin(_characterBoard, info.boardX, info.boardY);
             prefab.Setup(info.x, info.y, info.power);
             prefab.SetGraphicRaycaster(_graphicRaycaster);
-            prefab.SetNextCharacterPosition(info.x, NEXT_CHARACTER_POSITION_Y);
             prefab.SetupImage(_CharacterImg(info.power));
+
+            if (nextCharacter)
+            {
+                prefab.SetNextCharacterPosition(info.x, NEXT_CHARACTER_POSITION_Y);
+            }
 
             // 画像更新
             prefab.changePower
