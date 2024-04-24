@@ -69,19 +69,20 @@ jobs:
           - Android
           - iOS
     steps:
-      - name: Checkout Repository
+      # Checkout
+      - name: Checkout
         uses: actions/checkout@v2
         with:
-          fetch-depth: 0
           lfs: true
-      - name: Cache Library
+
+      # Cache
+      - name: Cache
         uses: actions/cache@v2
         with:
-          path: |
-            Library
-            build/${{ matrix.targetPlatform }}
-          key: Library-${{ matrix.targetPlatform }}-
-          restore-keys: Library-
+          path: ${{ matrix.projectPath }}/Library
+          key: Library-${{ matrix.projectPath }}
+          restore-keys: |
+            Library-
       - name: Free Disk Space for Android
         if: matrix.targetPlatform == 'Android'
         run: |

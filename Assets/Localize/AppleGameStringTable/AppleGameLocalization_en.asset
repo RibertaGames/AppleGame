@@ -80,5 +80,11 @@ MonoBehaviour:
       you get a clock, the fruit will not be able to move for one turn!'
     m_Metadata:
       m_Items: []
+  - m_Id: 47046028684242944
+    m_Localized: 'You can move within this frame!
+
+'
+    m_Metadata:
+      m_Items: []
   references:
     version: 1

@@ -75,5 +75,9 @@ MonoBehaviour:
       voc\xEA conseguir um rel\xF3gio, a fruta n\xE3o poder\xE1 se mover nem um turno!"
     m_Metadata:
       m_Items: []
+  - m_Id: 47046028684242944
+    m_Localized: "Voc\xEA pode se mover dentro deste quadro!\r\n"
+    m_Metadata:
+      m_Items: []
   references:
     version: 1

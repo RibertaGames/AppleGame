@@ -75,5 +75,9 @@ MonoBehaviour:
       nicht bewegen!\r\n"
     m_Metadata:
       m_Items: []
+  - m_Id: 47046028684242944
+    m_Localized: "In diesem Rahmen k\xF6nnen Sie sich bewegen!"
+    m_Metadata:
+      m_Items: []
   references:
     version: 1

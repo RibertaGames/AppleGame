@@ -79,5 +79,11 @@ MonoBehaviour:
       pun!'
     m_Metadata:
       m_Items: []
+  - m_Id: 47046028684242944
+    m_Localized: 'Anda dapat bergerak dalam bingkai ini!
+
+'
+    m_Metadata:
+      m_Items: []
   references:
     version: 1

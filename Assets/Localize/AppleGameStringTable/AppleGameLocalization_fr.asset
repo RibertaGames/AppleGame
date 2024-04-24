@@ -75,5 +75,9 @@ MonoBehaviour:
       un tour !"
     m_Metadata:
       m_Items: []
+  - m_Id: 47046028684242944
+    m_Localized: "Vous pouvez vous d\xE9placer dans ce cadre !"
+    m_Metadata:
+      m_Items: []
   references:
     version: 1

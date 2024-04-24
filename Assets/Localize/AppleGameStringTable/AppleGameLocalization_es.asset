@@ -72,5 +72,9 @@ MonoBehaviour:
       consigues un reloj, la fruta no podr\xE1 moverse durante un turno!"
     m_Metadata:
       m_Items: []
+  - m_Id: 47046028684242944
+    m_Localized: "\xA1Puedes moverte dentro de este marco!\r\n"
+    m_Metadata:
+      m_Items: []
   references:
     version: 1

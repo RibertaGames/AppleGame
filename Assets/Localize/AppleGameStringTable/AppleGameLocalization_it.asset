@@ -75,5 +75,11 @@ MonoBehaviour:
       ottieni un orologio, il frutto non potr\xE0 muoversi per un turno!"
     m_Metadata:
       m_Items: []
+  - m_Id: 47046028684242944
+    m_Localized: 'Puoi muoverti all''interno di questa cornice!
+
+'
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
