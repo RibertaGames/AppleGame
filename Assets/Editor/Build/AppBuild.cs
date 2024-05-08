@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using UnityEditor;
 using UnityEditor.AddressableAssets.Settings;
 using UnityEditor.Build.Reporting;
@@ -23,7 +23,7 @@ namespace RibertaGames
 #if UNITY_EDITOR_WIN
             string path = $"/Users/user/Desktop/UnityBuild/android/game.apk";
 #elif UNITY_EDITOR_OSX
-            string path = $"/Users/yanosyoki/Desktop/UnityBuild/android/game.apk";
+            string path = $"/Users/riberta/Desktop/UnityBuild/android/game.apk";
 #endif
             var report = BuildPipeline.BuildPlayer(_GetAllScenePaths(), path, BuildTarget.Android, BuildOptions.None);
             BuildSummary summary = report.summary;
@@ -47,7 +47,7 @@ namespace RibertaGames
 #if UNITY_EDITOR_WIN
             string path = $"/Users/user/Desktop/UnityBuild/ios";
 #elif UNITY_EDITOR_OSX
-            string path = $"/Users/yanosyoki/Desktop/UnityBuild/ios";
+            string path = $"/Users/riberta/Desktop/UnityBuild/ios";
 #endif
             var report = BuildPipeline.BuildPlayer(_GetAllScenePaths(), path, BuildTarget.iOS, BuildOptions.None);
             BuildSummary summary = report.summary;
