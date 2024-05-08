@@ -188,8 +188,8 @@ namespace RibertaGames
             {
                 _Initialize();
                 _gameState = eGameState.GamePlay;
-                await _NextTurn();
                 _CreateNextCharacter();
+                await _NextTurn();
             }
         }
 
