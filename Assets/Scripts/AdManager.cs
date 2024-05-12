@@ -13,8 +13,8 @@
 //#if UNITY_ANDROID
 
 //    //本番ID
-//    private static readonly string ANDROID_BANNER_ID = "";
-//    private static readonly string ANDROID_INTERSTITIAL_ID = "";
+//    private static readonly string ANDROID_BANNER_ID = "ca-app-pub-8184775472875165/3722688788";
+//    private static readonly string ANDROID_INTERSTITIAL_ID = "ca-app-pub-8184775472875165/9615132889";
 //    private static readonly string ANDROID_REWARD_ID = "";
 
 //    //テストID
@@ -25,8 +25,8 @@
 //#elif UNITY_IPHONE
 
 //    //本番ID
-//    private static readonly string IPONE_BANNER_ID = "";
-//    private static readonly string IPONE_INTERSTITIAL_ID = "";
+//    private static readonly string IPONE_BANNER_ID = "ca-app-pub-8184775472875165/9886008890";
+//    private static readonly string IPONE_INTERSTITIAL_ID = "ca-app-pub-8184775472875165/6506587965";
 //    private static readonly string IPONE_REWARD_ID = "";
 
 //    //テストID
