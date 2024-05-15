@@ -9,6 +9,7 @@ namespace RibertaGames
     /// <summary>
     /// オーディオを管理するマネージャクラスの設定ファイル
     /// </summary>
+    [CreateAssetMenu(fileName = "AudioManagerSetting", menuName = "ScriptableObject/オーディオ設定ファイル")]
     public class AudioManagerSetting : ScriptableObject
     {
 
