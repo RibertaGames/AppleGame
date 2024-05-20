@@ -26,6 +26,7 @@ namespace RibertaGames
         [SerializeField] private GameObject _boardFillter;
         [SerializeField] private SettingWindow _settingWindow;
         [SerializeField] private TutorialWindow _tutorialWindow;
+        [SerializeField] private GameOverWindow _gameOverWindow;
 
         [SerializeField] private Sprite[]_animal;  // 動物の画像
         [SerializeField] private Sprite[] _fruits; // フルーツの画像
@@ -70,6 +71,21 @@ namespace RibertaGames
         public IObservable<Unit> backTutorialWindowButton => _tutorialWindow.closeWindowButton;
 
         /// <summary>
+        /// ゲームオーバーのYESボタン
+        /// </summary>
+        public IObservable<Unit> yesGameOverWindowButton => _gameOverWindow.yesButton;
+
+        /// <summary>
+        /// ゲームオーバーのYESボタン
+        /// </summary>
+        public IObservable<Unit> noGameOverWindowButton => _gameOverWindow.noButton;
+
+        /// <summary>
+        /// チュートリアルウィンドウの戻るボタン
+        /// </summary>
+        public IObservable<Unit> backGameOverWindowButton => _gameOverWindow.closeWindowButton;
+
+        /// <summary>
         /// 初期化
         /// </summary>
         public override void Init()
@@ -82,6 +98,9 @@ namespace RibertaGames
 
             // チュートリアルウィンドウを初期化
             _tutorialWindow.Init();
+
+            // ゲームを終了しますか？ウィンドウを初期化
+            _gameOverWindow.Init();
 
             // フィルターオフ
             SetActiveFillter(false);
@@ -122,6 +141,16 @@ namespace RibertaGames
         /// チュートリアルウィンドウを閉じる
         /// </summary>
         public async UniTask CloseTutorialWindow() => await _tutorialWindow.Close();
+
+        /// <summary>
+        /// ゲームオーバーウィンドウを開く
+        /// </summary>
+        public void OpenGameOverWindow() => _gameOverWindow.Open();
+
+        /// <summary>
+        /// ゲームオーバーウィンドウを閉じる
+        /// </summary>
+        public async UniTask CloseGameOverWindow() => await _gameOverWindow.Close();
 
         /// <summary>
         /// ボードフィルターオンオフ

@@ -85,5 +85,19 @@ MonoBehaviour:
 '
     m_Metadata:
       m_Items: []
+  - m_Id: 56539373169094656
+    m_Localized: 'Apakah permainannya sudah selesai?
+
+'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 56539380291022848
+    m_Localized: Ya
+    m_Metadata:
+      m_Items: []
+  - m_Id: 56539387412951040
+    m_Localized: Tidak
+    m_Metadata:
+      m_Items: []
   references:
     version: 1

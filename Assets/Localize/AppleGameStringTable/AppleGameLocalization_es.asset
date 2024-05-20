@@ -76,5 +76,17 @@ MonoBehaviour:
     m_Localized: "\xA1Puedes moverte dentro de este marco!\r\n"
     m_Metadata:
       m_Items: []
+  - m_Id: 56539373169094656
+    m_Localized: "\xBFSe acab\xF3 el juego?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 56539380291022848
+    m_Localized: "S\xED"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 56539387412951040
+    m_Localized: No
+    m_Metadata:
+      m_Items: []
   references:
     version: 1

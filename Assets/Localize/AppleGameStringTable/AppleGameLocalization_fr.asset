@@ -79,5 +79,17 @@ MonoBehaviour:
     m_Localized: "Vous pouvez vous d\xE9placer dans ce cadre !"
     m_Metadata:
       m_Items: []
+  - m_Id: 56539373169094656
+    m_Localized: "Le jeu est-il termin\xE9 ?\r\n"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 56539380291022848
+    m_Localized: Oui
+    m_Metadata:
+      m_Items: []
+  - m_Id: 56539387412951040
+    m_Localized: Non
+    m_Metadata:
+      m_Items: []
   references:
     version: 1

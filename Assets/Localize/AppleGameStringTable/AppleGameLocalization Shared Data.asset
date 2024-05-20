@@ -71,6 +71,18 @@ MonoBehaviour:
     m_Key: TUTORIAL_6
     m_Metadata:
       m_Items: []
+  - m_Id: 56539373169094656
+    m_Key: GAME_OVER_WINDOW
+    m_Metadata:
+      m_Items: []
+  - m_Id: 56539380291022848
+    m_Key: YES
+    m_Metadata:
+      m_Items: []
+  - m_Id: 56539387412951040
+    m_Key: NO
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

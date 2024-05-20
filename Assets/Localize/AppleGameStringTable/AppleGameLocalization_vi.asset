@@ -82,5 +82,17 @@ MonoBehaviour:
     m_Localized: "B\u1EA1n c\xF3 th\u1EC3 di chuy\u1EC3n trong khung n\xE0y!\r\n"
     m_Metadata:
       m_Items: []
+  - m_Id: 56539373169094656
+    m_Localized: "Tr\xF2 ch\u01A1i \u0111\xE3 k\u1EBFt th\xFAc ch\u01B0a?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 56539380291022848
+    m_Localized: "\u0110\xFAng"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 56539387412951040
+    m_Localized: "kh\xF4ng"
+    m_Metadata:
+      m_Items: []
   references:
     version: 1

@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using UniRx;
 using System;
 using Cysharp.Threading.Tasks;
+using DG.Tweening;
 
 namespace RibertaGames
 {
@@ -84,6 +85,11 @@ namespace RibertaGames
         {
             _image.sprite = s;
             _additiveImage.sprite = s;
+            _additiveImage.color = new Color(1, 1, 1, 0.05f);
+            _additiveImage
+                .DOFade(0.3f, 2.0f) // 1.0秒かけてアルファ値を0.1fにする
+                .SetLoops(-1, LoopType.Yoyo) // 無限ループさせてYoyo（行ったり来たり）する
+                .SetEase(Ease.InOutSine);
         }
 
         /// <summary>

@@ -100,12 +100,16 @@ namespace RibertaGames {
             // ゲーム開始ボタン
             _view.gameStartButton
                 .Subscribe(async _ => {
-
                     if (_model.GetCurrentGameState() != eGameState.GamePlay)
                     {
                         _view.InitializeView();
                         await _model.GameStart();
                         _view.SetActiveBoardFillter(false);
+                    }
+                    else
+                    {
+                        _view.SetActiveFillter(true);
+                        _view.OpenGameOverWindow();
                     }
                 })
                 .AddTo(gameObject);
@@ -113,7 +117,7 @@ namespace RibertaGames {
             // ゲーム終了ボタン
             _view.gameEndButton
                 .Subscribe(async _ => {
-                    _model.GameEnd();
+                    _view.OpenGameOverWindow();
                     await _view.CloseSettingWindow();
                     _view.SetActiveFillter(false);
                 })
@@ -164,6 +168,34 @@ namespace RibertaGames {
                 .Subscribe(async _ => {
                     await _view.CloseTutorialWindow();
                     _view.SetActiveFillter(false);
+                })
+                .AddTo(gameObject);
+
+            // ゲームオーバー: YESボタン登録
+            _view.yesGameOverWindowButton
+                .Subscribe(async _ => {
+                    _view.SetActiveFillter(true);
+                    _view.SetActiveBoardFillter(false);
+                    await _view.CloseGameOverWindow();
+                    _model.GameEnd();
+                })
+                .AddTo(gameObject);
+
+            // ゲームオーバー: NOボタン登録
+            _view.noGameOverWindowButton
+                .Subscribe(async _ => {
+                    _view.SetActiveFillter(false);
+                    _view.SetActiveBoardFillter(false);
+                    await _view.CloseGameOverWindow();
+                })
+                .AddTo(gameObject);
+
+            // ゲームオーバー閉じる
+            _view.backGameOverWindowButton
+                .Subscribe(async _ => {
+                    _view.SetActiveFillter(false);
+                    _view.SetActiveBoardFillter(false);
+                    await _view.CloseGameOverWindow();
                 })
                 .AddTo(gameObject);
         }

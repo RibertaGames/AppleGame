@@ -79,5 +79,17 @@ MonoBehaviour:
     m_Localized: "In diesem Rahmen k\xF6nnen Sie sich bewegen!"
     m_Metadata:
       m_Items: []
+  - m_Id: 56539373169094656
+    m_Localized: Ist das Spiel vorbei?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 56539380291022848
+    m_Localized: Ja
+    m_Metadata:
+      m_Items: []
+  - m_Id: 56539387412951040
+    m_Localized: Nein
+    m_Metadata:
+      m_Items: []
   references:
     version: 1

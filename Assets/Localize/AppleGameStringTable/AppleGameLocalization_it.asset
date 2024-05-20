@@ -81,5 +81,17 @@ MonoBehaviour:
 '
     m_Metadata:
       m_Items: []
+  - m_Id: 56539373169094656
+    m_Localized: "Il gioco \xE8 finito?\r"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 56539380291022848
+    m_Localized: "S\xCC"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 56539387412951040
+    m_Localized: No
+    m_Metadata:
+      m_Items: []
   references:
     version: 1

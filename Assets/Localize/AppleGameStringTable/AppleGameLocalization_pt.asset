@@ -79,5 +79,17 @@ MonoBehaviour:
     m_Localized: "Voc\xEA pode se mover dentro deste quadro!\r\n"
     m_Metadata:
       m_Items: []
+  - m_Id: 56539373169094656
+    m_Localized: O jogo acabou?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 56539380291022848
+    m_Localized: sim
+    m_Metadata:
+      m_Items: []
+  - m_Id: 56539387412951040
+    m_Localized: "n\xE3o"
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
