@@ -106,11 +106,11 @@ namespace RibertaGames {
                         await _model.GameStart();
                         _view.SetActiveBoardFillter(false);
                     }
-                    else
-                    {
-                        _view.SetActiveFillter(true);
-                        _view.OpenGameOverWindow();
-                    }
+                    //else
+                    //{
+                    //    _view.SetActiveFillter(true);
+                    //    _view.OpenGameOverWindow();
+                    //}
                 })
                 .AddTo(gameObject);
 

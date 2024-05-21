@@ -153,7 +153,10 @@ namespace RibertaGames
         /// </summary>
         private readonly int TIMER_POP_PERCENT = 1;
 
-        private readonly float ENEMY_STRONG = 0.5f;
+        /// <summary>
+        /// エネミーの強さ
+        /// </summary>
+        private readonly float ENEMY_STRONG = 0.4f;
 
         #endregion
 
@@ -463,7 +466,7 @@ namespace RibertaGames
             {
                 _isEnableMove.Value = false;
                 SEManager.instance.Play(SEPath.EAT);
-                await UniTask.Delay(700);
+                await UniTask.Delay(800);
                 _isEnableMove.Value = true;
             }
 
