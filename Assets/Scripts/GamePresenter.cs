@@ -117,9 +117,8 @@ namespace RibertaGames {
             // ゲーム終了ボタン
             _view.gameEndButton
                 .Subscribe(async _ => {
-                    _view.OpenGameOverWindow();
                     await _view.CloseSettingWindow();
-                    _view.SetActiveFillter(false);
+                    _view.OpenGameOverWindow();
                 })
                 .AddTo(gameObject);
 
@@ -174,28 +173,35 @@ namespace RibertaGames {
             // ゲームオーバー: YESボタン登録
             _view.yesGameOverWindowButton
                 .Subscribe(async _ => {
-                    _view.SetActiveFillter(true);
-                    _view.SetActiveBoardFillter(false);
-                    await _view.CloseGameOverWindow();
                     _model.GameEnd();
+                    await _view.CloseGameOverWindow();
+
+                    _view.SetActiveFillter(false);
+                    _view.SetActiveBoardFillter(false);
+                    if (_model.GetCurrentGameState() != eGameState.GamePlay)
+                    {
+                        _view.InitializeView();
+                        await _model.GameStart();
+                        _view.SetActiveBoardFillter(false);
+                    }
                 })
                 .AddTo(gameObject);
 
             // ゲームオーバー: NOボタン登録
             _view.noGameOverWindowButton
                 .Subscribe(async _ => {
+                    await _view.CloseGameOverWindow();
                     _view.SetActiveFillter(false);
                     _view.SetActiveBoardFillter(false);
-                    await _view.CloseGameOverWindow();
                 })
                 .AddTo(gameObject);
 
             // ゲームオーバー閉じる
             _view.backGameOverWindowButton
                 .Subscribe(async _ => {
+                    await _view.CloseGameOverWindow();
                     _view.SetActiveFillter(false);
                     _view.SetActiveBoardFillter(false);
-                    await _view.CloseGameOverWindow();
                 })
                 .AddTo(gameObject);
         }
