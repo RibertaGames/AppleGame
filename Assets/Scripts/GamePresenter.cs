@@ -173,17 +173,15 @@ namespace RibertaGames {
             // ゲームオーバー: YESボタン登録
             _view.yesGameOverWindowButton
                 .Subscribe(async _ => {
-                    _model.GameEnd();
                     await _view.CloseGameOverWindow();
-
+                    _model.GameEnd();
                     _view.SetActiveFillter(false);
-                    _view.SetActiveBoardFillter(false);
-                    if (_model.GetCurrentGameState() != eGameState.GamePlay)
-                    {
-                        _view.InitializeView();
-                        await _model.GameStart();
-                        _view.SetActiveBoardFillter(false);
-                    }
+                    //if (_model.GetCurrentGameState() != eGameState.GamePlay)
+                    //{
+                    //    _view.InitializeView();
+                    //    await _model.GameStart();
+                    //    _view.SetActiveBoardFillter(false);
+                    //}
                 })
                 .AddTo(gameObject);
 

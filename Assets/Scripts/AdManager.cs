@@ -1,285 +1,208 @@
-﻿//using GoogleMobileAds.Api;
-//using System.Collections;
-//using Unity.VisualScripting;
-//using UnityEngine;
+﻿using GoogleMobileAds.Api;
+using System;
 
-//public class AdManager : MonoBehaviour
-//{
-//    /// <summary>
-//    /// テストモード
-//    /// </summary>
-//    public static readonly bool AD_TEST_MODE = true;
+namespace RibertaGames
+{
 
-//#if UNITY_ANDROID
+    public class AdManager : SingletonMonoBehaviour<AdManager>
+    {
+        private AdManager() { }
 
-//    //本番ID
-//    private static readonly string ANDROID_BANNER_ID = "ca-app-pub-8184775472875165/3722688788";
-//    private static readonly string ANDROID_INTERSTITIAL_ID = "ca-app-pub-8184775472875165/9615132889";
-//    private static readonly string ANDROID_REWARD_ID = "";
+        /// <summary>
+        /// テストモード
+        /// </summary>
+        private readonly bool AD_TEST_MODE = false;
 
-//    //テストID
-//    private static readonly string TEST_ANDROID_BANNER_ID = "ca-app-pub-3940256099942544/6300978111";
-//    private static readonly string TEST_ANDROID_INTERSTITIAL_ID = "ca-app-pub-3940256099942544/1033173712";
-//    private static readonly string TEST_ANDROID_REWARD_ID = "ca-app-pub-3940256099942544/5224354917";
+#if UNITY_ANDROID
 
-//#elif UNITY_IPHONE
+        //本番ID
+        private readonly string ANDROID_BANNER_ID = "ca-app-pub-8184775472875165/3722688788";
+        private readonly string ANDROID_INTERSTITIAL_ID = "ca-app-pub-8184775472875165/9615132889";
+        private readonly string ANDROID_REWARD_ID = "";
 
-//    //本番ID
-//    private static readonly string IPONE_BANNER_ID = "ca-app-pub-8184775472875165/9886008890";
-//    private static readonly string IPONE_INTERSTITIAL_ID = "ca-app-pub-8184775472875165/6506587965";
-//    private static readonly string IPONE_REWARD_ID = "";
+        //テストID
+        private readonly string TEST_ANDROID_BANNER_ID = "ca-app-pub-3940256099942544/6300978111";
+        private readonly string TEST_ANDROID_INTERSTITIAL_ID = "ca-app-pub-3940256099942544/1033173712";
+        private readonly string TEST_ANDROID_REWARD_ID = "ca-app-pub-3940256099942544/5224354917";
 
-//    //テストID
-//    private static readonly string TEST_IPONE_BANNER_ID = "ca-app-pub-3940256099942544/2934735716";
-//    private static readonly string TEST_IPONE_INTERSTITIAL_ID = "ca-app-pub-3940256099942544/4411468910";
-//    private static readonly string TEST_IPONE_REWARD_ID = "ca-app-pub-3940256099942544/1712485313";
+#elif UNITY_IPHONE
 
-//#endif
+        //本番ID
+        private readonly string IPONE_BANNER_ID = "ca-app-pub-8184775472875165/9886008890";
+        private readonly string IPONE_INTERSTITIAL_ID = "ca-app-pub-8184775472875165/6506587965";
+        private readonly string IPONE_REWARD_ID = "";
 
-//    /// <summary>
-//    /// AdMobの広告種類
-//    /// </summary>
-//    public enum eAdMob
-//    {
-//        Banner = 0,
-//        Interstitial = 1,
-//        Reward = 2,
-//    }
+        //テストID
+        private readonly string TEST_IPONE_BANNER_ID = "ca-app-pub-3940256099942544/2934735716";
+        private readonly string TEST_IPONE_INTERSTITIAL_ID = "ca-app-pub-3940256099942544/4411468910";
+        private readonly string TEST_IPONE_REWARD_ID = "ca-app-pub-3940256099942544/1712485313";
 
-//    /// <summary>
-//    /// AdMob: バナー広告
-//    /// </summary>
-//    private BannerView _bannerView;
+#endif
 
-//    /// <summary>
-//    /// AdMob: インタースティシャル広告
-//    /// </summary>
-//    private InterstitialAd _interstitial;
+        private string _GetID(eAdMob eAdMob)
+        {
+            string adUnitId = "";
+#if UNITY_ANDROID
+            switch (eAdMob)
+            {
+                case eAdMob.Banner:
+                    if (AD_TEST_MODE) adUnitId = TEST_ANDROID_BANNER_ID;
+                    else adUnitId = ANDROID_BANNER_ID;
+                    break;
+                case eAdMob.Interstitial:
+                    if (AD_TEST_MODE) adUnitId = TEST_ANDROID_INTERSTITIAL_ID;
+                    else adUnitId = ANDROID_INTERSTITIAL_ID;
+                    break;
+                case eAdMob.Reward:
+                    if (AD_TEST_MODE) adUnitId = TEST_ANDROID_REWARD_ID;
+                    else adUnitId = ANDROID_REWARD_ID;
+                    break;
+            }
+#elif UNITY_IPHONE
+      switch (eAdMob)
+        {
+            case eAdMob.Banner:
+                if (AD_TEST_MODE) adUnitId = TEST_IPONE_BANNER_ID;
+                else adUnitId = IPONE_BANNER_ID;
+                break;
+            case eAdMob.Interstitial:
+                if (AD_TEST_MODE) adUnitId = TEST_IPONE_INTERSTITIAL_ID;
+                else adUnitId = IPONE_INTERSTITIAL_ID;
+                break;
+            case eAdMob.Reward:
+                if (AD_TEST_MODE) adUnitId = TEST_IPONE_REWARD_ID;
+                else adUnitId = IPONE_REWARD_ID;
+                break;
+        }             
+#endif
+            return adUnitId;
+        }
 
-//    /// <summary>
-//    /// AdMob: リワード広告
-//    /// </summary>
-//    private RewardedAd _rewardedAd;
+        /// <summary>
+        /// AdMobの広告種類
+        /// </summary>
+        public enum eAdMob
+        {
+            Banner = 0,
+            Interstitial = 1,
+            Reward = 2,
+        }
 
-//    /// <summary>
-//    /// リワード回数
-//    /// </summary>
-//    private int _rewardCount = 0;
+        /// <summary>
+        /// AdMob: バナー広告
+        /// </summary>
+        private BannerView _bannerView;
 
-//    public void Start()
-//    {
-//        MobileAds.Initialize(initStatus => { });
-//    }
+        /// <summary>
+        /// AdMob: インタースティシャル広告
+        /// </summary>
+        private InterstitialAd _interstitial;
 
-//    /// <summary>
-//    /// AdMobの広告ロード
-//    /// </summary>
-//    /// <param name="adType"></param>
-//    public void LoadAdMob(eAdMob adType)
-//    {
-//        switch (adType)
-//        {
-//            case eAdMob.Banner:
-//                _LoadBanner();
-//                break;
-//            case eAdMob.Interstitial:
-//                _LoadInterstitial();
-//                break;
-//            case eAdMob.Reward:
-//                _LoadReward();
-//                break;
-//        }
-//    }
+        /// <summary>
+        /// AdMob: リワード広告
+        /// </summary>
+        private RewardedAd _rewardedAd;
 
-//    /// <summary>
-//    /// 広告の表示
-//    /// </summary>
-//    /// <param name="adType"></param>
-//    public void ShowAdMob(eAdMob adType)
-//    {
-//        switch (adType)
-//        {
-//            case eAdMob.Banner:
-//                _ShowBanner();
-//                break;
-//            case eAdMob.Interstitial:
-//                _ShowInterstitialAd();
-//                break;
-//            case eAdMob.Reward:
-//                _ShowReward();
-//                break;
-//        }
-//    }
+        public void Start()
+        {
+            MobileAds.Initialize(initStatus => { });
+        }
 
-//    #region 広告ロード
-//    private void _LoadBanner()
-//    {
-//        string adUnitId;
-//        #if UNITY_ANDROID
-//            if(AD_TEST_MODE) adUnitId = TEST_ANDROID_BANNER_ID;
-//            else adUnitId = ANDROID_BANNER_ID;
-//        #elif UNITY_IPHONE
-//            if (AD_TEST_MODE) adUnitId = TEST_IPONE_BANNER_ID;
-//            else adUnitId = IPONE_BANNER_ID;
-//        #else
-//            adUnitId = "unexpected_platform";
-//        #endif
+        /// AdMobの広告ロード
+        /// </summary>
+        /// <param name="adType"></param>
+        public void LoadAndShowAdMob(eAdMob adType)
+        {
+            switch (adType)
+            {
+                case eAdMob.Banner:
+                    _ShowAdmobBanner();
+                    break;
+                case eAdMob.Interstitial:
+                    _ShowAdmobInterstitial();
+                    break;
+                case eAdMob.Reward:
+                    _AdmobReward();
+                    break;
+            }
+        }
 
-//        StartCoroutine(_HandleOnBannerAdClose());
+        /// <summary>
+        /// バナー広告
+        /// </summary>
+        private void _ShowAdmobBanner()
+        {
+            string adUnitId = _GetID(eAdMob.Banner);
+            if (_bannerView != null)
+            {
+                _bannerView.Destroy();
+            }
 
-//        _bannerView = new BannerView(adUnitId, AdSize.Banner, AdPosition.Bottom);
+            AdSize adaptiveSize = AdSize.GetPortraitAnchoredAdaptiveBannerAdSizeWithWidth(AdSize.FullWidth);
+            _bannerView = new BannerView(adUnitId, adaptiveSize, AdPosition.Bottom);
+            AdRequest request = new AdRequest.Builder().Build();
+            _bannerView.LoadAd(request);
+        }
 
-//        _bannerView.OnBannerAdLoaded += () => { };
-//        _bannerView.OnAdClicked += () => { };
-//        _bannerView.OnAdFullScreenContentOpened += () => { };
-//        _bannerView.OnAdFullScreenContentClosed += () => StartCoroutine(_HandleOnBannerAdClose()); ;
-//        _bannerView.OnBannerAdLoadFailed += (LoadAdError error) => StartCoroutine(_HandleOnBannerAdClose());
-//        _bannerView.OnAdImpressionRecorded += () => { };
-//        _bannerView.OnAdPaid += (AdValue value) => { };
-//    }
+        /// <summary>
+        /// インタースティシャル広告
+        /// </summary>
+        private void _ShowAdmobInterstitial()
+        {
+            string adUnitId = _GetID(eAdMob.Interstitial);
+            _interstitial = new InterstitialAd(adUnitId);
+            _interstitial.OnAdLoaded += _InterstitialAdLoaded;
+            _interstitial.OnAdClosed += _InterstitialAdClosed;
+            AdRequest request = new AdRequest.Builder().Build();
+            _interstitial.LoadAd(request);
 
-//    private void _LoadInterstitial()
-//    {
-//        string adUnitId;
-//        #if UNITY_ANDROID
-//            if (AD_TEST_MODE) adUnitId = TEST_ANDROID_INTERSTITIAL_ID;
-//            else adUnitId = ANDROID_INTERSTITIAL_ID;
-//        #elif UNITY_IPHONE
-//            if (AD_TEST_MODE) adUnitId = TEST_IPONE_INTERSTITIAL_ID;
-//            else adUnitId = IPONE_INTERSTITIAL_ID;
-//        #else
-//            adUnitId = "unexpected_platform";
-//        #endif
+            void _InterstitialAdLoaded(object sender, EventArgs args)
+            {
+                if (_interstitial.IsLoaded())
+                {
+                    _interstitial.Show();
+                }
+            }
 
-//        InterstitialAd.Load(
-//            adUnitId,
-//            new AdRequest(),
-//          (InterstitialAd ad, LoadAdError loadAdError) =>
-//          {
-//              StartCoroutine(_HandleOnInterstitialAdClose());
-//              if (loadAdError != null || ad == null) return;
+            void _InterstitialAdClosed(object sender, EventArgs args)
+            {
+                _interstitial.Destroy();
+            }
+        }
 
-//              ad.OnAdClicked += () => { };
-//              ad.OnAdFullScreenContentOpened += () => { };
-//              ad.OnAdFullScreenContentClosed += () => StartCoroutine(_HandleOnInterstitialAdClose()); ;
-//              ad.OnAdFullScreenContentFailed += (AdError error) => StartCoroutine(_HandleOnInterstitialAdClose());
-//              ad.OnAdImpressionRecorded += () => { };
-//              ad.OnAdPaid += (AdValue value) => { };
+        /// <summary>
+        /// リワード広告
+        /// </summary>
+        private void _AdmobReward()
+        {
+            string adUnitId = _GetID(eAdMob.Reward);
 
-//              _interstitial = ad;
-//          });
-//    }
+            _rewardedAd = new RewardedAd(adUnitId);
+            _rewardedAd.OnAdLoaded += _HandleRewardedAdLoaded;
+            _rewardedAd.OnUserEarnedReward += _HandleUserEarnedReward;
+            _rewardedAd.OnAdClosed += _HandleRewardedAdClosed;
+            AdRequest request = new AdRequest.Builder().Build();
+            _rewardedAd.LoadAd(request);
 
-//    private void _LoadReward()
-//    {
-//        string adUnitId;
-//        #if UNITY_ANDROID
-//            if(AD_TEST_MODE) adUnitId = TEST_ANDROID_REWARD_ID;
-//            else adUnitId = ANDROID_REWARD_ID;
-//        #elif UNITY_IPHONE
-//            if(AD_TEST_MODE) adUnitId = TEST_IPONE_REWARD_ID;
-//            else adUnitId = IPONE_REWARD_ID;
-//        #else
-//            adUnitId = "unexpected_platform";
-//        #endif
+            // リワード閉じる
+            void _HandleRewardedAdClosed(object sender, EventArgs args)
+            {
+                //AdmobReward();
+            }
 
-//        RewardedAd.Load(adUnitId, new AdRequest(),
-//        (RewardedAd ad, LoadAdError loadError) =>
-//        {
-//            StartCoroutine(_HandleOnRewardAdClose());
-//            if (loadError != null || ad == null) return;
+            // リワードゲット
+            void _HandleUserEarnedReward(object sender, Reward args)
+            {
+            }
 
-//            ad.OnAdClicked += () => { };
-//            ad.OnAdFullScreenContentOpened += () => { };
-//            ad.OnAdFullScreenContentClosed += () => StartCoroutine(_HandleOnRewardAdClose());
-//            ad.OnAdFullScreenContentFailed += (AdError error) => StartCoroutine(_HandleOnRewardAdClose());
-//            ad.OnAdImpressionRecorded += () => { };
-//            ad.OnAdPaid += (AdValue value) => { };
-
-//            _rewardedAd = ad;
-//        });
-//    }
-//    #endregion
-
-//    #region 広告表示
-
-//    /// <summary>
-//    /// バナー広告を表示
-//    /// </summary>
-//    private void _ShowBanner()
-//    {
-//        if (_bannerView != null)
-//        {
-//            AdRequest request = new AdRequest();
-//            _bannerView.LoadAd(request);
-//        }
-//    }
-
-//    /// <summary>
-//    /// インタースティシャル広告を表示
-//    /// </summary>
-//    private void _ShowInterstitialAd()
-//    {
-//        if (_interstitial != null &&
-//            _interstitial.CanShowAd())
-//        {
-//            _interstitial.Show();
-//        }
-//    }
-
-//    /// <summary>
-//    /// リワード広告表示
-//    /// </summary>
-//    private void _ShowReward()
-//    {
-//        if (_rewardedAd != null && _rewardedAd.CanShowAd())
-//        {
-//            _rewardedAd.Show((Reward reward) => _HandleUserEarnedReward(reward));
-//        }
-//    }
-
-//    #endregion
-
-//    #region 広告終了時
-
-//    private IEnumerator _HandleOnBannerAdClose()
-//    {
-//        if(_bannerView != null)
-//        {
-//            _bannerView.Destroy();
-//            yield return null;
-//            _bannerView = null;
-//        }
-//    }
-//    private IEnumerator _HandleOnInterstitialAdClose()
-//    {
-//        if (_interstitial != null)
-//        {
-//            _interstitial.Destroy();
-//            yield return null;
-//            _interstitial = null;
-//        }
-//    }
-//    private IEnumerator _HandleOnRewardAdClose()
-//    {
-//        if (_rewardedAd != null)
-//        {
-//            _rewardedAd.Destroy();
-//            //一フレーム待機
-//            yield return null;
-//            _rewardedAd = null;
-//        }
-//    }
-
-//    #endregion
-
-//    /// <summary>
-//    /// リワード広告完了後の報酬
-//    /// </summary>
-//    /// <param name="args"></param>
-//    private void _HandleUserEarnedReward(Reward args)
-//    {
-//        Debug.Log(args.Type + " - " + args.Amount);
-//        _rewardCount++;
-//    }
-//}
+            // リワードロード後に表示
+            void _HandleRewardedAdLoaded(object sender, EventArgs args)
+            {
+                if (_rewardedAd.IsLoaded())
+                {
+                    _rewardedAd.Show();
+                }
+            }
+        }
+    }
+}
