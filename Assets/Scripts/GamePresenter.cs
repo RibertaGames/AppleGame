@@ -96,12 +96,14 @@ namespace RibertaGames {
                 .Subscribe(active => _view.SetEnableMove(active))
                 .AddTo(gameObject);
 
-
             // ゲーム開始ボタン
             _view.gameStartButton
                 .Subscribe(async _ => {
                     if (_model.GetCurrentGameState() != eGameState.GamePlay)
                     {
+                        // インタースティシャル広告を表示
+                        AdManager.instance.LoadAndShowAdMob(AdManager.eAdMob.Interstitial);
+
                         _view.InitializeView();
                         await _model.GameStart();
                         _view.SetActiveBoardFillter(false);
