@@ -14,7 +14,7 @@ public static class ATTPostProcessBuild
         PlistDocument infoPlist = new PlistDocument();
         infoPlist.ReadFromFile(infoPlistPath);
         PlistElementDict root = infoPlist.root;
-        root.SetString("NSUserTrackingUsageDescription", "あなたの好みに合わせた広告を表示するために使用されます");
+        root.SetString("NSUserTrackingUsageDescription", "不適切な広告の表示を避けるために'トラッキングを許可'に設定してください。");
         infoPlist.WriteToFile(infoPlistPath);
 
         string pbxProjectPath = PBXProject.GetPBXProjectPath(buildPath);
