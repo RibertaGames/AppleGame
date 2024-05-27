@@ -8,6 +8,13 @@ namespace RibertaGames
 {
     public class AppBuilder
     {
+        [MenuItem("RibertaGames/Build/IOSAndroid")]
+        public static void BuildForIOSAndroid()
+        {
+            BuildForIOS();
+            BuildForAndroid();
+        }
+
         [MenuItem("RibertaGames/Build/Android")]
         public static void BuildForAndroid()
         {
