@@ -94,5 +94,14 @@ MonoBehaviour:
     m_Localized: "kh\xF4ng"
     m_Metadata:
       m_Items: []
+  - m_Id: 59043740237508608
+    m_Localized: "tr\xF2 ch\u01A1i t\xE1o"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 59043780226002944
+    m_Localized: "Vui l\xF2ng \u0111\u1EB7t \"Cho ph\xE9p theo d\xF5i\" \u0111\u1EC3
+      tr\xE1nh hi\u1EC3n th\u1ECB qu\u1EA3ng c\xE1o kh\xF4ng ph\xF9 h\u1EE3p.\r\n"
+    m_Metadata:
+      m_Items: []
   references:
     version: 1

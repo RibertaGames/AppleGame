@@ -100,5 +100,15 @@ MonoBehaviour:
     m_Localized: no
     m_Metadata:
       m_Items: []
+  - m_Id: 59043740237508608
+    m_Localized: apple game
+    m_Metadata:
+      m_Items: []
+  - m_Id: 59043780226002944
+    m_Localized: 'Please set "Allow Tracking" to avoid displaying inappropriate advertisements.
+
+'
+    m_Metadata:
+      m_Items: []
   references:
     version: 1

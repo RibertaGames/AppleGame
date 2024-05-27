@@ -91,5 +91,14 @@ MonoBehaviour:
     m_Localized: Non
     m_Metadata:
       m_Items: []
+  - m_Id: 59043740237508608
+    m_Localized: jeu de pomme
+    m_Metadata:
+      m_Items: []
+  - m_Id: 59043780226002944
+    m_Localized: "Veuillez d\xE9finir \xAB Autoriser le suivi \xBB pour \xE9viter
+      d'afficher des publicit\xE9s inappropri\xE9es.\r\n"
+    m_Metadata:
+      m_Items: []
   references:
     version: 1

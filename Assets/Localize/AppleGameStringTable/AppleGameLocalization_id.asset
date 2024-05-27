@@ -99,5 +99,16 @@ MonoBehaviour:
     m_Localized: Tidak
     m_Metadata:
       m_Items: []
+  - m_Id: 59043740237508608
+    m_Localized: permainan apel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 59043780226002944
+    m_Localized: 'Silakan atur "Izinkan Pelacakan" untuk menghindari menampilkan
+      iklan yang tidak pantas.
+
+'
+    m_Metadata:
+      m_Items: []
   references:
     version: 1

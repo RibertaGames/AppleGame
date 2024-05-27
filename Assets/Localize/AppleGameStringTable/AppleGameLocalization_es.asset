@@ -88,5 +88,15 @@ MonoBehaviour:
     m_Localized: No
     m_Metadata:
       m_Items: []
+  - m_Id: 59043740237508608
+    m_Localized: juego de manzana
+    m_Metadata:
+      m_Items: []
+  - m_Id: 59043780226002944
+    m_Localized: 'Configure "Permitir seguimiento" para evitar mostrar anuncios inapropiados.
+
+'
+    m_Metadata:
+      m_Items: []
   references:
     version: 1

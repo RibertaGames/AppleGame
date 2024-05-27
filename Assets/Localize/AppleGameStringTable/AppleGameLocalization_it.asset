@@ -93,5 +93,16 @@ MonoBehaviour:
     m_Localized: No
     m_Metadata:
       m_Items: []
+  - m_Id: 59043740237508608
+    m_Localized: gioco della mela
+    m_Metadata:
+      m_Items: []
+  - m_Id: 59043780226002944
+    m_Localized: 'Imposta "Consenti tracciamento" per evitare di visualizzare annunci
+      pubblicitari inappropriati.
+
+'
+    m_Metadata:
+      m_Items: []
   references:
     version: 1

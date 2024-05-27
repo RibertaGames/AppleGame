@@ -94,5 +94,14 @@ MonoBehaviour:
     m_Localized: "\uC544\uB2C8\uC624"
     m_Metadata:
       m_Items: []
+  - m_Id: 59043740237508608
+    m_Localized: "\uC0AC\uACFC \uAC8C\uC784"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 59043780226002944
+    m_Localized: "\uBD80\uC801\uC808\uD55C \uAD11\uACE0 \uAC8C\uC7AC\uB97C \uD53C\uD558\uB824\uBA74
+      '\uCD94\uC801 \uD5C8\uC6A9'\uC73C\uB85C \uC124\uC815\uD558\uC2ED\uC2DC\uC624.\r\n"
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
