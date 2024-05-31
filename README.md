@@ -14,4 +14,4 @@ Admobの設定ファイルGoogleMobileAdsSettingsのDelayなんとかのチェ�
 
 
 Xcodeの自動認証
-Preferences =>『Xcode Default Settings』
+buildSetting => Player => Identification => AutomaticallySign オン
