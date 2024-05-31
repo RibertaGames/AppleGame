@@ -14,4 +14,6 @@ Admobの設定ファイルGoogleMobileAdsSettingsのDelayなんとかのチェ�
 
 
 Xcodeの自動認証
-buildSetting => Player => Identification => AutomaticallySign オン
+buildSetting => Player => Identification => 
+Singing Team ID: L5896L5C58
+AutomaticallySign: オン
