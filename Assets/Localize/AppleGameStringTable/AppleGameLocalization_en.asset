@@ -105,7 +105,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 59043780226002944
-    m_Localized: 'Please set "Allow Tracking" to avoid displaying inappropriate advertisements.
+    m_Localized: 'Please set to [Allow Tracking] to avoid displaying inappropriate
+      advertisements.
 
 '
     m_Metadata:

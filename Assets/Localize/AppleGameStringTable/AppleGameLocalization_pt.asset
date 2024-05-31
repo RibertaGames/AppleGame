@@ -96,8 +96,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 59043780226002944
-    m_Localized: "Defina \"Permitir rastreamento\" para evitar a exibi\xE7\xE3o de
-      an\xFAncios inadequados.\r\n"
+    m_Localized: "Defina como [Permitir rastreamento] para evitar a exibi\xE7\xE3o
+      de an\xFAncios inadequados.\r\n"
     m_Metadata:
       m_Items: []
   references:

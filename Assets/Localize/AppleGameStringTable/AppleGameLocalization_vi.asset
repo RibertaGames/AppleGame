@@ -99,8 +99,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 59043780226002944
-    m_Localized: "Vui l\xF2ng \u0111\u1EB7t \"Cho ph\xE9p theo d\xF5i\" \u0111\u1EC3
-      tr\xE1nh hi\u1EC3n th\u1ECB qu\u1EA3ng c\xE1o kh\xF4ng ph\xF9 h\u1EE3p.\r\n"
+    m_Localized: "Vui l\xF2ng \u0111\u1EB7t th\xE0nh [Cho ph\xE9p theo d\xF5i] \u0111\u1EC3
+      tr\xE1nh hi\u1EC3n th\u1ECB c\xE1c qu\u1EA3ng c\xE1o kh\xF4ng ph\xF9 h\u1EE3p.\r\n"
     m_Metadata:
       m_Items: []
   references:

@@ -96,8 +96,10 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 59043780226002944
-    m_Localized: "Bitte stellen Sie \u201ETracking zulassen\u201C ein, um die Anzeige
-      unangemessener Werbung zu vermeiden.\r\n"
+    m_Localized: 'Bitte stellen Sie [Tracking zulassen] ein, um die Anzeige unangemessener
+      Werbung zu vermeiden.
+
+'
     m_Metadata:
       m_Items: []
   references:
