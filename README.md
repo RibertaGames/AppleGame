@@ -11,3 +11,7 @@
 unity2021.1.20f1だとAdMob6.1.2が動作する。他はビルドエラーになる
 ATTの設置と自動記載
 Admobの設定ファイルGoogleMobileAdsSettingsのDelayなんとかのチェックを入れるとIDが保存される。
+
+
+Xcodeの自動認証
+Preferences =>『Xcode Default Settings』
