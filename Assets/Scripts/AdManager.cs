@@ -1,5 +1,8 @@
 ﻿using GoogleMobileAds.Api;
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace RibertaGames
 {
@@ -106,67 +109,107 @@ namespace RibertaGames
         public void Start()
         {
             MobileAds.Initialize(initStatus => { });
-        }
 
-        /// AdMobの広告ロード
-        /// </summary>
-        /// <param name="adType"></param>
-        public void LoadAndShowAdMob(eAdMob adType)
-        {
-            switch (adType)
-            {
-                case eAdMob.Banner:
-                    _ShowAdmobBanner();
-                    break;
-                case eAdMob.Interstitial:
-                    _ShowAdmobInterstitial();
-                    break;
-                case eAdMob.Reward:
-                    _AdmobReward();
-                    break;
-            }
+            // バナー表示
+            LoadAndShowAdmobBanner();
+
+            // インタースティシャル広告をロード
+            LoadAdmobInterstitial();
         }
 
         /// <summary>
-        /// バナー広告
+        /// バナー広告表示
         /// </summary>
-        private void _ShowAdmobBanner()
+        public void LoadAndShowAdmobBanner()
         {
             string adUnitId = _GetID(eAdMob.Banner);
-            if (_bannerView != null)
-            {
-                _bannerView.Destroy();
-            }
-
             AdSize adaptiveSize = AdSize.GetPortraitAnchoredAdaptiveBannerAdSizeWithWidth(AdSize.FullWidth);
             _bannerView = new BannerView(adUnitId, adaptiveSize, AdPosition.Bottom);
             AdRequest request = new AdRequest.Builder().Build();
             _bannerView.LoadAd(request);
         }
 
+        private int _retryCount = 0;
+        private int _interstitialCount = 2; // 最初は表示させる。
+
         /// <summary>
-        /// インタースティシャル広告
+        /// インタースティシャル広告をロード
         /// </summary>
-        private void _ShowAdmobInterstitial()
+        public void LoadAdmobInterstitial()
         {
             string adUnitId = _GetID(eAdMob.Interstitial);
             _interstitial = new InterstitialAd(adUnitId);
-            _interstitial.OnAdLoaded += _InterstitialAdLoaded;
-            _interstitial.OnAdClosed += _InterstitialAdClosed;
+            _interstitial.OnAdLoaded += _HandleOnAdLoaded;
+            _interstitial.OnAdFailedToLoad += _HandleOnAdFailedToLoad;
             AdRequest request = new AdRequest.Builder().Build();
             _interstitial.LoadAd(request);
 
-            void _InterstitialAdLoaded(object sender, EventArgs args)
+            void _HandleOnAdLoaded(object sender, EventArgs args)
             {
-                if (_interstitial.IsLoaded())
-                {
-                    _interstitial.Show();
-                }
+                _retryCount = 0;
             }
 
-            void _InterstitialAdClosed(object sender, EventArgs args)
+            // 広告の読み込みが失敗したときの処理
+            void _HandleOnAdFailedToLoad(object sender, AdFailedToLoadEventArgs args)
             {
+                if (_retryCount < 10)
+                {
+                    _retryCount++;
+                    StartCoroutine(_RetryLoadAd());
+                }
+                IEnumerator _RetryLoadAd()
+                {
+                    _interstitial.OnAdLoaded -= _HandleOnAdLoaded;
+                    _interstitial.OnAdFailedToLoad -= _HandleOnAdFailedToLoad;
+                    _interstitial.Destroy();
+                    yield return new WaitForSeconds(2);
+                    LoadAdmobInterstitial();
+                }
+            }
+        }
+
+        /// <summary>
+        /// インタースティシャル広告を表示する
+        /// </summary>
+        public void ShowAdmobInterstitial(Action getReward)
+        {
+            // 3回に一回インタースティシャル広告を表示させる
+            _interstitialCount++;
+            if(_interstitialCount % 3 != 0)
+            {
+                getReward();
+                return;
+            }
+
+            if (_interstitial != null && _interstitial.IsLoaded())
+            {
+                _interstitial.OnAdClosed += _HandleOnAdClosed;
+                _interstitial.OnAdFailedToShow += _HandleOnAdFailedToShow;
+                _interstitial.Show();
+            }
+            else
+            {
+                getReward();
+            }
+
+            // 広告の表示が失敗したときの処理
+            void _HandleOnAdFailedToShow(object sender, AdErrorEventArgs args)
+            {
+                _interstitial.OnAdClosed -= _HandleOnAdClosed;
+                _interstitial.OnAdFailedToShow -= _HandleOnAdFailedToShow;
                 _interstitial.Destroy();
+                LoadAdmobInterstitial();
+                getReward();
+            }
+
+            // 閉じた時
+            void _HandleOnAdClosed(object sender, EventArgs args)
+            {
+                _interstitial.OnAdClosed -= _HandleOnAdClosed;
+                _interstitial.OnAdFailedToShow -= _HandleOnAdFailedToShow;
+                _interstitial.Destroy();
+                LoadAdmobInterstitial();
+                getReward();
             }
         }
 

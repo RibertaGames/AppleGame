@@ -102,11 +102,11 @@ namespace RibertaGames {
                     if (_model.GetCurrentGameState() != eGameState.GamePlay)
                     {
                         // インタースティシャル広告を表示
-                        AdManager.instance.LoadAndShowAdMob(AdManager.eAdMob.Interstitial);
-
-                        _view.InitializeView();
-                        await _model.GameStart();
-                        _view.SetActiveBoardFillter(false);
+                        AdManager.instance.ShowAdmobInterstitial(async () => {
+                            _view.InitializeView();
+                            await _model.GameStart();
+                            _view.SetActiveBoardFillter(false);
+                        });
                     }
                     //else
                     //{

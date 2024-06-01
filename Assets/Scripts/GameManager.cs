@@ -27,7 +27,6 @@ namespace RibertaGames
         public void Start()
         {
             BGMManager.instance.Play(BGMPath.MUS_MUS_BGM, isLoop: true);
-            AdManager.instance.LoadAndShowAdMob(AdManager.eAdMob.Banner);
         }
     }
 }
