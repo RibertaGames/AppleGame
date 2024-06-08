@@ -19,6 +19,10 @@ public class AppManager : MonoBehaviour
         Application.targetFrameRate = GameDefine.FRAME_COUNT;
     }
 
+    /// <summary>
+    /// レビュー誘導
+    /// </summary>
+    /// <param name="review_type"></param>
     public void StoreReview(string review_type)
     {
 #if UNITY_IOS

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using UnityEditor;
 using UnityEditor.AddressableAssets.Settings;
 using UnityEditor.Build.Reporting;
@@ -12,11 +12,11 @@ namespace RibertaGames
         public static void BuildForIOSAndroid()
         {
             BuildForIOS();
-            BuildForAndroid();
+            BuildForAndroidAPK();
         }
 
-        [MenuItem("RibertaGames/Build/Android")]
-        public static void BuildForAndroid()
+        [MenuItem("RibertaGames/Build/Android/apk")]
+        public static void BuildForAndroidAPK()
         {
             _BumpBuildNumberForAndroid();
 #if UNITY_EDITOR_WIN
@@ -24,6 +24,32 @@ namespace RibertaGames
 #elif UNITY_EDITOR_OSX
             string path = $"/Users/riberta/Desktop/UnityBuild/android/game.apk";
 #endif
+            var report = BuildPipeline.BuildPlayer(_GetAllScenePaths(), path, BuildTarget.Android, BuildOptions.None);
+            BuildSummary summary = report.summary;
+
+            if (summary.result == BuildResult.Succeeded)
+            {
+                Debug.Log("Androidビルド 成功");
+            }
+
+            if (summary.result == BuildResult.Failed)
+            {
+                Debug.LogError("Androidビルド 失敗");
+            }
+        }
+
+        [MenuItem("RibertaGames/Build/Android/aab")]
+        public static void BuildForAndroidAAB()
+        {
+            _BumpBuildNumberForAndroid();
+#if UNITY_EDITOR_WIN
+            string path = $"/Users/user/Desktop/UnityBuild/android/game.aab";
+#elif UNITY_EDITOR_OSX
+            string path = $"/Users/riberta/Desktop/UnityBuild/android/game.aab";
+#endif
+            // PlayerSettingsを変更してAABをビルドするように設定
+            EditorUserBuildSettings.buildAppBundle = true;
+
             var report = BuildPipeline.BuildPlayer(_GetAllScenePaths(), path, BuildTarget.Android, BuildOptions.None);
             BuildSummary summary = report.summary;
 
