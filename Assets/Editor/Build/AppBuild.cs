@@ -47,7 +47,26 @@ namespace RibertaGames
 #elif UNITY_EDITOR_OSX
             string path = $"/Users/riberta/Desktop/UnityBuild/android/game.aab";
 #endif
-            // PlayerSettingsを変更してAABをビルドするように設定
+            //--- ※Google Play の 64 ビット要件に準拠していません
+            // PlayerSettingsを変更してスクリプティングバックエンドをIL2CPPに設定
+            PlayerSettings.SetScriptingBackend(BuildTargetGroup.Android, ScriptingImplementation.IL2CPP);
+
+            // ターゲットアーキテクチャをARM64に設定
+            PlayerSettings.Android.targetArchitectures = AndroidArchitecture.ARM64;
+            //---
+
+            //--- ※API レベル 33 以上を対象にする必要があります。
+            // ターゲットAPIレベルを設定
+            PlayerSettings.Android.targetSdkVersion = (AndroidSdkVersions)33;
+            //---
+
+            //--- ※この App Bundle に関連付けられている難読化解除ファイルはありません。
+            // Player => UseR8にチェック
+
+            // ※この App Bundle にはネイティブ コードが含まれ、デバッグ シンボルがアップロードされていません。
+            EditorUserBuildSettings.androidCreateSymbols = AndroidCreateSymbols.Debugging;
+
+            // AABをビルドするように設定
             EditorUserBuildSettings.buildAppBundle = true;
 
             var report = BuildPipeline.BuildPlayer(_GetAllScenePaths(), path, BuildTarget.Android, BuildOptions.None);
