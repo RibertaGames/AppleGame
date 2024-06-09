@@ -39,3 +39,12 @@ GoogleMobileAdsSettingsのDelay...チェックを入れるとIDが保存され�
 buildSetting => Player => Identificationへ移動
 - Singing Team ID: L5896L5C58
 - AutomaticallySign: オン
+
+### Android申請
+- アプリ名
+- 簡単な説明
+- 詳しい説明
+- アイコン画像
+- 説明動画
+- スクリーンショット
+- フィーチャー グラフィック
