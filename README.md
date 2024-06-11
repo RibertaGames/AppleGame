@@ -42,8 +42,8 @@ buildSetting => Player => Identificationへ移動
 
 ### Apple申請
 
-- デジタルサービス法（DSA）(https://developer.apple.com/help/app-store-connect/manage-compliance-information/manage-european-union-digital-services-act-trader-requirements/)
-
+- [デジタルサービス法（DSA)](https://developer.apple.com/help/app-store-connect/manage-compliance-information/manage-european-union-digital-services-act-trader-requirements/)
+- ノントレーダー: 個人、法人ともに有料アプリ（EU除く）、アプリ内課金あり(EU除く)、無料アプリ(EU含む場合もOK)
 
 ### Android申請
 - アプリ名
