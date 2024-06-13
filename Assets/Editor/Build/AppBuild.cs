@@ -87,6 +87,11 @@ namespace RibertaGames
         public static void BuildForIOS()
         {
             _BumpBuildNumberForIOS();
+
+            //チームIDの自動認識
+            PlayerSettings.iOS.appleEnableAutomaticSigning = true;
+            PlayerSettings.iOS.appleDeveloperTeamID = "L5896L5C58";
+
             // 出力パス。絶対パスで指定すること。また、最後にスラッシュを入れないこと。PostBuildProcess に渡る path が通常ビルドと異なってしまい、思わぬバグを引き起こすことがあります。
 #if UNITY_EDITOR_WIN
             string path = $"/Users/user/Desktop/UnityBuild/ios";
