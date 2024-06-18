@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEditor.AddressableAssets.Settings;
 using UnityEditor.Build.Reporting;
 using UnityEngine;
@@ -8,13 +7,6 @@ namespace RibertaGames
 {
     public class AppBuilder
     {
-        [MenuItem("RibertaGames/Build/IOSAndroid")]
-        public static void BuildForIOSAndroid()
-        {
-            BuildForIOS();
-            BuildForAndroidAPK();
-        }
-
         [MenuItem("RibertaGames/Build/Android/apk")]
         public static void BuildForAndroidAPK()
         {
@@ -47,6 +39,10 @@ namespace RibertaGames
 #elif UNITY_EDITOR_OSX
             string path = $"/Users/riberta/Desktop/UnityBuild/android/game.aab";
 #endif
+            //--- keystoreの設定
+            // TODO: 
+            //---
+
             //--- ※Google Play の 64 ビット要件に準拠していません
             // PlayerSettingsを変更してスクリプティングバックエンドをIL2CPPに設定
             PlayerSettings.SetScriptingBackend(BuildTargetGroup.Android, ScriptingImplementation.IL2CPP);
@@ -60,10 +56,25 @@ namespace RibertaGames
             PlayerSettings.Android.targetSdkVersion = (AndroidSdkVersions)33;
             //---
 
-            //--- ※この App Bundle に関連付けられている難読化解除ファイルはありません。
-            // Player => UseR8にチェック
+            //--- ※この App Bundle に関連付けられている難読化解除ファイルはありません。ProGuard/R8
+            // コードの縮小 (minification) の有効化/難読化
+            // => **mapping.txtが生成されるのでアップロードする。
+            PlayerSettings.Android.minifyRelease = true;
+            PlayerSettings.Android.minifyDebug = false; // デバッグビルドでは縮小を無効にする
+            PlayerSettings.Android.minifyWithR8 = true;
+            // プロガード設定ファイルのパスを設定(不要？)
+            //「BuildSetting」=>「PlayerSettng」=>「Android」=> 「PublishingSettings」=>
+            //「Build」=>「Custom Proguard File」をオン =>「Assets/Plugins/Android/proguard-user.txtが生成される」
+            //---
+
+            // Android 13 以上をターゲットとするアプリで広告 ID を使用する場合は、
+            // マニフェストに com.google.android.gms.permission.AD_ID 権限を含める必要があります。
+            //「Custom Main Manifest」をオン => 「AndroidManifest.xml」が生成される。↓追加
+            // <manifest><uses-permission android:name="com.google.android.gms.permission.AD_ID"/></manifest>
 
             // ※この App Bundle にはネイティブ コードが含まれ、デバッグ シンボルがアップロードされていません。
+            // クラッシュやANRの解析を容易にするために、デバッグシンボルの生成を有効
+            // zipのデバッグシンボルが出力されるのでこれもアップロードする。
             EditorUserBuildSettings.androidCreateSymbols = AndroidCreateSymbols.Debugging;
 
             // AABをビルドするように設定
@@ -92,7 +103,6 @@ namespace RibertaGames
             PlayerSettings.iOS.appleEnableAutomaticSigning = true;
             PlayerSettings.iOS.appleDeveloperTeamID = "L5896L5C58";
 
-            // 出力パス。絶対パスで指定すること。また、最後にスラッシュを入れないこと。PostBuildProcess に渡る path が通常ビルドと異なってしまい、思わぬバグを引き起こすことがあります。
 #if UNITY_EDITOR_WIN
             string path = $"/Users/user/Desktop/UnityBuild/ios";
 #elif UNITY_EDITOR_OSX
