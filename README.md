@@ -41,22 +41,23 @@ buildSetting => Player => Identificationへ移動
 - AutomaticallySign: オン
 
 # 申請で準備するもの(共通)
+### 文言(ローカライズ含め)
 - ゲームタイトル
 - サブタイトル(Appleは30文字以内、Androidは80文字以内)
 - 概要(1000文字程度)
-- ↑テキストを全て翻訳する
-- スクリーンショット(全対応言語)
-- サポートURL
-- プライバシーポリシーURL
-  
-## Apple申請
 - プロモーション用テキスト(170文字)
 - キーワード(100文字以内のcsv)
+
+### 画像(ローカライズ含め)
+- アイコン(1024 x 1024 / 1M以下 / 1枚) + (512×512/ 1枚)
+- スクリーンショット(5.5インチ / 16:9 / 1242 x 2208 /2枚～) + (6.5インチ / 19.5:9 /1242 x 2688/ 2枚～)
+- フィーチャーグラフィック(1024 x 500 /1M以下/Android専用)
+  
+### Webサイト
+- サポートURL
+- プライバシーポリシーURL
 
 <その他>
 - ゲーム内でサインインが必要な場合は担当者が確認するようのデバッグアカウントを提示 ※添付ファイル可
 - [デジタルサービス法（DSA)](https://developer.apple.com/help/app-store-connect/manage-compliance-information/manage-european-union-digital-services-act-trader-requirements/)
 - ノントレーダー: 個人、法人ともに有料アプリ（EU除く）、アプリ内課金あり(EU除く)、無料アプリ(EU含む場合もOK)
-
-## Android申請
-- フィーチャー グラフィック
