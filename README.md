@@ -40,16 +40,23 @@ buildSetting => Player => Identificationへ移動
 - Singing Team ID: L5896L5C58
 - AutomaticallySign: オン
 
-### Apple申請
+# 申請で準備するもの(共通)
+- ゲームタイトル
+- サブタイトル(Appleは30文字以内、Androidは80文字以内)
+- 概要(1000文字程度)
+- ↑テキストを全て翻訳する
+- スクリーンショット(全対応言語)
+- サポートURL
+- プライバシーポリシーURL
+  
+## Apple申請
+- プロモーション用テキスト(170文字)
+- キーワード(100文字以内のcsv)
 
+<その他>
+- ゲーム内でサインインが必要な場合は担当者が確認するようのデバッグアカウントを提示 ※添付ファイル可
 - [デジタルサービス法（DSA)](https://developer.apple.com/help/app-store-connect/manage-compliance-information/manage-european-union-digital-services-act-trader-requirements/)
 - ノントレーダー: 個人、法人ともに有料アプリ（EU除く）、アプリ内課金あり(EU除く)、無料アプリ(EU含む場合もOK)
 
-### Android申請
-- アプリ名
-- 簡単な説明
-- 詳しい説明
-- アイコン画像
-- 説明動画
-- スクリーンショット
+## Android申請
 - フィーチャー グラフィック
