@@ -10,4 +10,4 @@ ModelとViewはお互いを知らないので、結合した実装にならず�
 (ゲームロジック部分のModel,ゲーム画面UI部分のView,それを繋ぐPresenter)
 
 ゲーム自体はコード量もなく簡単な実装です。
-ゲームロジック部分は、AppleGame/Assets/Scripts/GameModel.cs この辺が参考になるかと思いますので、よろしくお願い致します。
+ゲームロジック部分は、[Assets/Scripts/GameModel.cs](https://github.com/RibertaGames/AppleGame/blob/0404f229318d3cb18589cbbbfd586cb2d54cdc27/Assets/Scripts/GameModel.cs) この辺が参考になるかと思いますので、よろしくお願い致します。
